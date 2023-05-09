@@ -94,7 +94,11 @@ Lien Swagger
 
 # Choix techniques
 
-- typescript
+- react-native navigation
+
+- reducer
+
+- React context
 
 - mui
 

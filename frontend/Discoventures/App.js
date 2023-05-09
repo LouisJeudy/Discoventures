@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useFonts } from 'expo-font';
 import {StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -24,56 +25,60 @@ const theme = {
   }
 };
 
-export default function App({ navigation }) {
+function SignInScreen() {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const [state, dispatch] = React.useReducer(reducer, initialState)
-  function SignInScreen(message) {
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
-  
-    const { signIn } = React.useContext(AuthContext);
-    return (
-    <View style={styles.container}>
-        <Text style={[styles.baseText, fonts.text4xl]}>
-        Connexion à mon compte
-        </Text>
-        <TextInput
-          nativeID='emailInput'
-          label="E-mail"
-          variant="outlined"
-          style={[styles.input]} 
-          onChangeText={setEmail} 
-          value={email} 
-          color="grey"
+
+  const { signIn } = React.useContext(AuthContext);
+  return (
+  <View style={styles.container}>
+      <Text style={[styles.baseText, fonts.text4xl]}>
+      Connexion à mon compte
+      </Text>
+      <TextInput
+        nativeID='emailInput'
+        label="E-mail"
+        variant="outlined"
+        style={[styles.input]} 
+        onChangeText={setEmail} 
+        value={email} 
+        color="grey"
+      />
+       <TextInput
+        nativeID='passwordInput'
+        label="Mot de passe"
+        variant="outlined"
+        style={styles.input} 
+        secureTextEntry={true} 
+        onChangeText={setPassword} 
+        value={password}
+        color="grey"
+      />
+        <Button
+          nativeID='btnConnect'
+          label='Se connecter'
+          style={styles.button}
+          onPress={() => signIn({email, password})}
         />
-         <TextInput
-          nativeID='passwordInput'
-          label="Mot de passe"
-          variant="outlined"
-          style={styles.input} 
-          secureTextEntry={true} 
-          onChangeText={setPassword} 
-          value={password}
-          color="grey"
-        />
-          <Button
-            nativeID='btnConnect'
-            label='Se connecter'
-            style={styles.button}
-            onPress={() => signIn({email, password})}
-          />
-        <Text 
-          style={styles.errorMsg}
-          nativeID='errorMsg'
-        >
-          {state.errorMsg}
-        </Text>
-        <Text>
-        Pas encore de compte ? 
-          <Text style={styles.innerText}> S'inscrire</Text>
-        </Text>
-      </View>
-      );
-  }
+      <Text 
+        style={styles.errorMsg}
+        nativeID='errorMsg'
+      >
+        {state.errorMsg}
+      </Text>
+      <Text>
+      Pas encore de compte ? 
+        <Text style={styles.innerText}> S'inscrire</Text>
+      </Text>
+    </View>
+    );
+}
+
+export default function App({ navigation }) {
+
+  const [state, dispatch] = React.useReducer(reducer, initialState)
+
 
   const authContext = React.useMemo(
     () => ({
@@ -120,7 +125,7 @@ export default function App({ navigation }) {
       <NavigationContainer theme={theme}>
         <Stack.Navigator
           screenOptions={{
-            headerTitleAlign: 'center',
+           
             headerTitleStyle: {
               fontFamily: fonts.font2text2xl.fontFamily,
               color: colors.colorPrimary900.color,
