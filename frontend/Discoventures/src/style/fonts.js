@@ -215,5 +215,19 @@ export default StyleSheet.create({
     fontWeight: 400,
     fontSize: "16px",
     lineHeight: "20px"
+  },
+  font2text2xl: {
+    fontFamily: 'CantoraOne-Regular',
+    fontStyle: "normal",
+    fontWeight: 600,
+    fontSize: "24px",
+    lineHeight: "32px"
+  },
+  font2textXmRegular: {
+    fontFamily: 'CantoraOne-Regular',
+    fontStyle: "normal",
+    fontWeight: 400,
+    fontSize: "16px",
+    lineHeight: "20px"
   }
 });

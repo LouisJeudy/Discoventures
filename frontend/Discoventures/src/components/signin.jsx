@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { StyleSheet, View, Text} from 'react-native';
 import {useState} from 'react';
 import {TextInput} from "@react-native-material/core";
@@ -9,6 +10,8 @@ import fonts from '../style/fonts'
 const BACKEND = "http://localhost:3000"
 
 export default function Signin({ onConnect }) {
+  const Authcontext = React.useContext();
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
@@ -25,6 +28,7 @@ export default function Signin({ onConnect }) {
         .then(data => {
             if (data.token) {
                 setToken(data.token)
+                setErrormsg('')
             } else {
                 setErrormsg(data.message)
             }})
