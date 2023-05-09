@@ -6,24 +6,34 @@ const users = db.define('users', {
     type: Sequelize.INTEGER,
     autoIncrement: true
   },
-  name: {
-    type: Sequelize.STRING(128),
-    validate: {
-      is: /^[a-z\-'\s]{1,128}$/i
-    }
+  username: {
+    type: Sequelize.STRING(16),
+    unique: true,
+    allowNul: false
   },
   email: {
     type: Sequelize.STRING(128),
     unique: true,
+    allowNul: false,
     validate: {
       isEmail: true
     }
   },
-  passhash: {
+  password: {
     type: Sequelize.STRING(60),
+    allowNul: false,
     validate: {
       is: /^[0-9a-z\\/$.]{60}$/i
     }
+  },
+  isadmin: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
+  },
+  spotifyToken: {
+    type: Sequelize.STRING(60),
+    allowNul: true,
+    unique: true
   }
 }, { timestamps: false })
 module.exports = users

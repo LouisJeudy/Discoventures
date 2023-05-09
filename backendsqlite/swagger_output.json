@@ -1,0 +1,299 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "REST API",
+    "description": ""
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get all users",
+        "description": "",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "header",
+            "type": "string",
+            "description": "username"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returning users",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "1"
+                      },
+                      "username": {
+                        "type": "string",
+                        "example": "louis"
+                      },
+                      "email": {
+                        "type": "string",
+                        "example": "louis@jeudy.com"
+                      },
+                      "isAdmin": {
+                        "type": "boolean",
+                        "example": true
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "username",
+                      "email",
+                      "isAdmin"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "data"
+              ],
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Create an user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "data",
+            "in": "body",
+            "description": "username",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "example": "louis"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "mark@com.fr"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "markcavendish"
+                }
+              },
+              "required": [
+                "username",
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "User Added"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete all users",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users deleted"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Delete an user by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id of the user"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User deleted"
+          }
+        }
+      }
+    },
+    "/getjwtDeleg/{username}": {
+      "get": {
+        "tags": [
+          "Token"
+        ],
+        "summary": "Retrieve token for the user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "username"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returning token",
+            "descriptiuon": "Returning token",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiJ9.bWFyaw.DAFVHDlid5Factj50DywBd3DhmBZfHDgcLkJiURjZmE"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/data": {
+      "get": {
+        "tags": [
+          "whoami"
+        ],
+        "summary": "Get the username through token",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "type": "string",
+            "description": "token generated by /getjwtdeleg/{user} endpoint"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returning username",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "type": "object",
+                  "properties": {
+                    "username": {
+                      "type": "string",
+                      "example": "louis"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "louis@com.fr"
+                    },
+                    "isAdmin": {
+                      "type": "string",
+                      "example": "[true|false]"
+                    },
+                    "spotifyToken": {
+                      "type": "string",
+                      "example": "[null|spotifyTokenHash]"
+                    }
+                  },
+                  "required": [
+                    "username",
+                    "email",
+                    "isAdmin",
+                    "spotifyToken"
+                  ]
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Verify credentials of user using email and password and return token",
+        "description": "",
+        "parameters": [
+          {
+            "name": "obj",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "John.Doe@acme.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "12345"
+                }
+              },
+              "required": [
+                "email",
+                "password"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  }
+}
