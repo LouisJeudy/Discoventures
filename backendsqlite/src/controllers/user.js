@@ -143,7 +143,6 @@ module.exports = {
     if (!user) {
       throw new CodeError('L\'utilisateur n\'existe pas !', status.NOT_FOUND)
     }
-    const data = user.username
     // Réponse JSON dans le format souhaité
     res.json({ status: 200, message: 'Données de l\'utilisateur', user })
   },
