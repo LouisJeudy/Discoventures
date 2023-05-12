@@ -3,37 +3,41 @@ import { StyleSheet, View, Text} from 'react-native';
 import {useState} from 'react';
 import {TextInput} from "@react-native-material/core";
 import Button from './Button';
-
+import { useSelector, useDispatch } from 'react-redux'
 import colors from '../style/colors'
 import fonts from '../style/fonts'
+import { userToken } from '../app/slices/userSlice';
+import { Link } from '@react-navigation/native';
+import SignUpForm from './SignUpForm';
 
 const BACKEND = "http://localhost:3000"
 
-export default function Signin({ onConnect }) {
-  const Authcontext = React.useContext();
+export default function Signin(props) {
   
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [token, setToken] = useState('');
-  const [errormsg, setErrormsg] = useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [errormsg, setErrormsg] = React.useState('');
+  const dispatch = useDispatch();
 
-    function onConnect(email, password){
-        console.log(`${BACKEND}/login`);
-        fetch(`${BACKEND}/login`,{
-            method:'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({email, password})
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.token) {
-                setToken(data.token)
-                setErrormsg('')
-            } else {
-                setErrormsg(data.message)
-            }})
-        .catch(error => alert("Server error"))
-    }
+  function onConnect(email, password){
+      console.log(`${BACKEND}/login`);
+      fetch(`${BACKEND}/login`,{
+          method:'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({email, password})
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.token) {
+              setErrormsg('')
+              dispatch(userToken(data.token))
+              props.navigation.navigate('Home')
+          } else {
+              setErrormsg(data.message)
+              
+          }})
+      .catch(error => alert("Server error" + error))
+  }
 
   return (
     <View style={styles.container}>
@@ -73,9 +77,9 @@ export default function Signin({ onConnect }) {
         {errormsg}
       </Text>
       <Text>
-      Pas encore de compte ? 
-        <Text style={styles.innerText}> S'inscrire</Text>
-      </Text>
+      Pas encore de compte ?
+      <Text style={styles.innerText} onPress={() => props.navigation.navigate('SignUp')}> S'inscrire</Text>
+      </Text>        
     </View>
   );
 }

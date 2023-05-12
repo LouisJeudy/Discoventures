@@ -1,0 +1,101 @@
+//SignUp.js
+import {useState} from 'react';
+import { StyleSheet, Text, View} from 'react-native';
+import fonts from '../style/fonts';
+import { TextInput} from '@react-native-material/core';
+import Button from './Button';
+import colors from '../style/colors'
+const BACKEND = "http://localhost:3000"
+const FRONTEND = "http://localhost:19000"
+
+export default function SignUpForm(props) {
+  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [errormsg, setErrormsg] = useState('')
+
+  function signup(email, username, password){
+    const body = new URLSearchParams();
+    body.append("data",JSON.stringify({username:username, email:email,password:password}));
+    fetch(`${BACKEND}/users`,{
+        method:'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body
+    })
+    .then(response => response.json())
+    .then(response =>{
+      if(response.status!= 201){ 
+        setErrormsg(response.message)
+      }else{
+        setErrormsg(null)
+        props.navigation.navigate('Login');
+      }
+    })
+    .catch(error => alert("Server error inscrire :" + error));
+  }
+  return (
+    <View style={styles.container}>
+        <Text style={fonts.text4xl}> Crée ton compte</Text>
+        <TextInput
+        nativeID='emailInput'
+        label="E-mail"
+        variant="outlined"
+        style={styles.inputInscri} 
+        onChangeText={setEmail} 
+        value={email} 
+        color="grey"/>
+      <TextInput
+        nativeID='userInput'
+        label="Nom d'utilisateur"
+        variant="outlined"
+        style={styles.inputInscri} 
+        onChangeText={setUsername} 
+        value={username} 
+        color="grey"/>
+        <TextInput
+        nativeID='passwordInput'
+        label="Mot de passe"
+        variant="outlined"
+        style={styles.inputInscri} 
+        secureTextEntry={true} 
+        onChangeText={setPassword} 
+        value={password} 
+        color="grey"/>
+        <Button 
+        nativeID='btInscrire'
+        label="S'inscrire" 
+        onPress={()=>signup(email,username,password)}
+        /> 
+        <Text 
+        style={styles.errorMsg}
+        nativeID='errorMsg'
+      >
+        {errormsg}
+      </Text>
+        <Text>Déjà inscrit ?
+            <Text style={styles.innerText} onPress={() => props.navigation.navigate('Login')}> Se Connecter</Text>
+        </Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex:1,
+    flexDirection: 'column',
+    padding:20,
+    justifyContent:'center'
+
+  },
+  inputInscri: {
+    height:40,
+    marginTop: 12,
+    marginBottom: 12
+  },
+  innerText: {
+    color: colors.colorPrimary500.color
+  },
+  errorMsg:{
+    color: "red"
+  }
+});

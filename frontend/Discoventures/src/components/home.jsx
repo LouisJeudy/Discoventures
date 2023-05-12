@@ -6,7 +6,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import fonts from '../style/fonts';
 import colors from '../style/colors';
-
+import { useSelector, useDispatch } from 'react-redux'
 
 function HomeScreen({ navigation }) {
     return (
@@ -32,10 +32,13 @@ function HomeScreen({ navigation }) {
 const Tab = createBottomTabNavigator();
 
 export default function Home({name}) {
+
+  const token = useSelector((state) => state.user.token)
+  console.log(token)
+
     return (
         <Tab.Navigator
           screenOptions={({ route }) => ({
-            headerShown: false,
             tabBarIcon: ({ focused, color, size }) => {
               let iconName;
   
