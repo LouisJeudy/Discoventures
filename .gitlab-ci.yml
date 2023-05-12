@@ -25,8 +25,8 @@ lintjs_frontend:
     image: node
     script:
       - npm --prefix ./frontend/Discoventures/ i
+      - npx eslint ./frontend/Discoventures/src/app/**
       - npx eslint ./frontend/Discoventures/src/components/**
-      - npx eslint ./frontend/Discoventures/app/**
 
 # Exécution des tests Cypress
 jobcypress:

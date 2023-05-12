@@ -1,13 +1,7 @@
 import * as React from 'react';
-import { useFonts } from 'expo-font';
-import {StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Signin from './src/components/SignInForm';
 import Home from './src/components/home';
-import colors from './src/style/colors';
-import { Provider } from 'react-redux';
-import { useSelector } from 'react-redux'
 import SignUpForm from './src/components/SignUpForm';
 import { createStackNavigator } from '@react-navigation/stack';
 
