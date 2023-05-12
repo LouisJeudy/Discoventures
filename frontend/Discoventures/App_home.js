@@ -8,7 +8,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 
 const theme = {
-  colors: {
+  colors:{
     background: "white"
   }
 };

@@ -3,8 +3,7 @@ import { Provider } from 'react-redux';
 import store from './src/app/store/store';
 import AppHome from './App_home';
 
-
-export default function App({ navigation }) {
+export default function App() {
   
     //const { signIn } = React.useContext(AuthContext);
     return (
