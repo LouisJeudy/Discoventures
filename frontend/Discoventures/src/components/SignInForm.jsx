@@ -37,7 +37,6 @@ export default function Signin(props) {
 
   return (
     <View style={styles.container}>
-      {/* <MyHeader label1={"Discoventures"} label2={"Connexion"} style={styles.header}></MyHeader> */}
       <Text style={[styles.baseText, fonts.text4xl]}>
       Connexion à mon compte
       </Text>
