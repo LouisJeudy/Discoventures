@@ -6,7 +6,6 @@ import { TextInput} from '@react-native-material/core';
 import Button from './Button';
 import colors from '../style/colors'
 const BACKEND = "http://localhost:3000"
-const FRONTEND = "http://localhost:19000"
 
 export default function SignUpForm(props) {
   const [email, setEmail] = useState('')
@@ -16,6 +15,7 @@ export default function SignUpForm(props) {
 
   function signup(email, username, password){
     const body = new URLSearchParams();
+    
     body.append("data",JSON.stringify({username:username, email:email,password:password}));
     fetch(`${BACKEND}/users`,{
         method:'POST',
@@ -37,7 +37,7 @@ export default function SignUpForm(props) {
     <View style={styles.container}>
         <Text style={fonts.text4xl}> Crée ton compte</Text>
         <TextInput
-        nativeID='emailInput'
+        nativeID='emailInputSignUp'
         label="E-mail"
         variant="outlined"
         style={styles.inputInscri} 
@@ -45,7 +45,7 @@ export default function SignUpForm(props) {
         value={email} 
         color="grey"/>
       <TextInput
-        nativeID='userInput'
+        nativeID='userInputSignUp'
         label="Nom d'utilisateur"
         variant="outlined"
         style={styles.inputInscri} 
@@ -53,7 +53,7 @@ export default function SignUpForm(props) {
         value={username} 
         color="grey"/>
         <TextInput
-        nativeID='passwordInput'
+        nativeID='passwordInputSignUp'
         label="Mot de passe"
         variant="outlined"
         style={styles.inputInscri} 
@@ -62,13 +62,13 @@ export default function SignUpForm(props) {
         value={password} 
         color="grey"/>
         <Button 
-        nativeID='btInscrire'
+        nativeID='btSignUp'
         label="S'inscrire" 
         onPress={()=>signup(email,username,password)}
         /> 
         <Text 
         style={styles.errorMsg}
-        nativeID='errorMsg'
+        nativeID='errorMsgSignUp'
       >
         {errormsg}
       </Text>

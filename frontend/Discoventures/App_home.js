@@ -3,7 +3,7 @@ import { useFonts } from 'expo-font';
 import {StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Signin from './src/components/signin';
+import Signin from './src/components/SignInForm';
 import Home from './src/components/home';
 import colors from './src/style/colors';
 import fonts from './src/style/fonts';

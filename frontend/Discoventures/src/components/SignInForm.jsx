@@ -46,7 +46,7 @@ export default function Signin(props) {
       Connexion à mon compte
       </Text>
       <TextInput
-        nativeID='emailInput'
+        nativeID='emailInputSignIn'
         label="E-mail"
         variant="outlined"
         style={[styles.input]} 
@@ -55,7 +55,7 @@ export default function Signin(props) {
         color="grey"
       />
        <TextInput
-        nativeID='passwordInput'
+        nativeID='passwordInputSignIn'
         label="Mot de passe"
         variant="outlined"
         style={styles.input} 
@@ -65,20 +65,24 @@ export default function Signin(props) {
         color="grey"
       />
         <Button
-          nativeID='btnConnect'
+          nativeID='btnConnectSignIn'
           label='Se connecter'
           style={styles.button}
           onPress={()=>onConnect(email,password)}
         />
       <Text 
         style={styles.errorMsg}
-        nativeID='errorMsg'
+        nativeID='errorMsgSignIn'
       >
         {errormsg}
       </Text>
       <Text>
       Pas encore de compte ?
-      <Text style={styles.innerText} onPress={() => props.navigation.navigate('SignUp')}> S'inscrire</Text>
+      <Text 
+        style={styles.innerText} 
+        onPress={() => props.navigation.navigate('SignUp')}
+        nativeID='signUpLink'
+        > S'inscrire</Text>
       </Text>        
     </View>
   );
