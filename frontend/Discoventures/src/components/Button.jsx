@@ -1,6 +1,6 @@
 import { StyleSheet, View, Pressable, Text } from 'react-native';
 import colors from '../style/colors'
-import fonts from '../style/fonts'
+
 export default function Button({ label, onPress, nativeID }) {
   return (
     <View >

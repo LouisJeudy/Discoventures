@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { Button, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import fonts from '../style/fonts';
 import colors from '../style/colors';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 function HomeScreen({ navigation }) {
     return (
@@ -31,7 +28,7 @@ function HomeScreen({ navigation }) {
 
 const Tab = createBottomTabNavigator();
 
-export default function Home({name}) {
+export default function Home() {
 
   const token = useSelector((state) => state.user.token)
   console.log(token)
