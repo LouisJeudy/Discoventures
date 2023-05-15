@@ -12,7 +12,7 @@ const bcrypt = require('bcrypt');
   const passhashFei = await bcrypt.hash('fei', 2)
 
   await userModel.create({
-    username: 'louisJ', email: 'louisjeudy1@gmail.com', password: passhashLouis, isAdmin: false
+    username: 'louisJ', email: 'louisjeudy1@gmail.com', password: passhashLouis, isadmin: false
   })
   await userModel.create({
     username: 'fei', email: 'fei@gmail.com', password: passhashFei, isadmin: true
