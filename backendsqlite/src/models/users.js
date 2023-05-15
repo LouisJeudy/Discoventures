@@ -9,19 +9,19 @@ const users = db.define('users', {
   username: {
     type: Sequelize.STRING(16),
     unique: true,
-    allowNul: false
+    allowNull: false
   },
   email: {
     type: Sequelize.STRING(128),
     unique: true,
-    allowNul: false,
+    allowNull: false,
     validate: {
       isEmail: true
     }
   },
   password: {
     type: Sequelize.STRING(60),
-    allowNul: false,
+    allowNull: false,
     validate: {
       is: /^[0-9a-z\\/$.]{60}$/i
     }
@@ -32,7 +32,7 @@ const users = db.define('users', {
   },
   spotifyToken: {
     type: Sequelize.STRING(60),
-    allowNul: true,
+    allowNull: true,
     unique: true
   }
 }, { timestamps: false })

@@ -2,7 +2,7 @@
 
 # Objectifs du projet
 
-Discoventures est une application mobile pour tout sportif voulant se dépenser en explorant les horizons. L'objectif de cette application permet à chacun de générer un parcours alétoire depuis sa position. Le parcours généré est pensé pour que l'utilisateur visite des lieux culturels et patrimoniaux durant son activité. La fonctionnalité phare de cette application est l'activation automatique d'un audio guide lorsque l'utilisateur passe devant ces lieux importants. En liant son application de musiques en streaming, son activité pourra s'effectuer en écoutant ses playlists préférées.
+Discoventures est une application mobile pour tout sportif voulant se dépenser en explorant les horizons. L'objectif de cette application permet à chacun de générer un parcours aléatoire depuis une position de départ. Le parcours généré est pensé pour que l'utilisateur visite des lieux culturels et patrimoniaux durant son activité. La fonctionnalité phare de cette application est l'activation automatique d'un audio guide lorsque l'utilisateur passe devant ces lieux importants. En liant son application de musiques en streaming, son activité pourra s'effectuer en écoutant ses playlists préférées.
 
 # Cas d'usage
 
@@ -36,7 +36,7 @@ Discoventures est une application mobile pour tout sportif voulant se dépenser 
 
 ## Se connecter
 
-Un utilisateur arrive sur la page de connexion. Il doit saisir son adresse mail ainsi que sont mot de passe. Si l'un des deux champs saisis est erroné, un message d'erreur s'affiche de manière voyante (message en rouge). Si l'utilisateur n'a pas de compte, il peut s'inscrire en cliquant sur le lien prévu à cet effet.
+Un utilisateur arrive sur la page de connexion. Il doit saisir son adresse mail ainsi que son mot de passe. Si l'un des deux champs saisis est erroné, un message d'erreur s'affiche de manière voyante (message en rouge). Si l'utilisateur n'a pas de compte, il peut s'inscrire en cliquant sur le lien prévu à cet effet.
 
 ## Lier son compte de musiques en streaming
 
@@ -60,7 +60,7 @@ Un utilisateur arrive sur la page de connexion. Il doit saisir son adresse mail 
 
 # Modèle de données
 
-Pour gérer la persistence de nos données, nous avons utiliser l'ORM Sequelize. Il permet d'avoir un système de gestion de données par modèle objet. Plusieurs entités ont été "designées".
+Pour gérer la persistence de nos données, nous avons utilisé l'ORM Sequelize. Il permet d'avoir un système de gestion de données par modèle objet. Plusieurs entités ont été "designées".
 
 ## Sequelize
 
@@ -72,7 +72,7 @@ Un utilisateur est caractérisé par son email, son mot de passe qui est encodé
 <img src="./documentation/images/sequelize/model_users.png"></img>
 </div>
 
-| Attributs        | Clé primaire   | Clé étrangère  | Type           | Unique         | Nul           |
+| Attributs        | Clé primaire   | Clé étrangère  | Type           | Unique         | Null          |
 | :--------------- |:---------------|:---------------|:---------------|:---------------|:--------------|
 | id               |x               |                |  Integer       |                |               |
 | username         |                |                |  String        |x               |               |
@@ -85,7 +85,7 @@ Un utilisateur est caractérisé par son email, son mot de passe qui est encodé
 
 A voir si on garde GPX ou codé.
 
-### lieux
+### Lieux
 
 Cette entité est alimentée par une API externe répertoriant tous les lieux culturels et patrimoniaux autour de l'utilisateur. Pour un parcours données, cela permet de connaître tous ses lieux importants. Une information très utile pour activer l'audio guide et d'informer les autres utilisateurs.
 
