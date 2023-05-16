@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Image, Text, View} from 'react-native';
+import { StyleSheet, ScrollView, Text, View} from 'react-native';
 import fonts from '../style/fonts';
 import colors from '../style/colors'
 import { Divider } from "@react-native-material/core";
@@ -7,6 +7,7 @@ import LogoutButton from './LogoutButton';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useDispatch } from 'react-redux'
 import { userToken } from '../app/slices/userSlice';
+import MapCard from './MapCard';
 
 const BACKEND = "http://localhost:3000"
 
@@ -32,8 +33,19 @@ export default function Profile(props) {
             </Text>
             <LogoutButton onPress={()=>logout()}/>
           </View>
-          <Divider/>
-
+          <ScrollView>
+            <Divider/>
+            <MapCard/>
+            <MapCard/>
+            <MapCard/>
+            <MapCard/>
+            <MapCard/>
+            <MapCard/>
+            <MapCard/>
+            <MapCard/>
+            <MapCard/>
+            <MapCard/>
+          </ScrollView>
         </View>
       );
 }
