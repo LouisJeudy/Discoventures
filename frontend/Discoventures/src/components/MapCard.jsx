@@ -34,17 +34,21 @@ export default function MapCard(props) {
                 </View>
                 <Image
 <<<<<<< HEAD
+<<<<<<< HEAD
                     source={{uri: 'https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-l+'+ colors.colorPrimary500.color.slice(1) +'('+ gps.latitude[0] +','+ gps.longitude[0] +'),'+ renderMarkerPlaces(places) +'path-5+f44-0.5(' + getUrlEncodedPolyline(gps) +')/auto/500x300?access_token=pk.eyJ1IjoiY3ZuZHNoIiwiYSI6ImNsaG93dWFiejAxYXozcW84a3pxZms2YjkifQ.0SImY1_6NeTPUyAS765eAg'}}
                     style={styles.map}
                     nativeID='map'
 =======
                 source={{uri: 'https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/-122.337798,37.810550,9.67,0.00,0.00/1000x600@2x?access_token=pk.eyJ1IjoiY3ZuZHNoIiwiYSI6ImNsZ3V1ZzQxMzAxanMzbG11Z2E0cWJ0bmgifQ.7BRdbaWmQytXDZ8AE4CIaA'}}
+=======
+                source={{uri: 'https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s-a+9ed4bd(-122.46589,37.77343),pin-s-b+000(-122.42816,37.75965),path-5+f44-0.5(%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM)/auto/500x300?access_token=pk.eyJ1IjoiY3ZuZHNoIiwiYSI6ImNsZ3V1ZzQxMzAxanMzbG11Z2E0cWJ0bmgifQ.7BRdbaWmQytXDZ8AE4CIaA'}}
+>>>>>>> 5fad1e7 (size of mapCard)
                 style={styles.map}
                 />
-                <Text style={[styles.title, fonts.textMSemiBold]}>Visite révolution francaise</Text>
+                <Text style={[styles.title]}>Visite révolution francaise</Text>
                 <Text>20km</Text>
                 <StarRating
-                    rating={rating}
+                    rating={3.5}
                     onChange={setRating}
                     color={colors.colorPrimary500.color}
                     starSize={25}
@@ -97,10 +101,14 @@ const styles = StyleSheet.create({
         padding:10,
         paddingBottom: 20,
 <<<<<<< HEAD
+<<<<<<< HEAD
         width: '100%',
 =======
         width: '80%',
 >>>>>>> e67a7f0 (mapCard in profile view)
+=======
+        width: '100%',
+>>>>>>> 5fad1e7 (size of mapCard)
         backgroundColor: 'white',
         shadowColor: "#000000",
         shadowOffset: {
@@ -152,8 +160,9 @@ const styles = StyleSheet.create({
 =======
     map:{
         width: '100%', 
-        height: 150,
-        alignSelf: 'center'
+        height: 200,
+        alignSelf: 'center',
+        borderRadius: 5
     },
     stars:{
         alignSelf: 'center'

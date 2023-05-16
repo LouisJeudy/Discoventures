@@ -26,7 +26,6 @@ export default function Profile(props) {
           <View style={styles.box}>
           <Icon name={'account'} size={70} color={'black'}/>
             <Text 
-                style={fonts.textXmRegular}
                 nativeID='errorMsgSignIn'
             >
                 Louis Jeudy
@@ -35,15 +34,6 @@ export default function Profile(props) {
           </View>
           <ScrollView>
             <Divider/>
-            <MapCard/>
-            <MapCard/>
-            <MapCard/>
-            <MapCard/>
-            <MapCard/>
-            <MapCard/>
-            <MapCard/>
-            <MapCard/>
-            <MapCard/>
             <MapCard/>
           </ScrollView>
         </View>
