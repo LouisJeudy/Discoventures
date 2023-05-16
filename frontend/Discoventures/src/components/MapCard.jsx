@@ -7,8 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { getUrlEncodedPolyline } from '../utils/staticImageMap';
 
 export default function MapCard({nativeID, title, activityType, distance, estimatedTime, isPrivate, nbVoters, score, gps}) {
-    // eslint-disable-next-line no-unused-vars
-    const [rating, setRating] = React.useState(0);
+
     const icons = new Object();
     icons["walk"] = "walk";
     icons["run"] = "run-fast";
@@ -119,5 +118,4 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center'
     }
-
 })
