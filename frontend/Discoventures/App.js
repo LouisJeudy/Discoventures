@@ -19,16 +19,9 @@ export default function App() {
   }
 
     return (
-<<<<<<< HEAD
       <Provider store={store}>
         <AppHome/>
       </Provider>
     );
-=======
-    <Provider store={store}>
-      <Profile/>
-    </Provider>
-      );
->>>>>>> e67a7f0 (mapCard in profile view)
   }
  

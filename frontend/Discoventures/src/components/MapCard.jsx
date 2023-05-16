@@ -4,6 +4,7 @@ import fonts from '../style/fonts';
 import colors from '../style/colors'
 import StarRating from 'react-native-star-rating-widget';
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { convertMsToTime } from '../utils/time';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { renderMarkerPlaces, getUrlEncodedPolyline } from '../utils/staticImageMap';
@@ -20,6 +21,16 @@ export default function MapCard(props) {
     icons["walk"] = "walk";
     icons["run"] = "run-fast";
     icons["bike"] = "bike-fast"
+=======
+import { convertMsToTime } from '../utils/time';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+const BACKEND = "http://localhost:3000"
+
+
+export default function MapCard({title, activityType, distance, estimatedTime, isPrivate, nbVoters, score, props}) {
+    const [rating, setRating] = React.useState(0);
+>>>>>>> 9788dcc (mapcard with informations)
 
     return (
 <<<<<<< HEAD
@@ -29,6 +40,7 @@ export default function MapCard(props) {
 >>>>>>> e67a7f0 (mapCard in profile view)
             <View style={styles.container}>
                 <View style={styles.header}>
+<<<<<<< HEAD
                     <Text style={[styles.title, fonts.textXlSemiBold]} nativeID='title'>{title}</Text>
                     <Text nativeID='privacy'>{isPrivate == true ? "Privé":"Public"}</Text>
                 </View>
@@ -59,22 +71,50 @@ export default function MapCard(props) {
                     <View style={styles.distance}>
                         <MaterialCommunityIcons name={"map"} size={20}/>
                         <Text nativeID='distance'>{distance} km</Text>
+=======
+                    <Text style={[styles.title, fonts.textXlSemiBold]}>{title}</Text>
+                    <Text>{isPrivate == true ? "Privé":"Public"}</Text>
+                    {/* <Ionicons name={isPrivate = true ? "globe-outline":"globe-outline"} size={15}/> */}
+                </View>
+                
+                <Image
+                    source={{uri: 'https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s-a+9ed4bd(-122.46589,37.77343),pin-s-b+000(-122.42816,37.75965),path-5+f44-0.5(%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM)/auto/500x300?access_token=pk.eyJ1IjoiY3ZuZHNoIiwiYSI6ImNsZ3V1ZzQxMzAxanMzbG11Z2E0cWJ0bmgifQ.7BRdbaWmQytXDZ8AE4CIaA'}}
+                    style={styles.map}
+                />
+
+                <View style={styles.information}>
+                    <View style={styles.distance}>
+                        <MaterialCommunityIcons name={"map"} size={20}/>
+                        <Text>{distance} km</Text>
+>>>>>>> 9788dcc (mapcard with informations)
                     </View>
 
                     <View style={styles.distance}>
                         <MaterialCommunityIcons name={"timer-outline"} size={20}/>
+<<<<<<< HEAD
                         <Text nativeID='time'>{convertMsToTime(estimatedTime)}</Text>
                     </View>
 
                     <View style={styles.distance}>
                         <MaterialCommunityIcons name={icons[activityType]} size={20}/>
                         <Text nativeID='activityType'>{activityType}</Text>
+=======
+                        <Text>{convertMsToTime(estimatedTime)}</Text>
+                    </View>
+
+                    <View style={styles.distance}>
+                        <MaterialCommunityIcons name={"run-fast"} size={20}/>
+                        <Text>Running</Text>
+>>>>>>> 9788dcc (mapcard with informations)
                     </View>
                 </View>
 
                 <View style={styles.score}>
                     <StarRating
+<<<<<<< HEAD
                         nativeID="score"
+=======
+>>>>>>> 9788dcc (mapcard with informations)
                         rating={score}
                         onChange={setRating}
                         color={colors.colorPrimary500.color}
@@ -122,6 +162,9 @@ const styles = StyleSheet.create({
 
     },
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 9788dcc (mapcard with informations)
     header:{
         flexDirection: 'row',
         alignItems: 'center',
@@ -129,6 +172,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         justifyContent: 'space-between'
     },
+<<<<<<< HEAD
     map:{
         width: '100%', 
         height: 200,
@@ -158,14 +202,33 @@ const styles = StyleSheet.create({
 
 })
 =======
+=======
+>>>>>>> 9788dcc (mapcard with informations)
     map:{
         width: '100%', 
         height: 200,
         alignSelf: 'center',
-        borderRadius: 5
+        borderRadius: 5,
+        marginBottom: 5
     },
     stars:{
         alignSelf: 'center'
+    },
+    score: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    information: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginBottom: 10,
+        paddingTop: 10,
+        paddingBottom: 10
+    },
+    distance:{
+        flexDirection: 'column',
+        alignItems: 'center'
     }
 
 })
