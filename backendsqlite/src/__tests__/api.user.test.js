@@ -53,6 +53,12 @@ describe('GET /users', () => {
     expect(response.body.message).toBe('Utilisateurs disponibles')
     expect(response.body.data.length).toBe(2)
   })
+  test('Test that we cannot fetch all users as a lambda user', async () => {
+    const response = await request(app)
+      .get('/users')
+    expect(response.statusCode).toBe(401)
+    expect(response.body.message).toBe('Missing token')
+  })
 })
 
 describe('GET /users/:id', () => {
