@@ -5,6 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import colors from '../style/colors';
 import { useSelector } from 'react-redux'
 import DeleteRoutes from './DeleteRoutes';
+import Profile from './Profile';
 
 function HomeScreen({ navigation }) {
     return (
@@ -55,19 +56,18 @@ export default function Home() {
             },
             tabBarActiveTintColor: colors.colorPrimary500.color,
             tabBarInactiveTintColor: colors.colorNeutral400.color,
-          })}>
+        })}>
           {isAdmin == false?(
             <>
               <Tab.Screen name="Génération" component={HomeScreen} />
               <Tab.Screen name="Découvertes" component={SettingsScreen} />
-              <Tab.Screen name="Profile" component={SettingsScreen} />
+              <Tab.Screen name="Profile" component={Profile} />
             </>
           ):(
             <>
               <Tab.Screen name="Parcours" component={DeleteRoutes} />
             </>
           )}
-    
         </Tab.Navigator>
     );
   }
