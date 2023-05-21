@@ -108,7 +108,7 @@ describe('GET /routes', () => {
     const response = await request(app)
       .get('/routes')
     expect(response.statusCode).toBe(401)
-    expect(response.body.message).toBe('Missing token')
+    expect(response.body.message).toBe('Token manquant')
   })
 })
 
@@ -147,7 +147,7 @@ describe('GET /routes/users/:id', () => {
       .set('Content-type', 'application/x-www-form-urlencoded')
     expect(responseGet.statusCode).toBe(401)
     expect(responseGet.body.message).toBe(
-      'Missing token'
+      'Token manquant'
     )
   })
 })

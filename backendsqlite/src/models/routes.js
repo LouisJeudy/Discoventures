@@ -58,7 +58,7 @@ const routes = db.define('routes', {
 users.hasMany(routes, {
   foreignKey: 'userId'
 })
-// routes.belongsTo(users)
+routes.belongsTo(users)
 // Many-to-many association between Routes and Places
 // TODO: remove comments below when places API is done
 // routes.hasMany(places)

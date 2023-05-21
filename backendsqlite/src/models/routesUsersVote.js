@@ -1,11 +1,13 @@
 const Sequelize = require('sequelize')
 const db = require('./database.js')
+const routes = require('../models/routes.js')
+const users = require('../models/users.js')
 const routesUsers = db.define('routesUsers', {
   routeId: {
     primaryKey: false,
     type: Sequelize.INTEGER,
     references: {
-      model: 'routes',
+      model: routes,
       key: 'id'
     }
   },
@@ -13,7 +15,7 @@ const routesUsers = db.define('routesUsers', {
     primaryKey: false,
     type: Sequelize.INTEGER,
     references: {
-      model: 'users',
+      model: users,
       key: 'id'
     }
   },
@@ -33,5 +35,8 @@ const routesUsers = db.define('routesUsers', {
     }
   }
 }, { timestamps: false })
+
+users.belongsToMany(routes, { through: routesUsers })
+routes.belongsToMany(users, { through: routesUsers })
 
 module.exports = routesUsers

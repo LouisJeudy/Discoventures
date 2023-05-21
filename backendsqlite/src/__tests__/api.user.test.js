@@ -57,7 +57,7 @@ describe('GET /users', () => {
     const response = await request(app)
       .get('/users')
     expect(response.statusCode).toBe(401)
-    expect(response.body.message).toBe('Missing token')
+    expect(response.body.message).toBe('Token manquant')
   })
 })
 

@@ -7,7 +7,7 @@ const CodeError = require('../util/CodeError.js')
 function verifyToken (req, res, next) {
   // Code vérifiant qu'il y a bien un token dans l'entête
   // eslint-disable-next-line no-prototype-builtins
-  if (!req.headers || !req.headers.hasOwnProperty('x-access-token')) { throw new CodeError('Missing token', status.UNAUTHORIZED) }
+  if (!req.headers || !req.headers.hasOwnProperty('x-access-token')) { throw new CodeError('Token manquant', status.UNAUTHORIZED) }
   // Code vérifiant la validité du token
   if (
     !jws.verify(req.headers['x-access-token'], jws.ALGORITHMS[0], TOKENSECRET)

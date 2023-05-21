@@ -51,6 +51,29 @@ describe('POST /newRouteUserVote/:id', () => {
     expect(responsePost.statusCode).toBe(201)
     expect(responsePost.body.message).toBe('Nouveau vote ajouté')
   })
+  test('Test we cannot note without token', async () => {
+    const data = {
+      note: 5
+    }
+    const responsePost = await request(app)
+      .post('/routesUsersVote/1')
+      .set('Content-type', 'application/x-www-form-urlencoded')
+      .send({ data: data })
+    expect(responsePost.statusCode).toBe(401)
+    expect(responsePost.body.message).toBe('Token manquant')
+  })
+  test('Test we cannot note an inexistant route', async () => {
+    const data = {
+      note: 5
+    }
+    const responsePost = await request(app)
+      .post('/routesUsersVote/42')
+      .set('Content-type', 'application/x-www-form-urlencoded')
+      .set('x-access-token', LAMBDA_JWT)
+      .send({ data: data })
+    expect(responsePost.statusCode).toBe(404)
+    expect(responsePost.body.message).toBe('Route non trouvée')
+  })
   test('Test we cannot give a negative note to a route', async () => {
     const data = {
       note: -1.8
