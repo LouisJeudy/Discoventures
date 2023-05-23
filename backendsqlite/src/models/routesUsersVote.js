@@ -4,7 +4,6 @@ const routes = require('../models/routes.js')
 const users = require('../models/users.js')
 const routesUsers = db.define('routesUsers', {
   routeId: {
-    primaryKey: false,
     type: Sequelize.INTEGER,
     references: {
       model: routes,
@@ -12,7 +11,6 @@ const routesUsers = db.define('routesUsers', {
     }
   },
   userId: {
-    primaryKey: false,
     type: Sequelize.INTEGER,
     references: {
       model: users,
