@@ -1,9 +1,5 @@
 import React from 'react';
-<<<<<<< HEAD
 import {StyleSheet, Pressable, View } from 'react-native';
-=======
-import {StyleSheet, Pressable,Text, View } from 'react-native';
->>>>>>> be9ea4d (logout & begin of cardmap)
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../style/colors'
 
