@@ -26,7 +26,8 @@ import { convertMsToTime } from '../utils/time';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { renderMarkerPlaces, getUrlEncodedPolyline } from '../utils/staticImageMap';
 
-export default function MapCard({nativeID, title, activityType, distance, estimatedTime, isPrivate, nbVoters, score, gps, places, props}) {
+export default function MapCard({nativeID, title, activityType, distance, estimatedTime, isPrivate, nbVoters, score, gps, places}) {
+    // eslint-disable-next-line no-unused-vars
     const [rating, setRating] = React.useState(0);
 <<<<<<< HEAD
 >>>>>>> 9788dcc (mapcard with informations)

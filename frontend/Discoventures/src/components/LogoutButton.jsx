@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Pressable,Text, View } from 'react-native';
+import {StyleSheet, Pressable, View } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../style/colors'
 
