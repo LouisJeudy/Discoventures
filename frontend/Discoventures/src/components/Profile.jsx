@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, ScrollView, Text, View} from 'react-native';
-import fonts from '../style/fonts';
 import colors from '../style/colors'
 import { Divider } from "@react-native-material/core";
 import LogoutButton from './LogoutButton';
@@ -9,9 +8,10 @@ import { useDispatch } from 'react-redux'
 import { userToken } from '../app/slices/userSlice';
 import MapCard from './MapCard';
 
-const BACKEND = "http://localhost:3000"
-
 export default function Profile(props) {
+  const username = "louis";
+
+  // TODO: Appel GET de la route /routes/users/:id
 
   const data = {
     id: 1,
@@ -159,15 +159,28 @@ export default function Profile(props) {
       }
     },
     estimatedDistance: 10000,
-    estimatedTime: 73954,
+    estimatedTime: 4000000,
     activityType: 'run',
     userId: 2,
     score: 4.0,
     nbVoters: 10.0,
     isPrivate: false
-  } 
-
-
+  }
+  
+  const places=[
+    {
+      "title":"Lieu 1",
+      "description":"beautiful",
+      "latitude": "5.763574",
+      "longitude": "45.194109"
+    },
+    {
+      "title":"Lieu 2",
+      "description":"beautiful",
+      "latitude": "5.766603",
+      "longitude": "45.192142,"
+    },
+  ]
     const dispatch = useDispatch();
 
     function logout(){
@@ -180,19 +193,13 @@ export default function Profile(props) {
             
           <View style={styles.box}>
           <Icon name={'account'} size={70} color={'black'}/>
-            <Text 
-                nativeID='errorMsgSignIn'
-            >
-                Louis Jeudy
-            </Text>
-            <LogoutButton onPress={()=>logout()}/>
+            <Text nativeID='usernameProfile'>{ username }</Text>
+            <LogoutButton nativeID="logoutButton" onPress={()=>logout()}/>
           </View>
           <ScrollView>
             <Divider/>
-            <MapCard title={data.title} activityType={data.activityType} distance={data.estimatedDistance/1000} estimatedTime={data.estimatedTime} isPrivate={data.isPrivate} nbVoters={data.nbVoters} score={data.score}/>
-            <MapCard title={data.title} activityType={data.activityType} distance={data.estimatedDistance/1000} estimatedTime={data.estimatedTime} isPrivate={data.isPrivate} nbVoters={data.nbVoters} score={data.score}/>
-            <MapCard title={data.title} activityType={data.activityType} distance={data.estimatedDistance/1000} estimatedTime={data.estimatedTime} isPrivate={data.isPrivate} nbVoters={data.nbVoters} score={data.score}/>
-          </ScrollView>
+            <MapCard nativeID="mapCard" title={data.title} activityType={data.activityType} distance={data.estimatedDistance/1000} estimatedTime={data.estimatedTime} isPrivate={data.isPrivate} nbVoters={data.nbVoters} score={data.score} gps={data.coordinates.data} places={places}/>
+            </ScrollView>
         </View>
       );
 }

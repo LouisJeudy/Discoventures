@@ -17,7 +17,6 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
-
     return (
       <Provider store={store}>
         <AppHome/>

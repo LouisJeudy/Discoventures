@@ -24,12 +24,11 @@ export default function MapCard(props) {
 =======
 import { convertMsToTime } from '../utils/time';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-const BACKEND = "http://localhost:3000"
+import { renderMarkerPlaces, getUrlEncodedPolyline } from '../utils/staticImageMap';
 
-
-export default function MapCard({title, activityType, distance, estimatedTime, isPrivate, nbVoters, score, props}) {
+export default function MapCard({nativeID, title, activityType, distance, estimatedTime, isPrivate, nbVoters, score, gps, places, props}) {
     const [rating, setRating] = React.useState(0);
+<<<<<<< HEAD
 >>>>>>> 9788dcc (mapcard with informations)
 
     return (
@@ -75,22 +74,39 @@ export default function MapCard({title, activityType, distance, estimatedTime, i
                     <Text style={[styles.title, fonts.textXlSemiBold]}>{title}</Text>
                     <Text>{isPrivate == true ? "Privé":"Public"}</Text>
                     {/* <Ionicons name={isPrivate = true ? "globe-outline":"globe-outline"} size={15}/> */}
-                </View>
-                
-                <Image
-                    source={{uri: 'https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-s-a+9ed4bd(-122.46589,37.77343),pin-s-b+000(-122.42816,37.75965),path-5+f44-0.5(%7DrpeFxbnjVsFwdAvr@cHgFor@jEmAlFmEMwM_FuItCkOi@wc@bg@wBSgM)/auto/500x300?access_token=pk.eyJ1IjoiY3ZuZHNoIiwiYSI6ImNsZ3V1ZzQxMzAxanMzbG11Z2E0cWJ0bmgifQ.7BRdbaWmQytXDZ8AE4CIaA'}}
-                    style={styles.map}
-                />
+=======
+    const icons = new Object();
+    icons["walk"] = "walk";
+    icons["run"] = "run-fast";
+    icons["bike"] = "bike-fast"
 
+    return (
+        <View style={styles.mainContainer} nativeID={nativeID}>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <Text style={[styles.title, fonts.textXlSemiBold]} nativeID='title'>{title}</Text>
+                    <Text nativeID='privacy'>{isPrivate == true ? "Privé":"Public"}</Text>
+>>>>>>> 0482c1c (ADD Profile with map card => Cypress TO DO)
+                </View>
+                <Image
+                    source={{uri: 'https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-l+'+ colors.colorPrimary500.color.slice(1) +'('+ gps.latitude[0] +','+ gps.longitude[0] +'),'+ renderMarkerPlaces(places) +'path-5+f44-0.5(' + getUrlEncodedPolyline(gps) +')/auto/500x300?access_token=pk.eyJ1IjoiY3ZuZHNoIiwiYSI6ImNsaG93dWFiejAxYXozcW84a3pxZms2YjkifQ.0SImY1_6NeTPUyAS765eAg'}}
+                    style={styles.map}
+                    nativeID='map'
+                />
                 <View style={styles.information}>
                     <View style={styles.distance}>
                         <MaterialCommunityIcons name={"map"} size={20}/>
+<<<<<<< HEAD
                         <Text>{distance} km</Text>
 >>>>>>> 9788dcc (mapcard with informations)
+=======
+                        <Text nativeID='distance'>{distance} km</Text>
+>>>>>>> 0482c1c (ADD Profile with map card => Cypress TO DO)
                     </View>
 
                     <View style={styles.distance}>
                         <MaterialCommunityIcons name={"timer-outline"} size={20}/>
+<<<<<<< HEAD
 <<<<<<< HEAD
                         <Text nativeID='time'>{convertMsToTime(estimatedTime)}</Text>
                     </View>
@@ -106,15 +122,27 @@ export default function MapCard({title, activityType, distance, estimatedTime, i
                         <MaterialCommunityIcons name={"run-fast"} size={20}/>
                         <Text>Running</Text>
 >>>>>>> 9788dcc (mapcard with informations)
+=======
+                        <Text nativeID='time'>{convertMsToTime(estimatedTime)}</Text>
+                    </View>
+
+                    <View style={styles.distance}>
+                        <MaterialCommunityIcons name={icons[activityType]} size={20}/>
+                        <Text nativeID='activityType'>{activityType}</Text>
+>>>>>>> 0482c1c (ADD Profile with map card => Cypress TO DO)
                     </View>
                 </View>
 
                 <View style={styles.score}>
                     <StarRating
 <<<<<<< HEAD
+<<<<<<< HEAD
                         nativeID="score"
 =======
 >>>>>>> 9788dcc (mapcard with informations)
+=======
+                        nativeID="score"
+>>>>>>> 0482c1c (ADD Profile with map card => Cypress TO DO)
                         rating={score}
                         onChange={setRating}
                         color={colors.colorPrimary500.color}

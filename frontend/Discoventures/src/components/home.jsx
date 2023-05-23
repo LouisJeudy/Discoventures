@@ -6,6 +6,7 @@ import colors from '../style/colors';
 import { useSelector } from 'react-redux'
 import DeleteRoutes from './DeleteRoutes';
 import Profile from './Profile';
+import { idUnique } from 'htmlhint';
 
 function HomeScreen({ navigation }) {
     return (
@@ -45,7 +46,7 @@ export default function Home() {
                   : 'refresh';
               } else if (route.name === 'Découvertes') {
                 iconName = focused ? 'apple-safari' : 'apple-safari';
-              } else if (route.name === 'Profile') {
+              } else if (route.name === 'Profil') {
                 iconName = focused ? 'account-circle' : 'account-circle';
               } else if(route.name === 'DeleteRoutes'){
                 iconName = focused ? 'map': 'map'
