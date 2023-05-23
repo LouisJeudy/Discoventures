@@ -1,5 +1,9 @@
 const app = require('../app')
 const request = require('supertest')
+const placesModel = require('../models/places.js')
+const routeModel = require('../models/routes.js')
+const routesPlacesModel = require('../models/routesPlaces.js')
+const routeUserVoteModel = require('../models/routesUsersVote.js')
 const userModel = require('../models/users.js')
 
 let ADMIN_JWT = null
@@ -9,7 +13,7 @@ beforeAll(async () => {
   const jws = require('jws')
   const { TOKENSECRET } = process.env
   const bcrypt = require('bcrypt')
-  await require('../models/database.js').sync({ force: true })
+  // await require('../models/database.js').sync({ force: true })
   // Initialise la base avec quelques données
   const passwordHashed = await bcrypt.hash('!A1o2e3r4', 2)
   const adminUser = await userModel.create({
@@ -43,6 +47,7 @@ describe('GET /users', () => {
       .set('x-access-token', ADMIN_JWT)
     expect(response.statusCode).toBe(200)
     expect(response.body.message).toBe('Utilisateurs disponibles')
+    console.log("--------------------------------------------------------------", response.body.data)
     expect(response.body.data.length).toBe(2)
   })
   test('Test that we cannot fetch all users as a lambda user', async () => {
@@ -76,6 +81,7 @@ describe('GET /users/:id', () => {
       isadmin: true
     })
   })
+
 
   test('Test that a lambda user cannot fetch the data of another user', async () => {
     const responseGet = await request(app)
