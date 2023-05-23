@@ -3,10 +3,7 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import store from './src/app/store/store';
 import AppHome from './App_home';
-import Profile from './src/components/Profile';
 import { useFonts } from 'expo-font';
-import MapCard from './src/components/MapCard';
-import Home from './src/components/home';
 
 export default function App() {
   const [fontsLoaded] = useFonts({

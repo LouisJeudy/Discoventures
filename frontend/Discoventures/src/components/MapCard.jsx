@@ -12,7 +12,6 @@ export default function MapCard({nativeID, title, activityType, distance, estima
     icons["walk"] = "walk";
     icons["run"] = "run-fast";
     icons["bike"] = "bike-fast"
-    console.log(gps)
     return (
         <View style={styles.mainContainer} nativeID={nativeID}>
             <View style={styles.container}>

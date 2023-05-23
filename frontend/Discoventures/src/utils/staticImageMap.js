@@ -23,7 +23,5 @@ export function getUrlEncodedPolyline(gpsData){
         path.push([gpsData.latitude[i], gpsData.longitude[i]]); 
     }
 
-    console.log(path)
-
     return encodeURIComponent(encode(path, 5))
 }

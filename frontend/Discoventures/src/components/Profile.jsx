@@ -10,6 +10,9 @@ import MapCard from './MapCard';
 const BACKEND = "http://localhost:3000"
 
 export default function Profile(props) {
+  const username = "louis";
+
+  // TODO: Appel GET de la route /routes/users/:id
 
   const [routes, setRoutes] = React.useState([]);
   const [routeLoaded, setRouteLoaded] = React.useState(false);
