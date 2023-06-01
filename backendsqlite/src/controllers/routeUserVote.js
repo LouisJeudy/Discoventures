@@ -1,6 +1,7 @@
 const status = require('http-status')
 const CodeError = require('../util/CodeError.js')
 const routeUserVoteModel = require('../models/routesUsersVote.js')
+const routesModel = require('../models/routes.js')
 const has = require('has-keys')
 
 module.exports = {
@@ -17,6 +18,12 @@ module.exports = {
     if (!has(req.body.data, 'note')) throw new CodeError('Attribut \'note\' dans data manquant', status.BAD_REQUEST)
     await routeUserVoteModel.create({ note: req.body.data.note, userId: req.user.id, routeId: req.params.id })
     // #swagger.reponses[201] = { description: 'New vote successfully added.'}
+    const route = await routesModel.findOne({ where: { id: req.params.id }, attributes: ['nbVoters', 'score'] })
+    // const score = routesModel.score
+    console.log(route)
+    // route.increment('nbVoters')
+    // route.
+    // (nbVoters * score + req.body.data.note)/nbVoters+1
     return res
       .status(201)
       .send({ status: status.CREATED, message: 'Nouveau vote ajouté' })

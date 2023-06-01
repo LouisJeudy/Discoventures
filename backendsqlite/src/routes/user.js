@@ -3,7 +3,7 @@ const router = express.Router()
 const user = require('../controllers/user.js')
 const tokenMiddleware = require('../middleware/token.js')
 
-router.get('/users', tokenMiddleware.verifyToken, user.getUsers)
+router.get('/users', user.getUsers)
 router.get('/users/:id', tokenMiddleware.verifyToken, tokenMiddleware.verifyUserOrAdminRights, user.getUserById)
 // Récupérer le token d'un utilisateur
 router.get('/getjwtDeleg/:id', user.getToken)
