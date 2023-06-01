@@ -20,15 +20,17 @@
         "description": "",
         "parameters": [
           {
-            "name": "user",
+            "name": "x-access-token",
             "in": "header",
-            "type": "string",
-            "description": "username"
+            "description": "JWT token",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Returning users",
+            "type": "array",
             "schema": {
               "type": "object",
               "properties": {
@@ -39,26 +41,26 @@
                     "properties": {
                       "id": {
                         "type": "string",
-                        "example": "1"
+                        "example": "2"
                       },
                       "username": {
                         "type": "string",
-                        "example": "louis"
+                        "example": "Harry"
                       },
                       "email": {
                         "type": "string",
-                        "example": "louis@jeudy.com"
+                        "example": "harry@email.com"
                       },
-                      "isAdmin": {
+                      "isadmin": {
                         "type": "boolean",
-                        "example": true
+                        "example": false
                       }
                     },
                     "required": [
                       "id",
                       "username",
                       "email",
-                      "isAdmin"
+                      "isadmin"
                     ]
                   }
                 }
@@ -77,27 +79,26 @@
         "tags": [
           "Users"
         ],
-        "summary": "Create an user",
+        "summary": "Create a new user",
         "description": "",
         "parameters": [
           {
             "name": "data",
             "in": "body",
-            "description": "username",
             "schema": {
               "type": "object",
               "properties": {
                 "username": {
                   "type": "string",
-                  "example": "louis"
+                  "example": "Power"
                 },
                 "email": {
                   "type": "string",
-                  "example": "mark@com.fr"
+                  "example": "power@email.com"
                 },
                 "password": {
                   "type": "string",
-                  "example": "markcavendish"
+                  "example": "x!P0W3r!x"
                 }
               },
               "required": [
@@ -105,15 +106,13 @@
                 "email",
                 "password"
               ]
-            }
+            },
+            "required": true
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
-          },
           "201": {
-            "description": "User Added"
+            "description": "Created"
           }
         }
       },
@@ -127,6 +126,8 @@
           {
             "name": "x-access-token",
             "in": "header",
+            "description": "JWT token",
+            "required": true,
             "type": "string"
           }
         ],
@@ -138,6 +139,70 @@
       }
     },
     "/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get user by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id of the user"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "JWT token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User returned",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "4"
+                },
+                "username": {
+                  "type": "string",
+                  "example": "Power"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "power@email.com"
+                },
+                "isadmin": {
+                  "type": "boolean",
+                  "example": false
+                }
+              },
+              "required": [
+                "id",
+                "username",
+                "email",
+                "isadmin"
+              ],
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "You must specify the id"
+          },
+          "404": {
+            "description": "User not found"
+          }
+        }
+      },
       "delete": {
         "tags": [
           "Users"
@@ -155,17 +220,25 @@
           {
             "name": "x-access-token",
             "in": "header",
+            "description": "JWT token",
+            "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "User deleted"
+          },
+          "400": {
+            "description": "You must specify the id"
+          },
+          "404": {
+            "description": "User not found"
           }
         }
       }
     },
-    "/getjwtDeleg/{username}": {
+    "/getjwtDeleg/{id}": {
       "get": {
         "tags": [
           "Token"
@@ -174,17 +247,16 @@
         "description": "",
         "parameters": [
           {
-            "name": "username",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "username"
+            "description": "id"
           }
         ],
         "responses": {
           "200": {
             "description": "Returning token",
-            "descriptiuon": "Returning token",
             "schema": {
               "type": "object",
               "properties": {
@@ -197,63 +269,12 @@
                 "name": "main"
               }
             }
-          }
-        }
-      }
-    },
-    "/users/data": {
-      "get": {
-        "tags": [
-          "whoami"
-        ],
-        "summary": "Get the username through token",
-        "description": "",
-        "parameters": [
-          {
-            "name": "x-access-token",
-            "in": "header",
-            "type": "string",
-            "description": "token generated by /getjwtdeleg/{user} endpoint"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Returning username",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "user": {
-                  "type": "object",
-                  "properties": {
-                    "username": {
-                      "type": "string",
-                      "example": "louis"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "louis@com.fr"
-                    },
-                    "isAdmin": {
-                      "type": "string",
-                      "example": "[true|false]"
-                    },
-                    "spotifyToken": {
-                      "type": "string",
-                      "example": "[null|spotifyTokenHash]"
-                    }
-                  },
-                  "required": [
-                    "username",
-                    "email",
-                    "isAdmin",
-                    "spotifyToken"
-                  ]
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+          },
+          "400": {
+            "description": "You must specify the id"
+          },
+          "404": {
+            "description": "User not found"
           }
         }
       }
@@ -274,7 +295,7 @@
               "properties": {
                 "email": {
                   "type": "string",
-                  "example": "John.Doe@acme.com"
+                  "example": "johndoe@email.com"
                 },
                 "password": {
                   "type": "string",
@@ -290,7 +311,450 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Email/Mot de passe ok",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiJ9.bWFyaw.DAFVHDlid5Factj50DywBd3DhmBZfHDgcLkJiURjZmE"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "403": {
+            "description": "Les identifiants ne sont pas corrects"
+          }
+        }
+      }
+    },
+    "/routes/{id}": {
+      "delete": {
+        "tags": [
+          "Routes"
+        ],
+        "summary": "Delete a route by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "id of the route"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "JWT token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Route successfully deleted"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Routes"
+        ],
+        "summary": "Get all public routes",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "JWT token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returning all public routes",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "1"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "Walk in the woods"
+                      },
+                      "coordinates": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "latitude": {
+                                "type": "array",
+                                "example": [
+                                  20.234,
+                                  40.123
+                                ],
+                                "items": {
+                                  "type": "number"
+                                }
+                              },
+                              "longitude": {
+                                "type": "array",
+                                "example": [
+                                  12.3674,
+                                  45.32789
+                                ],
+                                "items": {
+                                  "type": "number"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "estimatedDistance": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "estimatedTime": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "isPrivate": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "score": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "nbVoters": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "activityType": {
+                        "type": "string",
+                        "example": "walk"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "coordinates",
+                      "estimatedDistance",
+                      "estimatedTime",
+                      "isPrivate",
+                      "score",
+                      "nbVoters",
+                      "activityType"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "data"
+              ],
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/routes": {
+      "get": {
+        "tags": [
+          "Routes"
+        ],
+        "summary": "Get all public routes",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "JWT token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returning all public routes",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "1"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "Walk in the woods"
+                      },
+                      "coordinates": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "latitude": {
+                                "type": "array",
+                                "example": [
+                                  20.234,
+                                  40.123
+                                ],
+                                "items": {
+                                  "type": "number"
+                                }
+                              },
+                              "longitude": {
+                                "type": "array",
+                                "example": [
+                                  12.3674,
+                                  45.32789
+                                ],
+                                "items": {
+                                  "type": "number"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "estimatedDistance": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "estimatedTime": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "isPrivate": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "score": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "nbVoters": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "activityType": {
+                        "type": "string",
+                        "example": "walk"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "coordinates",
+                      "estimatedDistance",
+                      "estimatedTime",
+                      "isPrivate",
+                      "score",
+                      "nbVoters",
+                      "activityType"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "data"
+              ],
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Routes"
+        ],
+        "summary": "Create a new route",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "JWT token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Walk in the woods"
+                },
+                "coordinates": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "latitude": {
+                          "type": "array",
+                          "example": [
+                            0,
+                            2
+                          ],
+                          "items": {
+                            "type": "number"
+                          }
+                        },
+                        "longitude": {
+                          "type": "array",
+                          "example": [
+                            0,
+                            2
+                          ],
+                          "items": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "estimatedDistance": {
+                  "type": "number",
+                  "example": 2
+                },
+                "estimatedTime": {
+                  "type": "number",
+                  "example": 2
+                },
+                "activityType": {
+                  "type": "string",
+                  "example": "walk"
+                }
+              },
+              "required": [
+                "title",
+                "coordinates",
+                "estimatedDistance",
+                "estimatedTime",
+                "activityType"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          }
+        }
+      }
+    },
+    "/routes/users/{id}": {
+      "get": {
+        "tags": [
+          "Routes"
+        ],
+        "summary": "Get all routes of an user (only the specific user can call this route",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "JWT token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returning all routes generated by user",
+            "schema": {
+              "type": "object",
+              "properties": {},
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/routesUsersVote/{id}": {
+      "post": {
+        "tags": [
+          "RoutesUsersVote"
+        ],
+        "summary": "Create a new vote for a route by a user",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "JWT token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "note": {
+                  "type": "number",
+                  "example": 5
+                }
+              },
+              "required": [
+                "note"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
           }
         }
       }
