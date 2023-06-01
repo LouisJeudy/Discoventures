@@ -160,7 +160,7 @@ export default function Profile(props) {
     },
     estimatedDistance: 10000,
     estimatedTime: 4000000,
-    activityType: 'run',
+    activityType: 'bike',
     userId: 2,
     score: 4.0,
     nbVoters: 10.0,
