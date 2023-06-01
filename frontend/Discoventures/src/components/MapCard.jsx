@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignContent: "center",
         alignItems: 'center'
-
     },
     container: {
         flexDirection: 'column',
@@ -81,8 +80,7 @@ const styles = StyleSheet.create({
         shadowOpacity:  0.17,
         shadowRadius: 3.05,
         elevation: 4,
-        marginBottom: 5
-
+        marginBottom: 25
     },
     header:{
         flexDirection: 'row',

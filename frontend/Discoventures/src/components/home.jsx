@@ -6,6 +6,7 @@ import colors from '../style/colors';
 import { useSelector} from 'react-redux'
 import DeleteRoutes from './DeleteRoutes';
 import Profile from './Profile';
+import Decouvertes from './Decouvertes';
 
 function HomeScreen({ navigation }) {
     return (
