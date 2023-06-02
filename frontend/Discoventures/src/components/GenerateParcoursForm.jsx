@@ -7,13 +7,11 @@ import RadioButton from './radioButton'
 import { useSelector } from 'react-redux'
 import {getRoute} from '../components/GenerateParcours'
 import * as Location from 'expo-location'
-import { Description } from '@mui/icons-material'
 
-//TODO add radio button with icon to chosse type activity
-export default function GenerateParcoursForm() {
-  const [titre, setTitre] = React.useState('');
+export default function GenerateParcoursForm({route,navigation}) {
+  const [titre, setTitre] = React.useState(route.params==undefined?'':route.params.titreParcour);
   const [location, setLocation] = React.useState('');
-  const [distance, setDistance] = React.useState('');
+  const [distance, setDistance] = React.useState(route.params==undefined?'':route.params.distance_km);
   const [visibility, setVisibility] = React.useState('true');
   const [errormsg, setErrormsg] = React.useState('')
   const type = useSelector((state) => state.activity.type);
@@ -43,7 +41,37 @@ export default function GenerateParcoursForm() {
         description.push(await get_description_lieux_touristiques(res.lieux_tour[i].nom));
         console.log(description[i]);
       }
-    
+      let iconname = type;
+      if(type != 'walk'){
+        iconname = type+'-fast';
+      }
+      let time_h_m_s;
+      if(res.temps>0){
+        if(type == 'run'){
+          res.temps = parseInt(res.temps/2);
+        }
+        let h = parseInt(res.temps/3600);
+        let m = parseInt((res.temps-h*3600)/60);
+        let s = res.temps - 3600*h - 60*m;
+        if(h == 0 && m==0){
+          time_h_m_s = s + "s" ;
+        }else{
+          time_h_m_s= h + "h" + m ;
+        }
+      }
+      let distance_km = (res.distance / 1000).toFixed(2);
+      navigation.navigate('GenerateMap', {
+        name: titre,
+        icon: iconname,
+        activity: type,
+        distance: res.distance,
+        distance_km : distance_km,
+        parcours : res.route,
+        lieux : res.lieux_tour,
+        temps : res.temps,
+        time_h_m_s: time_h_m_s,
+        descrip : description
+      });
   }
   }
 

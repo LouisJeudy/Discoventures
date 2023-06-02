@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import colors from '../style/colors'
 import fonts from '../style/fonts'
 import { userToken } from '../app/slices/userSlice';
-const BACKEND = "http://localhost:3000"
+const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
 
 export default function Signin(props) {
   
