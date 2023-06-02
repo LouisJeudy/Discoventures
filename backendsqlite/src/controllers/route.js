@@ -26,11 +26,8 @@ module.exports = {
     if (!has(req.params, 'id')) { throw new CodeError('ID manquant', status.BAD_REQUEST) }
     const data = await routeModel.findOne({
       where: { id: req.params.id },
-      include: { model: routesPlacesModel, required: false }
+      include: { model: placeModel, required: false }
     })
-    // const data = await routeModel.findByPk(req.params.id, {
-    //   include: [{ model: placeModel, required: false, attributes: ['id', 'title', 'description', 'latitude', 'longitude'] }]
-    // })
     res.json({ status: status.OK, message: 'Parcours récupéré', data })
   },
 
@@ -72,12 +69,14 @@ module.exports = {
       isPrivate: dataJSON.isPrivate,
       userId: req.user.id
     })
+    
     if (dataJSON.places && dataJSON.places.ids) {
       const { ids } = dataJSON.places
-      ids.forEach((id) => {
-        const place = placeModel.findOne({ where: { id: id } })
-        routeCreated.addPlaces(place)
+      ids.forEach(async (id) => {
+        const place = await placeModel.findOne({ where: { id: id } })
+        await routeCreated[0].addPlace(place)
       })
+      console.log(routeCreated)
     }
     // #swagger.reponses[201] = { description: 'New route successfully added.'}
     return res
@@ -90,6 +89,7 @@ module.exports = {
     // #swagger.parameters['x-access-token'] = { in: 'header', description: 'JWT token', required: 'true', type: 'string' }
     // #swagger.parameters['id'] = { in: 'path', type: 'integer', description: 'id of the route' }
     // #swagger.responses[200] = { description: 'Route successfully deleted'}
+    // todo: regarder quand on findone un id qui n'existe pas Unhandled rejection SequelizeForeignKeyConstraintError: SQLITE_CONSTRAINT: FOREIGN KEY constraint failed
 
     const routeExists = await routeModel.findOne({
       where: { id: req.params.id }

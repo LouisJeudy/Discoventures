@@ -37,12 +37,6 @@ beforeAll(async () => {
     payload: { id: lambdaUser.id, isadmin: false },
     secret: TOKENSECRET
   })
-  // await placesModel.create({
-  //   title: 'BarOFish',
-  //   description: 'Un endroit convivial pour manger des spécialités de la mer avec une magnifique vue.',
-  //   latitude: 12.388,
-  //   longitude: 23.378873
-  // })
   await routeModel.create({
     title: 'Seaside2',
     coordinates: {
@@ -171,6 +165,7 @@ describe('GET /routes/:id', () => {
         activityType: 'run',
         userId: 2,
         score: 0.0,
+        places: [],
         nbVoters: 0.0,
         isPrivate: false
       }
@@ -199,8 +194,67 @@ describe('POST /routes', () => {
       .set('x-access-token', LAMBDA_JWT)
       .send({ data: JSON.stringify(data) })
 
-    // expect(responsePost.statusCode).toBe(201)
+    expect(responsePost.statusCode).toBe(201)
     expect(responsePost.body.message).toBe('Nouveau parcours créé')
+  })
+  test('Test we can create a new route with places', async () => {
+    const data = {
+      title: 'My second route',
+      coordinates: {
+        data: {
+          latitude: [20.123456, 12.3242, 23.3178],
+          longitude: [11.12345, 123.17278, 31.12887]
+        }
+      },
+      estimatedDistance: 10000,
+      estimatedTime: 1800,
+      activityType: 'bike',
+      isPrivate: true,
+      places: {
+        ids: [1]
+      }
+    }
+    const responsePost = await request(app)
+      .post('/routes')
+      .set('Content-type', 'application/x-www-form-urlencoded')
+      .set('x-access-token', LAMBDA_JWT)
+      .send({ data: JSON.stringify(data) })
+
+    expect(responsePost.statusCode).toBe(201)
+    expect(responsePost.body.message).toBe('Nouveau parcours créé')
+  })
+  test('Test that we can get all informations of a specific route', async () => {
+    const responseGet = await request(app)
+      .get('/routes/6')
+      .set('Content-type', 'application/x-www-form-urlencoded')
+      .set('x-access-token', LAMBDA_JWT)
+    // expect(responseGet.statusCode).toBe(200)
+    expect(responseGet.body.message).toBe('Parcours récupéré')
+    expect(responseGet.body.data).toStrictEqual(
+        {
+          id: 6,
+          title: 'My second route',
+          coordinates: {
+            data: {
+              latitude: [20.123456, 12.3242, 23.3178],
+              longitude: [11.12345, 123.17278, 31.12887]
+            }
+          },
+          estimatedDistance: 10000,
+          estimatedTime: 1800,
+          activityType: 'bike',
+          isPrivate: true,
+          userId: 4,
+          places: [{
+            title: 'BarOFish',
+            description: 'Un endroit convivial pour manger des spécialités de la mer avec une magnifique vue.',
+            latitude: 12.388,
+            longitude: 23.378873
+          }],
+          nbVoters: 0.0,
+          score: 0,
+      }
+    )
   })
   test('Test we cannot create a new route with an activity different than walk, run and bike', async () => {
     const data = {

@@ -18,12 +18,8 @@ const routesPlaces = db.define('routesPlaces', {
     }
   }
 }, { timestamps: false })
-places.belongsToMany(routes, { through: routesPlaces, as: 'routes' })
-// places.associate = function (models) {
-//   places.belongsToMany(models.routes, { through: models.routesPlaces })
-// }
-// routes.associate = function (models) {
-//   routes.belongsToMany(models.places, { through: models.routesPlaces })
-// }
-routes.belongsToMany(places, { through: routesPlaces, as: 'places' })
+
+places.belongsToMany(routes, { through: routesPlaces})
+routes.belongsToMany(places, { through: routesPlaces})
+
 module.exports = routesPlaces
