@@ -89,7 +89,6 @@ module.exports = {
     // #swagger.parameters['x-access-token'] = { in: 'header', description: 'JWT token', required: 'true', type: 'string' }
     // #swagger.parameters['id'] = { in: 'path', type: 'integer', description: 'id of the route' }
     // #swagger.responses[200] = { description: 'Route successfully deleted'}
-    // todo: regarder quand on findone un id qui n'existe pas Unhandled rejection SequelizeForeignKeyConstraintError: SQLITE_CONSTRAINT: FOREIGN KEY constraint failed
 
     const routeExists = await routeModel.findOne({
       where: { id: req.params.id }

@@ -2,13 +2,13 @@ const Sequelize = require('sequelize')
 const db = require('./database.js')
 const places = db.define('places', {
   id: {
-    primaryKey: true,
     type: Sequelize.INTEGER,
-    autoIncrement: true
+    autoIncrement: true,
+    primaryKey: true
   },
   // Title of the place
   title: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(60),
     allowNull: false
   },
   // Description of the place
@@ -26,11 +26,12 @@ const places = db.define('places', {
     type: Sequelize.FLOAT,
     allowNull: false
   }
-}, { timestamps: false })
-
-// places.belongsToMany(routes, { through: routesPlaces })
-// places.associate = function (models) {
-//   places.belongsToMany(models.routes, { through: 'routesPlaces' })
-// }
+}, {
+  timestamps: false,
+  indexes: [{
+    unique: true,
+    fields: ['longitude', 'latitude']
+  }]
+})
 
 module.exports = places

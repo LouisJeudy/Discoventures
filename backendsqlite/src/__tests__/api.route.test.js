@@ -6,6 +6,7 @@ const routeModel = require('../models/routes.js')
 const routesPlacesModel = require('../models/routesPlaces.js')
 const routeUserVoteModel = require('../models/routesUsersVote.js')
 const userModel = require('../models/users.js')
+
 let ADMIN_JWT = null
 let LAMBDA_JWT = null
 
@@ -39,6 +40,34 @@ beforeAll(async () => {
     secret: TOKENSECRET
   })
   await routeModel.create({
+    title: 'Seaside',
+    coordinates: {
+      data: {
+        latitude: [20.123456],
+        longitude: [11.12345]
+      }
+    },
+    estimatedDistance: 10000,
+    estimatedTime: 1800,
+    activityType: 'run',
+    userId: 1,
+    isPrivate: false
+  })
+  await routeModel.create({
+    title: 'Walk in the hoods',
+    coordinates: {
+      data: {
+        latitude: [20.123456, 1.2156, 4.2156],
+        longitude: [11.12345, 6.1267, 617.172]
+      }
+    },
+    estimatedDistance: 10000,
+    estimatedTime: 1800,
+    activityType: 'run',
+    userId: 1,
+    isPrivate: false
+  })
+  const routeSeaside2 = await routeModel.create({
     title: 'Seaside2',
     coordinates: {
       data: {
@@ -49,9 +78,16 @@ beforeAll(async () => {
     estimatedDistance: 10000,
     estimatedTime: 1800,
     activityType: 'run',
-    userId: 4,
+    userId: 2,
     isPrivate: true
   })
+  const place = await placesModel.create({
+    title: 'BarOFish',
+    description: 'Un endroit convivial pour manger des spécialités de la mer avec une magnifique vue.',
+    latitude: 12.388,
+    longitude: 23.378873
+  })
+  routeSeaside2.addPlace(place)
 })
 
 describe('GET /routes', () => {
@@ -75,7 +111,7 @@ describe('GET /routes', () => {
         estimatedDistance: 10000,
         estimatedTime: 1800,
         activityType: 'run',
-        userId: 2,
+        userId: 1,
         score: 0.0,
         nbVoters: 0.0
       }, {
@@ -106,14 +142,14 @@ describe('GET /routes', () => {
 describe('GET /routes/users/:id', () => {
   test('Test if we get all routes of the user', async () => {
     const responseGet = await request(app)
-      .get('/routes/users/4')
+      .get('/routes/users/2')
       .set('Content-type', 'application/x-www-form-urlencoded')
       .set('x-access-token', LAMBDA_JWT)
     expect(responseGet.statusCode).toBe(200)
     expect(responseGet.body.message).toBe("Tous les parcours de l'utilisateur")
     expect(responseGet.body.data).toStrictEqual(
       [{
-        id: 4,
+        id: 3,
         title: 'Seaside2',
         coordinates: {
           data: {
@@ -124,7 +160,7 @@ describe('GET /routes/users/:id', () => {
         estimatedDistance: 10000,
         estimatedTime: 1800,
         activityType: 'run',
-        userId: 4,
+        userId: 2,
         score: 0.0,
         nbVoters: 0.0,
         isPrivate: true
@@ -164,7 +200,7 @@ describe('GET /routes/:id', () => {
         estimatedDistance: 10000,
         estimatedTime: 1800,
         activityType: 'run',
-        userId: 2,
+        userId: 1,
         score: 0.0,
         places: [],
         nbVoters: 0.0,
@@ -183,11 +219,11 @@ describe('GET /routes/:id', () => {
       expect(responseGet.body.data).toStrictEqual(
         {
           id: 3,
-          title: 'Au bord de la plage',
+          title: 'Seaside2',
           coordinates: {
             data: {
-              latitude: [20.123],
-              longitude: [12.456]
+              latitude: [20.123456],
+              longitude: [11.12345]
             }
           },
           estimatedDistance: 10000,
