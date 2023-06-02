@@ -4,9 +4,10 @@ const placesModel = require('../models/places.js')
 const routeModel = require('../models/routes.js')
 const routesPlacesModel = require('../models/routesPlaces.js')
 const routeUserVoteModel = require('../models/routesUsersVote.js')
-// const userModel = require('../models/users.js')
+const userModel = require('../models/users.js')
 
 let LAMBDA_JWT = null
+let LAMBDA_BIS_JWT = null
 
 beforeAll(async () => {
   const jws = require('jws')
@@ -24,6 +25,17 @@ beforeAll(async () => {
   LAMBDA_JWT = jws.sign({
     header: { alg: 'HS256' },
     payload: { id: lambdaUser.id, isadmin: false },
+    secret: TOKENSECRET
+  })
+  const lambdaUserBis = await userModel.create({
+    username: 'LambdaBis',
+    email: 'lambdabis@email.com',
+    password: passwordHashed,
+    isadmin: false
+  })
+  LAMBDA_BIS_JWT = jws.sign({
+    header: { alg: 'HS256' },
+    payload: { id: lambdaUserBis.id, isadmin: false },
     secret: TOKENSECRET
   })
   await routeModel.create({
@@ -53,6 +65,18 @@ describe('POST /newRouteUserVote/:id', () => {
       .send({ data: data })
     expect(responsePost.statusCode).toBe(201)
     expect(responsePost.body.message).toBe('Nouveau vote ajouté')
+  })
+  test('Test we cannot note the same route again', async () => {
+    const data = {
+      note: 4
+    }
+    const responsePost = await request(app)
+      .post('/routesUsersVote/1')
+      .set('Content-type', 'application/x-www-form-urlencoded')
+      .set('x-access-token', LAMBDA_JWT)
+      .send({ data: data })
+    expect(responsePost.statusCode).toBe(409)
+    expect(responsePost.body.message).toBe('Vote déjà effectué pour ce parcours')
   })
   test('Test we cannot note without token', async () => {
     const data = {
@@ -84,7 +108,7 @@ describe('POST /newRouteUserVote/:id', () => {
     const responsePost = await request(app)
       .post('/routesUsersVote/1')
       .set('Content-type', 'application/x-www-form-urlencoded')
-      .set('x-access-token', LAMBDA_JWT)
+      .set('x-access-token', LAMBDA_BIS_JWT)
       .send({ data: data })
     expect(responsePost.statusCode).toBe(400)
     expect(responsePost.body.message).toBe('Validation error: Note must be a value between 0 and 5')
@@ -96,7 +120,7 @@ describe('POST /newRouteUserVote/:id', () => {
     const responsePost = await request(app)
       .post('/routesUsersVote/1')
       .set('Content-type', 'application/x-www-form-urlencoded')
-      .set('x-access-token', LAMBDA_JWT)
+      .set('x-access-token', LAMBDA_BIS_JWT)
       .send({ data: data })
     expect(responsePost.statusCode).toBe(400)
     expect(responsePost.body.message).toBe('Validation error: Note must be a value between 0 and 5')

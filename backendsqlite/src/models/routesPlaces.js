@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('./database.js')
-const routes = require('../models/routes.js')
-const places = require('../models/places.js')
+const routes = require('./routes.js')
+const places = require('./places.js')
 const routesPlaces = db.define('routesPlaces', {
   routeId: {
     type: Sequelize.INTEGER,
@@ -18,6 +18,12 @@ const routesPlaces = db.define('routesPlaces', {
     }
   }
 }, { timestamps: false })
-routes.belongsToMany(places, { through: routesPlaces })
-places.belongsToMany(routes, { through: routesPlaces })
+places.belongsToMany(routes, { through: routesPlaces, as: 'routes' })
+// places.associate = function (models) {
+//   places.belongsToMany(models.routes, { through: models.routesPlaces })
+// }
+// routes.associate = function (models) {
+//   routes.belongsToMany(models.places, { through: models.routesPlaces })
+// }
+routes.belongsToMany(places, { through: routesPlaces, as: 'places' })
 module.exports = routesPlaces

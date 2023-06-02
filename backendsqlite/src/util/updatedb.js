@@ -28,7 +28,35 @@ const bcrypt = require('bcrypt');
     password: passhashFei,
     isadmin: true
   })
-  // Ajouter ici le code permettant d'initialiser par défaut la base de donnée
+  // // Ajouter ici le code permettant d'initialiser par défaut la base de donnée
+  await routeModel.create({
+    title: 'Seaside',
+    coordinates: {
+      data: {
+        latitude: [20.123456],
+        longitude: [11.12345]
+      }
+    },
+    estimatedDistance: 10000,
+    estimatedTime: 1800,
+    activityType: 'run',
+    userId: 2,
+    isPrivate: false
+  })
+  await routeModel.create({
+    title: 'Walk in the hoods',
+    coordinates: {
+      data: {
+        latitude: [20.123456, 1.2156, 4.2156],
+        longitude: [11.12345, 6.1267, 617.172]
+      }
+    },
+    estimatedDistance: 10000,
+    estimatedTime: 1800,
+    activityType: 'run',
+    userId: 1,
+    isPrivate: false
+  })
   await routeModel.create(
     {
       title: 'Au bord de la plage',
@@ -42,7 +70,7 @@ const bcrypt = require('bcrypt');
       estimatedTime: 1800,
       activityType: 'run',
       userId: 2,
-      isPrivate: false
+      isPrivate: true
     }
   )
   await routeUserVoteModel.create(
@@ -52,4 +80,10 @@ const bcrypt = require('bcrypt');
       note: 5
     }
   )
+  await placesModel.create({
+    title: 'BarOFish',
+    description: 'Un endroit convivial pour manger des spécialités de la mer avec une magnifique vue.',
+    latitude: 12.388,
+    longitude: 23.378873
+  })
 })()

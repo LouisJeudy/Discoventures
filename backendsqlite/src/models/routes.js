@@ -59,6 +59,9 @@ users.hasMany(routes, {
   foreignKey: 'userId'
 })
 routes.belongsTo(users)
+// routes.associate = function (models) {
+//   routes.belongsToMany(models.places, { through: 'routesPlaces' })
+// }
 // Many-to-many association between Routes and Places
 // TODO: remove comments below when places API is done
 // routes.hasMany(places)

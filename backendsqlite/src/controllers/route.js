@@ -2,6 +2,8 @@ const status = require('http-status')
 const CodeError = require('../util/CodeError.js')
 const has = require('has-keys')
 const routeModel = require('../models/routes.js')
+const placeModel = require('../models/places.js')
+const routesPlacesModel = require('../models/routesPlaces.js')
 
 module.exports = {
   async getRoutes (req, res) {
@@ -13,7 +15,6 @@ module.exports = {
       attributes: { exclude: ['isPrivate'] },
       where: { isPrivate: false }
     })
-    // TODO: calcul score and nbVoters
     res.json({ status: status.OK, message: 'Tous les parcours publics', data })
   },
 
@@ -24,8 +25,12 @@ module.exports = {
     // #swagger.responses[200] = {description: 'Returning all public routes', schema: {$data: [{$id: '1', $title: 'Walk in the woods', $coordinates: {data: { latitude: [20.234, 40.123], longitude: [12.3674, 45.32789]}}, $estimatedDistance: 2, $estimatedTime: 2, $isPrivate: false, $score: 0.0, $nbVoters: 0, $activityType: 'walk' }]}}
     if (!has(req.params, 'id')) { throw new CodeError('ID manquant', status.BAD_REQUEST) }
     const data = await routeModel.findOne({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
+      include: { model: routesPlacesModel, required: false }
     })
+    // const data = await routeModel.findByPk(req.params.id, {
+    //   include: [{ model: placeModel, required: false, attributes: ['id', 'title', 'description', 'latitude', 'longitude'] }]
+    // })
     res.json({ status: status.OK, message: 'Parcours récupéré', data })
   },
 
@@ -57,8 +62,8 @@ module.exports = {
       )
     }
     const dataJSON = JSON.parse(req.body.data)
-
-    await routeModel.create({
+    // on récupère un attribut places : { ids: [1,2,3] }
+    const routeCreated = await routeModel.create({
       title: dataJSON.title,
       coordinates: dataJSON.coordinates,
       estimatedDistance: dataJSON.estimatedDistance,
@@ -67,6 +72,13 @@ module.exports = {
       isPrivate: dataJSON.isPrivate,
       userId: req.user.id
     })
+    if (dataJSON.places && dataJSON.places.ids) {
+      const { ids } = dataJSON.places
+      ids.forEach((id) => {
+        const place = placeModel.findOne({ where: { id: id } })
+        routeCreated.addPlaces(place)
+      })
+    }
     // #swagger.reponses[201] = { description: 'New route successfully added.'}
     return res
       .status(201)
