@@ -7,7 +7,7 @@ const CodeError = require('../util/CodeError.js')
 function verifyToken (req, res, next) {
   // Code vérifiant qu'il y a bien un token dans l'entête
   // eslint-disable-next-line no-prototype-builtins
-  if (!req.headers || !req.headers.hasOwnProperty('x-access-token')) { throw new CodeError('Missing token', status.UNAUTHORIZED) }
+  if (!req.headers || !req.headers.hasOwnProperty('x-access-token')) { throw new CodeError('Token manquant', status.UNAUTHORIZED) }
   // Code vérifiant la validité du token
   if (
     !jws.verify(req.headers['x-access-token'], jws.ALGORITHMS[0], TOKENSECRET)
@@ -30,6 +30,18 @@ function verifyUserAdmin (req, res, next) {
   next()
 }
 
+function verifyUser (req, res, next) {
+  // Code vérifiant que la personne qui fait l'action est l'utilisateur lui-même
+  const { id } = req.params
+  const reqId = req.user.id.toString()
+  if (reqId !== id) {
+  // Provoque une réponse en erreur avec un code de retour 403
+    throw new CodeError('Vous n\'avez pas le droit d\'effectuer cette action', status.FORBIDDEN)
+  }
+  // On appelle la fonction middleware suivante que si la condition est vérifiée
+  next()
+}
+
 function verifyUserOrAdminRights (req, res, next) {
   // Code vérifiant que la personne qui fait l'action est l'utilisateur lui-même ou l'admin
   const { id } = req.params
@@ -44,5 +56,6 @@ function verifyUserOrAdminRights (req, res, next) {
 module.exports = {
   verifyToken,
   verifyUserAdmin,
+  verifyUser,
   verifyUserOrAdminRights
 }

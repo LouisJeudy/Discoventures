@@ -1,5 +1,10 @@
+/* eslint-disable no-unused-vars */
 const app = require('../app')
 const request = require('supertest')
+const placesModel = require('../models/places.js')
+const routeModel = require('../models/routes.js')
+const routesPlacesModel = require('../models/routesPlaces.js')
+const routeUserVoteModel = require('../models/routesUsersVote.js')
 const userModel = require('../models/users.js')
 
 let ADMIN_JWT = null
@@ -43,28 +48,34 @@ describe('GET /users', () => {
       .set('x-access-token', ADMIN_JWT)
     expect(response.statusCode).toBe(200)
     expect(response.body.message).toBe('Utilisateurs disponibles')
-    expect(response.body.data.length).toBe(2)
+    expect(response.body.data.length).toBe(4)
   })
-  test('Test that we cannot fetch all users as a lambda user', async () => {
+  test('Test that we can fetch all users as a lambda user', async () => {
     const response = await request(app)
       .get('/users')
       .set('x-access-token', LAMBDA_JWT)
     expect(response.statusCode).toBe(200)
     expect(response.body.message).toBe('Utilisateurs disponibles')
-    expect(response.body.data.length).toBe(2)
+    expect(response.body.data.length).toBe(4)
+  })
+  test('Test that we cannot fetch all users without a token', async () => {
+    const response = await request(app)
+      .get('/users')
+    expect(response.statusCode).toBe(401)
+    expect(response.body.message).toBe('Token manquant')
   })
 })
 
 describe('GET /users/:id', () => {
   test('Test if the token of the user return the correct data', async () => {
     const responseGet = await request(app)
-      .get('/users/1')
+      .get('/users/3')
       .set('Content-type', 'application/x-www-form-urlencoded')
       .set('x-access-token', ADMIN_JWT)
     expect(responseGet.statusCode).toBe(200)
     expect(responseGet.body.message).toBe("Données de l'utilisateur")
     expect(responseGet.body.data).toStrictEqual({
-      id: 1,
+      id: 3,
       username: 'Admin',
       email: 'admin@email.com',
       isadmin: true
@@ -73,7 +84,7 @@ describe('GET /users/:id', () => {
 
   test('Test that a lambda user cannot fetch the data of another user', async () => {
     const responseGet = await request(app)
-      .get('/users/1')
+      .get('/users/3')
       .set('Content-type', 'application/x-www-form-urlencoded')
       .set('x-access-token', LAMBDA_JWT)
     expect(responseGet.statusCode).toBe(403)
@@ -113,7 +124,7 @@ describe('POST /users', () => {
       .set('x-access-token', ADMIN_JWT)
     expect(responseGet.statusCode).toBe(200)
     expect(responseGet.body.message).toBe('Utilisateurs disponibles')
-    expect(responseGet.body.data.length).toBe(3)
+    expect(responseGet.body.data.length).toBe(5)
   })
 
   test('Test that we cannot create a new user without the username', async () => {
@@ -200,7 +211,7 @@ describe('POST /users', () => {
 
 describe('GET /getjwtDeleg/:id', () => {
   test('Test if we can get the jwt token of an existing user', async () => {
-    const responseGet = await request(app).get('/getjwtDeleg/1')
+    const responseGet = await request(app).get('/getjwtDeleg/3')
     expect(responseGet.statusCode).toBe(200)
     expect(responseGet.body.message).toBe('Jeton retourné')
     expect(responseGet.body.token).toBe(ADMIN_JWT)
@@ -239,7 +250,7 @@ describe('DELETE /users', () => {
   })
   test('Test if we can delete an user as an admin', async () => {
     const response = await request(app)
-      .delete('/users/3')
+      .delete('/users/2')
       .set('x-access-token', ADMIN_JWT)
     expect(response.statusCode).toBe(200)
     expect(response.body.message).toBe('Utilisateur supprimé')
