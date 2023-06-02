@@ -57,7 +57,7 @@ const bcrypt = require('bcrypt');
     userId: 1,
     isPrivate: false
   })
-  await routeModel.create(
+  const route3 = await routeModel.create(
     {
       title: 'Au bord de la plage',
       coordinates: {
@@ -80,10 +80,11 @@ const bcrypt = require('bcrypt');
       note: 5
     }
   )
-  await placesModel.create({
+  const place1 = await placesModel.create({
     title: 'BarOFish',
     description: 'Un endroit convivial pour manger des spécialités de la mer avec une magnifique vue.',
     latitude: 12.388,
     longitude: 23.378873
   })
+  route3.addPlace(place1)
 })()

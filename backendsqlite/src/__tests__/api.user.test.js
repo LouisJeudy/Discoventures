@@ -13,7 +13,7 @@ beforeAll(async () => {
   const jws = require('jws')
   const { TOKENSECRET } = process.env
   const bcrypt = require('bcrypt')
-  // await require('../models/database.js').sync({ force: true })
+  await require('../models/database.js').sync({ force: true })
   // Initialise la base avec quelques données
   const passwordHashed = await bcrypt.hash('!A1o2e3r4', 2)
   const adminUser = await userModel.create({

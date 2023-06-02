@@ -2,8 +2,8 @@ const app = require('../app')
 const request = require('supertest')
 const placesModel = require('../models/places.js')
 const routeModel = require('../models/routes.js')
-// const routesPlacesModel = require('../models/routesPlaces.js')
-// const routeUserVoteModel = require('../models/routesUsersVote.js')
+const routesPlacesModel = require('../models/routesPlaces.js')
+const routeUserVoteModel = require('../models/routesUsersVote.js')
 const userModel = require('../models/users.js')
 let ADMIN_JWT = null
 let LAMBDA_JWT = null
@@ -12,7 +12,7 @@ beforeAll(async () => {
   const jws = require('jws')
   const { TOKENSECRET } = process.env
   const bcrypt = require('bcrypt')
-  // await require('../models/database.js').sync({ force: true })
+  await require('../models/database.js').sync({ force: true })
   // Initialise la base avec quelques données
   const passwordHashed = await bcrypt.hash('!A1o2e3r4', 2)
   const adminUser = await userModel.create({
@@ -108,7 +108,7 @@ describe('GET /routes/users/:id', () => {
       .get('/routes/users/4')
       .set('Content-type', 'application/x-www-form-urlencoded')
       .set('x-access-token', LAMBDA_JWT)
-    // expect(responseGet.statusCode).toBe(200)
+    expect(responseGet.statusCode).toBe(200)
     expect(responseGet.body.message).toBe("Tous les parcours de l'utilisateur")
     expect(responseGet.body.data).toStrictEqual(
       [{
@@ -171,6 +171,45 @@ describe('GET /routes/:id', () => {
       }
     )
   })
+  describe('GET /routes/:id', () => {
+    test('Test that we can get all informations of a specific route with places', async () => {
+      const responseGet = await request(app)
+        .get('/routes/3')
+        .set('Content-type', 'application/x-www-form-urlencoded')
+        .set('x-access-token', LAMBDA_JWT)
+      expect(responseGet.statusCode).toBe(200)
+      expect(responseGet.body.message).toBe('Parcours récupéré')
+      expect(responseGet.body.data).toStrictEqual(
+        {
+          id: 3,
+          title: 'Au bord de la plage',
+          coordinates: {
+            data: {
+              latitude: [20.123],
+              longitude: [12.456]
+            }
+          },
+          estimatedDistance: 10000,
+          estimatedTime: 1800,
+          activityType: 'run',
+          userId: 2,
+          isPrivate: true,
+          score: 0.0,
+          places: [{
+            title: 'BarOFish',
+            description: 'Un endroit convivial pour manger des spécialités de la mer avec une magnifique vue.',
+            latitude: 12.388,
+            longitude: 23.378873,
+            routesPlaces: {
+              placeId: 1,
+              routeId: 3
+            }
+          }],
+          nbVoters: 0.0,
+        }
+      )
+    })
+  })
 })
 
 describe('POST /routes', () => {
@@ -222,39 +261,6 @@ describe('POST /routes', () => {
 
     expect(responsePost.statusCode).toBe(201)
     expect(responsePost.body.message).toBe('Nouveau parcours créé')
-  })
-  test('Test that we can get all informations of a specific route', async () => {
-    const responseGet = await request(app)
-      .get('/routes/6')
-      .set('Content-type', 'application/x-www-form-urlencoded')
-      .set('x-access-token', LAMBDA_JWT)
-    // expect(responseGet.statusCode).toBe(200)
-    expect(responseGet.body.message).toBe('Parcours récupéré')
-    expect(responseGet.body.data).toStrictEqual(
-        {
-          id: 6,
-          title: 'My second route',
-          coordinates: {
-            data: {
-              latitude: [20.123456, 12.3242, 23.3178],
-              longitude: [11.12345, 123.17278, 31.12887]
-            }
-          },
-          estimatedDistance: 10000,
-          estimatedTime: 1800,
-          activityType: 'bike',
-          isPrivate: true,
-          userId: 4,
-          places: [{
-            title: 'BarOFish',
-            description: 'Un endroit convivial pour manger des spécialités de la mer avec une magnifique vue.',
-            latitude: 12.388,
-            longitude: 23.378873
-          }],
-          nbVoters: 0.0,
-          score: 0,
-      }
-    )
   })
   test('Test we cannot create a new route with an activity different than walk, run and bike', async () => {
     const data = {
@@ -319,7 +325,7 @@ describe('DELETE /routes', () => {
     expect(response.statusCode).toBe(404)
     expect(response.body.message).toBe("Le parcours n'existe pas")
   })
-  test('Test if we can delete an user as an admin', async () => {
+  test('Test if we can delete a route as an admin', async () => {
     const response = await request(app)
       .delete('/routes/1')
       .set('x-access-token', ADMIN_JWT)

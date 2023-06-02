@@ -26,8 +26,9 @@ module.exports = {
     if (!has(req.params, 'id')) { throw new CodeError('ID manquant', status.BAD_REQUEST) }
     const data = await routeModel.findOne({
       where: { id: req.params.id },
-      include: { model: placeModel, required: false }
+      include: {model: placeModel, attributes:['title', 'description', 'latitude', 'longitude']}
     })
+    
     res.json({ status: status.OK, message: 'Parcours récupéré', data })
   },
 
@@ -74,7 +75,7 @@ module.exports = {
       const { ids } = dataJSON.places
       ids.forEach(async (id) => {
         const place = await placeModel.findOne({ where: { id: id } })
-        await routeCreated[0].addPlace(place)
+        await routeCreated.addPlace(place)
       })
       console.log(routeCreated)
     }

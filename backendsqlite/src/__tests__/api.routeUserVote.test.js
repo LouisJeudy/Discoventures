@@ -5,7 +5,6 @@ const routeModel = require('../models/routes.js')
 const routesPlacesModel = require('../models/routesPlaces.js')
 const routeUserVoteModel = require('../models/routesUsersVote.js')
 const userModel = require('../models/users.js')
-
 let LAMBDA_JWT = null
 let LAMBDA_BIS_JWT = null
 
@@ -13,7 +12,7 @@ beforeAll(async () => {
   const jws = require('jws')
   const { TOKENSECRET } = process.env
   const bcrypt = require('bcrypt')
-  // await require('../models/database.js').sync({ force: true })
+  await require('../models/database.js').sync({ force: true })
   // Initialise la base avec quelques données
   const passwordHashed = await bcrypt.hash('!A1o2e3r4', 2)
   const lambdaUser = await userModel.create({
