@@ -1,5 +1,6 @@
 const placesModel = require('../models/places.js')
 const routeModel = require('../models/routes.js')
+// eslint-disable-next-line no-unused-vars
 const routesPlacesModel = require('../models/routesPlaces.js')
 const routeUserVoteModel = require('../models/routesUsersVote.js')
 const userModel = require('../models/users.js')

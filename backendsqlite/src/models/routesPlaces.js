@@ -19,7 +19,7 @@ const routesPlaces = db.define('routesPlaces', {
   }
 }, { timestamps: false })
 
-places.belongsToMany(routes, { through: routesPlaces})
-routes.belongsToMany(places, { through: routesPlaces})
+places.belongsToMany(routes, { through: routesPlaces })
+routes.belongsToMany(places, { through: routesPlaces })
 
 module.exports = routesPlaces

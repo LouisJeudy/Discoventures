@@ -1,9 +1,5 @@
 const status = require('http-status')
-const CodeError = require('../util/CodeError.js')
-const has = require('has-keys')
 const routeModel = require('../models/routes.js')
-const placeModel = require('../models/places.js')
-const routesPlacesModel = require('../models/routesPlaces.js')
 
 module.exports = {
   async getPlaces (req, res) {
@@ -16,5 +12,5 @@ module.exports = {
       where: { isPrivate: false }
     })
     res.json({ status: status.OK, message: 'Tous les parcours publics', data })
-  },
+  }
 }

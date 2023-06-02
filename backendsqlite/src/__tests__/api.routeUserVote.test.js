@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const app = require('../app')
 const request = require('supertest')
 const placesModel = require('../models/places.js')

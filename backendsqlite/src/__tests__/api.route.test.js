@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const app = require('../app')
 const request = require('supertest')
 const placesModel = require('../models/places.js')
@@ -205,7 +206,7 @@ describe('GET /routes/:id', () => {
               routeId: 3
             }
           }],
-          nbVoters: 0.0,
+          nbVoters: 0.0
         }
       )
     })

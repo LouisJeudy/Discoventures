@@ -3,7 +3,6 @@ const CodeError = require('../util/CodeError.js')
 const has = require('has-keys')
 const routeModel = require('../models/routes.js')
 const placeModel = require('../models/places.js')
-const routesPlacesModel = require('../models/routesPlaces.js')
 
 module.exports = {
   async getRoutes (req, res) {
@@ -26,9 +25,9 @@ module.exports = {
     if (!has(req.params, 'id')) { throw new CodeError('ID manquant', status.BAD_REQUEST) }
     const data = await routeModel.findOne({
       where: { id: req.params.id },
-      include: {model: placeModel, attributes:['title', 'description', 'latitude', 'longitude']}
+      include: { model: placeModel, attributes: ['title', 'description', 'latitude', 'longitude'] }
     })
-    
+
     res.json({ status: status.OK, message: 'Parcours récupéré', data })
   },
 
@@ -70,7 +69,7 @@ module.exports = {
       isPrivate: dataJSON.isPrivate,
       userId: req.user.id
     })
-    
+
     if (dataJSON.places && dataJSON.places.ids) {
       const { ids } = dataJSON.places
       ids.forEach(async (id) => {
