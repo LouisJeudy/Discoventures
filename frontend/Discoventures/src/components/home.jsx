@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Button, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import GenerateParcoursForm from '../components/GenerateParcoursForm'
+import GenerateParcoursStack from '../components/GenerateParcoursStack'
 import colors from '../style/colors';
 import { useSelector } from 'react-redux'
 
@@ -57,7 +57,7 @@ export default function Home() {
             tabBarInactiveTintColor: colors.colorNeutral400.color,
           })}
         >
-          <Tab.Screen name="Génération" component={GenerateParcoursForm} />
+          <Tab.Screen name="Génération" component={GenerateParcoursStack} />
           <Tab.Screen name="Découvertes" component={SettingsScreen} />
           <Tab.Screen name="Profile" component={SettingsScreen} />
         </Tab.Navigator>
