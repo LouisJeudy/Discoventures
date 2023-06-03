@@ -48,7 +48,7 @@ describe('GET /users', () => {
       .set('x-access-token', ADMIN_JWT)
     expect(response.statusCode).toBe(200)
     expect(response.body.message).toBe('Utilisateurs disponibles')
-    expect(response.body.data.length).toBe(4)
+    expect(response.body.data.length).toBe(2)
   })
   test('Test that we can fetch all users as a lambda user', async () => {
     const response = await request(app)
@@ -56,7 +56,7 @@ describe('GET /users', () => {
       .set('x-access-token', LAMBDA_JWT)
     expect(response.statusCode).toBe(200)
     expect(response.body.message).toBe('Utilisateurs disponibles')
-    expect(response.body.data.length).toBe(4)
+    expect(response.body.data.length).toBe(2)
   })
   test('Test that we cannot fetch all users without a token', async () => {
     const response = await request(app)
@@ -69,13 +69,13 @@ describe('GET /users', () => {
 describe('GET /users/:id', () => {
   test('Test if the token of the user return the correct data', async () => {
     const responseGet = await request(app)
-      .get('/users/3')
+      .get('/users/1')
       .set('Content-type', 'application/x-www-form-urlencoded')
       .set('x-access-token', ADMIN_JWT)
     expect(responseGet.statusCode).toBe(200)
     expect(responseGet.body.message).toBe("Données de l'utilisateur")
     expect(responseGet.body.data).toStrictEqual({
-      id: 3,
+      id: 1,
       username: 'Admin',
       email: 'admin@email.com',
       isadmin: true
@@ -84,7 +84,7 @@ describe('GET /users/:id', () => {
 
   test('Test that a lambda user cannot fetch the data of another user', async () => {
     const responseGet = await request(app)
-      .get('/users/3')
+      .get('/users/1')
       .set('Content-type', 'application/x-www-form-urlencoded')
       .set('x-access-token', LAMBDA_JWT)
     expect(responseGet.statusCode).toBe(403)
@@ -124,7 +124,7 @@ describe('POST /users', () => {
       .set('x-access-token', ADMIN_JWT)
     expect(responseGet.statusCode).toBe(200)
     expect(responseGet.body.message).toBe('Utilisateurs disponibles')
-    expect(responseGet.body.data.length).toBe(5)
+    expect(responseGet.body.data.length).toBe(3)
   })
 
   test('Test that we cannot create a new user without the username', async () => {
@@ -211,7 +211,7 @@ describe('POST /users', () => {
 
 describe('GET /getjwtDeleg/:id', () => {
   test('Test if we can get the jwt token of an existing user', async () => {
-    const responseGet = await request(app).get('/getjwtDeleg/3')
+    const responseGet = await request(app).get('/getjwtDeleg/1')
     expect(responseGet.statusCode).toBe(200)
     expect(responseGet.body.message).toBe('Jeton retourné')
     expect(responseGet.body.token).toBe(ADMIN_JWT)
@@ -250,7 +250,7 @@ describe('DELETE /users', () => {
   })
   test('Test if we can delete an user as an admin', async () => {
     const response = await request(app)
-      .delete('/users/2')
+      .delete('/users/3')
       .set('x-access-token', ADMIN_JWT)
     expect(response.statusCode).toBe(200)
     expect(response.body.message).toBe('Utilisateur supprimé')

@@ -250,7 +250,7 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
+            "type": "integer",
             "description": "id"
           }
         ],
@@ -326,7 +326,7 @@
             }
           },
           "403": {
-            "description": "Les identifiants ne sont pas corrects"
+            "description": "Invalid credentials"
           }
         }
       }
@@ -357,6 +357,9 @@
         "responses": {
           "200": {
             "description": "Route successfully deleted"
+          },
+          "404": {
+            "description": "Route not found"
           }
         }
       },
@@ -371,7 +374,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "id of the route"
           },
           {
             "name": "x-access-token",
@@ -383,90 +387,87 @@
         ],
         "responses": {
           "200": {
-            "description": "Returning all public routes",
+            "description": "Returning details of a specific route",
             "schema": {
               "type": "object",
               "properties": {
                 "data": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "string",
-                        "example": "1"
-                      },
-                      "title": {
-                        "type": "string",
-                        "example": "Walk in the woods"
-                      },
-                      "coordinates": {
-                        "type": "object",
-                        "properties": {
-                          "data": {
-                            "type": "object",
-                            "properties": {
-                              "latitude": {
-                                "type": "array",
-                                "example": [
-                                  20.234,
-                                  40.123
-                                ],
-                                "items": {
-                                  "type": "number"
-                                }
-                              },
-                              "longitude": {
-                                "type": "array",
-                                "example": [
-                                  12.3674,
-                                  45.32789
-                                ],
-                                "items": {
-                                  "type": "number"
-                                }
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "1"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Walk in the woods"
+                    },
+                    "coordinates": {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "latitude": {
+                              "type": "array",
+                              "example": [
+                                20.234,
+                                40.123
+                              ],
+                              "items": {
+                                "type": "number"
+                              }
+                            },
+                            "longitude": {
+                              "type": "array",
+                              "example": [
+                                12.3674,
+                                45.32789
+                              ],
+                              "items": {
+                                "type": "number"
                               }
                             }
                           }
                         }
-                      },
-                      "estimatedDistance": {
-                        "type": "number",
-                        "example": 2
-                      },
-                      "estimatedTime": {
-                        "type": "number",
-                        "example": 2
-                      },
-                      "isPrivate": {
-                        "type": "boolean",
-                        "example": false
-                      },
-                      "score": {
-                        "type": "number",
-                        "example": 0
-                      },
-                      "nbVoters": {
-                        "type": "number",
-                        "example": 0
-                      },
-                      "activityType": {
-                        "type": "string",
-                        "example": "walk"
                       }
                     },
-                    "required": [
-                      "id",
-                      "title",
-                      "coordinates",
-                      "estimatedDistance",
-                      "estimatedTime",
-                      "isPrivate",
-                      "score",
-                      "nbVoters",
-                      "activityType"
-                    ]
-                  }
+                    "estimatedDistance": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "estimatedTime": {
+                      "type": "number",
+                      "example": 2
+                    },
+                    "isPrivate": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "score": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "nbVoters": {
+                      "type": "number",
+                      "example": 0
+                    },
+                    "activityType": {
+                      "type": "string",
+                      "example": "walk"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "title",
+                    "coordinates",
+                    "estimatedDistance",
+                    "estimatedTime",
+                    "isPrivate",
+                    "score",
+                    "nbVoters",
+                    "activityType"
+                  ]
                 }
               },
               "required": [
@@ -618,6 +619,22 @@
                   "type": "string",
                   "example": "Walk in the woods"
                 },
+                "places": {
+                  "type": "object",
+                  "properties": {
+                    "ids": {
+                      "type": "array",
+                      "example": [
+                        1,
+                        2,
+                        3
+                      ],
+                      "items": {
+                        "type": "number"
+                      }
+                    }
+                  }
+                },
                 "coordinates": {
                   "type": "object",
                   "properties": {
@@ -683,14 +700,15 @@
         "tags": [
           "Routes"
         ],
-        "summary": "Get all routes of an user (only the specific user can call this route",
+        "summary": "Get all routes of an user (only the specific user can call this route or an admin)",
         "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "id of the user"
           },
           {
             "name": "x-access-token",
@@ -704,8 +722,93 @@
           "200": {
             "description": "Returning all routes generated by user",
             "schema": {
-              "type": "object",
-              "properties": {},
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "data": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "example": "5"
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "Seaside"
+                      },
+                      "coordinates": {
+                        "type": "object",
+                        "properties": {
+                          "data": {
+                            "type": "object",
+                            "properties": {
+                              "latitude": {
+                                "type": "array",
+                                "example": [
+                                  26.129,
+                                  98.123
+                                ],
+                                "items": {
+                                  "type": "number"
+                                }
+                              },
+                              "longitude": {
+                                "type": "array",
+                                "example": [
+                                  93.3674,
+                                  19.7219
+                                ],
+                                "items": {
+                                  "type": "number"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "estimatedDistance": {
+                        "type": "number",
+                        "example": 6
+                      },
+                      "estimatedTime": {
+                        "type": "number",
+                        "example": 3
+                      },
+                      "isPrivate": {
+                        "type": "boolean",
+                        "example": true
+                      },
+                      "score": {
+                        "type": "number",
+                        "example": 3.5
+                      },
+                      "nbVoters": {
+                        "type": "number",
+                        "example": 10
+                      },
+                      "activityType": {
+                        "type": "string",
+                        "example": "run"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "coordinates",
+                      "estimatedDistance",
+                      "estimatedTime",
+                      "isPrivate",
+                      "score",
+                      "nbVoters",
+                      "activityType"
+                    ]
+                  }
+                },
+                "required": [
+                  "data"
+                ]
+              },
               "xml": {
                 "name": "main"
               }
@@ -726,7 +829,8 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string"
+            "type": "integer",
+            "description": "id of the route"
           },
           {
             "name": "x-access-token",
@@ -755,6 +859,107 @@
         "responses": {
           "201": {
             "description": "Created"
+          }
+        }
+      }
+    },
+    "/places/{latitude}/{longitude}": {
+      "get": {
+        "tags": [
+          "Places"
+        ],
+        "summary": "Get a place by its coordinates",
+        "description": "",
+        "parameters": [
+          {
+            "name": "latitude",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Latitude of the place"
+          },
+          {
+            "name": "longitude",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Longitude of the place"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "JWT token",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/places": {
+      "post": {
+        "tags": [
+          "Places"
+        ],
+        "summary": "Create a new place",
+        "description": "",
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "JWT token",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "data",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Tour Eiffel"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Tour de fer puddlé de 330 m2 de hauteur (avec antennes) située à Paris, à l’extrémité nord-ouest du parc du Champ-de-Mars en bordure de la Seine dans le 7e arrondissement. Son adresse officielle est 5, avenue Anatole-France."
+                },
+                "longitude": {
+                  "type": "number",
+                  "example": 448258.15
+                },
+                "latitude": {
+                  "type": "number",
+                  "example": 5411953.63
+                }
+              },
+              "required": [
+                "title",
+                "description",
+                "longitude",
+                "latitude"
+              ]
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "path",
+            "type": "string",
+            "description": "Longitude of the place",
+            "required": true
+          },
+          {
+            "name": "latitude",
+            "in": "path",
+            "type": "string",
+            "description": "Latitude of the place",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }

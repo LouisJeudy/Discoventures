@@ -19,7 +19,7 @@ router.get('/routes', route.getRoutes)
 // Récupérer la liste de tous les parcours d'un utilisateur
 router.get(
   '/routes/users/:id',
-  tokenMiddleware.verifyUser,
+  tokenMiddleware.verifyUserOrAdminRights,
   route.getRoutesByUserId
 )
 router.get('/routes/:id', route.getRoute)

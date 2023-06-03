@@ -19,6 +19,7 @@ const routesPlaces = db.define('routesPlaces', {
   }
 }, { timestamps: false })
 
+// Many-to-many association between Routes and Places
 places.belongsToMany(routes, { through: routesPlaces })
 routes.belongsToMany(places, { through: routesPlaces })
 

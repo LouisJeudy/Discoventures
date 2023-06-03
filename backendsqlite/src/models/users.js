@@ -29,12 +29,13 @@ const users = db.define('users', {
   isadmin: {
     type: Sequelize.BOOLEAN,
     defaultValue: false
-  }
+  },
   // Implement spotifyToken for the next step
-  // spotifyToken: {
-  //   type: Sequelize.STRING(60),
-  //   allowNull: true,
-  //   unique: true
-  // }
+  spotifyToken: {
+    type: Sequelize.STRING(60),
+    allowNull: true,
+    unique: true
+  }
 }, { timestamps: false })
+
 module.exports = users
