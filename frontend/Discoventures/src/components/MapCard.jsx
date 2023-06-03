@@ -3,7 +3,6 @@ import { StyleSheet, Image, Text, View} from 'react-native';
 import fonts from '../style/fonts';
 import colors from '../style/colors'
 import StarRating from 'react-native-star-rating-widget';
-import { convertMsToTime } from '../utils/time';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getUrlEncodedPolyline } from '../utils/staticImageMap';
 
@@ -35,7 +34,7 @@ export default function MapCard({nativeID, title, activityType, distance, estima
 
                     <View style={styles.distance}>
                         <MaterialCommunityIcons name={"timer-outline"} size={20}/>
-                        <Text nativeID='time'>{convertMsToTime(estimatedTime)}</Text>
+                        <Text nativeID='time'>{new Date(estimatedTime * 1000).toISOString().slice(11, 19)}</Text>
                     </View>
 
                     <View style={styles.distance}>
