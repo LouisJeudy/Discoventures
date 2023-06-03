@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Button, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import GenerateParcoursStack from '../components/GenerateParcoursStack'
 import colors from '../style/colors';
 import { useSelector } from 'react-redux'
 import DeleteRoutes from './DeleteRoutes';

@@ -1,4 +1,3 @@
-import { Telegram } from "@mui/icons-material";
 
 export async function getLieuTouristique(position,distance) {
      const lieux_all = [];
