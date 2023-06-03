@@ -5,6 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import GenerateParcoursStack from '../components/GenerateParcoursStack'
 import colors from '../style/colors';
 import { useSelector } from 'react-redux'
+import DeleteRoutes from './DeleteRoutes';
 
 function HomeScreen({ navigation }) {
     return (
@@ -31,9 +32,7 @@ const Tab = createBottomTabNavigator();
 
 export default function Home() {
 
-  const token = useSelector((state) => state.user.token)
-  console.log(token)
-
+  const isAdmin = useSelector((state) => state.user.isAdmin)
     return (
         <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -48,6 +47,8 @@ export default function Home() {
                 iconName = focused ? 'apple-safari' : 'apple-safari';
               } else if (route.name === 'Profile') {
                 iconName = focused ? 'account-circle' : 'account-circle';
+              } else if(route.name === 'DeleteRoutes'){
+                iconName = focused ? 'map': 'map'
               }
   
               // You can return any component that you like here!
@@ -55,11 +56,19 @@ export default function Home() {
             },
             tabBarActiveTintColor: colors.colorPrimary500.color,
             tabBarInactiveTintColor: colors.colorNeutral400.color,
-          })}
-        >
-          <Tab.Screen name="Génération" component={GenerateParcoursStack} />
-          <Tab.Screen name="Découvertes" component={SettingsScreen} />
-          <Tab.Screen name="Profile" component={SettingsScreen} />
+          })}>
+          {isAdmin == false?(
+            <>
+              <Tab.Screen name="Génération" component={HomeScreen} />
+              <Tab.Screen name="Découvertes" component={SettingsScreen} />
+              <Tab.Screen name="Profile" component={SettingsScreen} />
+            </>
+          ):(
+            <>
+              <Tab.Screen name="Parcours" component={DeleteRoutes} />
+            </>
+          )}
+    
         </Tab.Navigator>
     );
   }
