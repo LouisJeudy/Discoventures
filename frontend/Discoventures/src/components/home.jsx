@@ -45,7 +45,7 @@ export default function Home() {
                 iconName = focused ? 'apple-safari' : 'apple-safari';
               } else if (route.name === 'Profile') {
                 iconName = focused ? 'account-circle' : 'account-circle';
-              } else if(route.name === 'DeleteRoutes'){
+              } else if(route.name === 'Parcours'){
                 iconName = focused ? 'map': 'map'
               }
   

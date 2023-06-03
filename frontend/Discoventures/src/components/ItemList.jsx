@@ -42,7 +42,7 @@ export default function ItemList({onDelete, idRoute, title, distance, time, acti
                     <View style={styles.data}>
                         <View style={styles.information}>
                             <MaterialCommunityIcons name={"map"} size={15}/>
-                            <Text nativeID='adminDistance'>{distance} km</Text>
+                            <Text nativeID='adminDistance'>{Math.round(distance)} km</Text>
                         </View>
                         <View style={styles.information}>
                             <MaterialCommunityIcons name={"timer-outline"} size={15}/>
