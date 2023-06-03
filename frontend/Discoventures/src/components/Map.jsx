@@ -1,7 +1,7 @@
 import React from 'react';
-import * as Location from 'expo-location'
+import * as Location from 'expo-location';
 // Import required components
-import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
 // Import Map and Marker
 import MapView, {Polyline, Marker} from 'react-native-maps';
 import colors from '../style/colors';
@@ -74,7 +74,7 @@ export default function Map({parcours,nbLieux, lieux}){
       </View>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {

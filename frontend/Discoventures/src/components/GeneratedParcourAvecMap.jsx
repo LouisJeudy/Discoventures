@@ -9,10 +9,15 @@ const Map = Platform.OS ==="web"?
   React.lazy(()=>import('./Map'));
 //TODO add radio button with icon to chosse type activity
 export default function GeneratedParcourAvecMap({route,navigation}){
-
+  const [visibility, setVisibility] = React.useState('true');
   const {name,icon,activity, distance,distance_km,parcours,lieux,temps,time_h_m_s,descrip } = route.params;
   function EnregistrerParcours(){
     console.log("enregistrer le parcours");
+    console.log(distance);
+    console.log(temps);
+    console.log(descrip);
+    console.log(visibility);
+    setVisibility('false');
   }
   function RegenerParcours(){
     navigation.navigate('GenerateForm',{
@@ -20,7 +25,6 @@ export default function GeneratedParcourAvecMap({route,navigation}){
       distance_km:distance_km 
     });
   }
- 
   return (
     <View style={styles.container}>
       <ButtonCancel style={styles.btRegenerer}nativeID='btRegenerParcours'

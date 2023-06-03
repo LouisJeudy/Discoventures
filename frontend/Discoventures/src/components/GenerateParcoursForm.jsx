@@ -12,11 +12,10 @@ export default function GenerateParcoursForm({route,navigation}) {
   const [titre, setTitre] = React.useState(route.params==undefined?'':route.params.titreParcour);
   const [location, setLocation] = React.useState('');
   const [distance, setDistance] = React.useState(route.params==undefined?'':route.params.distance_km);
-  const [visibility, setVisibility] = React.useState('true');
   const [errormsg, setErrormsg] = React.useState('')
   const type = useSelector((state) => state.activity.type);
  
-  async function onGenerateParcours(titre, distance, visibility){
+  async function onGenerateParcours(titre, distance){
     if(titre===''){
       setErrormsg('Veuillez remplir le titre de parcours')
       return;
@@ -133,7 +132,7 @@ export default function GenerateParcoursForm({route,navigation}) {
           nativeID='btnGenerateParcours'
           label='Générer un parcours'
           style={styles.button}
-          onPress={async ()=>onGenerateParcours(titre, distance, visibility)}
+          onPress={async ()=>onGenerateParcours(titre, distance)}
         />
       <Text 
         style={styles.errorMsg}
