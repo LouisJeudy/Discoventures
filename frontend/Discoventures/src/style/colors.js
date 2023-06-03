@@ -63,6 +63,9 @@ export default StyleSheet.create({
   colorNeutral900: {
     color: "#151522"
   },
+  colorNeutralDark100:{
+    color: "#9797B3"
+  },
   // SUCCESS COLORS
   colorSuccess50: {
     color: "#def5ef"
