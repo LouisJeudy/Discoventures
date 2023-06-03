@@ -3,8 +3,9 @@ import { Button, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../style/colors';
-import { useSelector } from 'react-redux'
+import { useSelector} from 'react-redux'
 import DeleteRoutes from './DeleteRoutes';
+import Profile from './Profile';
 
 function HomeScreen({ navigation }) {
     return (
@@ -30,8 +31,8 @@ function HomeScreen({ navigation }) {
 const Tab = createBottomTabNavigator();
 
 export default function Home() {
-
   const isAdmin = useSelector((state) => state.user.isAdmin)
+
     return (
         <Tab.Navigator
           screenOptions={({ route }) => ({
@@ -39,14 +40,12 @@ export default function Home() {
               let iconName;
   
               if (route.name === 'Génération') {
-                iconName = focused
-                  ? 'refresh'
-                  : 'refresh';
+                iconName = focused ? 'refresh' : 'refresh';
               } else if (route.name === 'Découvertes') {
                 iconName = focused ? 'apple-safari' : 'apple-safari';
               } else if (route.name === 'Profile') {
                 iconName = focused ? 'account-circle' : 'account-circle';
-              } else if(route.name === 'DeleteRoutes'){
+              } else if(route.name === 'Parcours'){
                 iconName = focused ? 'map': 'map'
               }
   
@@ -55,19 +54,18 @@ export default function Home() {
             },
             tabBarActiveTintColor: colors.colorPrimary500.color,
             tabBarInactiveTintColor: colors.colorNeutral400.color,
-          })}>
+        })}>
           {isAdmin == false?(
             <>
               <Tab.Screen name="Génération" component={HomeScreen} />
               <Tab.Screen name="Découvertes" component={SettingsScreen} />
-              <Tab.Screen name="Profile" component={SettingsScreen} />
+              <Tab.Screen name="Profile" component={Profile} />
             </>
           ):(
             <>
               <Tab.Screen name="Parcours" component={DeleteRoutes} />
             </>
           )}
-    
         </Tab.Navigator>
     );
   }

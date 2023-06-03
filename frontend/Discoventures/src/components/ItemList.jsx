@@ -4,7 +4,6 @@ import colors from '../style/colors'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Divider } from "@react-native-material/core";
 import DeleteButton from './DeleteButton';
-import { convertMsToTime } from '../utils/time';
 import { useSelector } from 'react-redux';
 const BACKEND = "http://localhost:3000"
 
@@ -43,11 +42,11 @@ export default function ItemList({onDelete, idRoute, title, distance, time, acti
                     <View style={styles.data}>
                         <View style={styles.information}>
                             <MaterialCommunityIcons name={"map"} size={15}/>
-                            <Text nativeID='adminDistance'>{distance} km</Text>
+                            <Text nativeID='adminDistance'>{Math.round(distance)} km</Text>
                         </View>
                         <View style={styles.information}>
                             <MaterialCommunityIcons name={"timer-outline"} size={15}/>
-                            <Text nativeID='adminTime'>{convertMsToTime(time)}</Text>
+                            <Text nativeID='adminTime'>{new Date(time * 1000).toISOString().slice(11, 19)}</Text>
                         </View>
                         <View style={styles.information}>
                             <MaterialCommunityIcons name={icons[activityType]} size={15}/>
