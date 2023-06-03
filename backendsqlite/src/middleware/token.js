@@ -45,7 +45,7 @@ function verifyUser (req, res, next) {
 function verifyUserOrAdminRights (req, res, next) {
   // Code vérifiant que la personne qui fait l'action est l'utilisateur lui-même ou l'admin
   const { id } = req.params
-  if (req.user.id !== id && !req.user.isadmin) {
+  if (req.user.id.toString() !== id && !req.user.isadmin) {
   // Provoque une réponse en erreur avec un code de retour 403
     throw new CodeError('Vous n\'avez pas le droit d\'effectuer cette action', status.FORBIDDEN)
   }

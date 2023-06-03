@@ -54,7 +54,7 @@ describe('GET /places/:latitude/:longitude', () => {
       .set('x-access-token', ADMIN_JWT)
     expect(response.body.message).toBe('Lieu récupéré')
     expect(response.statusCode).toBe(200)
-    expect(response.body.data).toStrictEqual(
+    expect(response.body.place).toStrictEqual(
       {
         id: 1,
         title: 'BarOFish',
@@ -94,6 +94,13 @@ describe('POST /places', () => {
 
     expect(responsePost.statusCode).toBe(201)
     expect(responsePost.body.message).toBe('Nouveau lieu ajouté')
+    expect(responsePost.body.place).toStrictEqual({
+      id: 2,
+      title: 'Tour Eiffel',
+      description: 'Tour de fer puddlé de 330 m de hauteur située à Paris, à l\'extrémité nord-ouest du parc du Champ-de-Mars en bordure de la Seine dans le 7ᵉ arrondissement. Son adresse officielle est 5, avenue Anatole-France.',
+      longitude: '43',
+      latitude: '12'
+    })
   })
   test('Test we cannot create a place with the same latitude and longitude as another one', async () => {
     const data = {

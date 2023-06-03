@@ -26,7 +26,7 @@ module.exports = {
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Get user by id'
     // #swagger.parameters['x-access-token'] = { in: 'header', description: 'JWT token', required: 'true', type: 'string' }
-    // #swagger.parameters['id'] = { in: 'path', type: 'integer', description: 'id of the user' }
+    // #swagger.parameters['id'] = { in: 'path', type: 'integer', description: 'id of the user', required: true }
     // #swagger.responses[400] = { description: "You must specify the id" }
     if (!has(req.params, 'id')) throw new CodeError('ID manquant', status.BAD_REQUEST)
     const { id } = req.params
@@ -43,16 +43,19 @@ module.exports = {
     // #swagger.summary = 'Create a new user'
     // #swagger.parameters['data'] = { in: 'body', schema: {$username: 'Power', $email: 'power@email.com', $password: 'x!P0W3r!x' }, required: 'true', }
     if (!req.body.data) {
-      // #swagger.reponses[400] = { description: 'User not added' }
+    // #swagger.reponses[400] = { description: 'User not added' }
       throw new CodeError('Body manquant', status.BAD_REQUEST)
     }
+    // #swagger.reponses[403] = { description: 'Username missing' }
     const dataJSON = JSON.parse(req.body.data)
     if (!has(dataJSON, 'username') || dataJSON.username.length === 0) {
       throw new CodeError('Vous devez spécifier un nom d\'utilisateur', status.FORBIDDEN)
     }
+    // #swagger.reponses[403] = { description: 'Username too long' }
     if (has(dataJSON, 'username') && dataJSON.username.length > 16) {
       throw new CodeError('Nom d\'utilisateur doit être inférieur à 16 caractères', status.FORBIDDEN)
     }
+    // #swagger.reponses[403] = { description: 'Email missing' }
     if (!has(dataJSON, 'email') || dataJSON.email.length === 0) {
       throw new CodeError('Vous devez spécifier une adresse e-mail', status.FORBIDDEN)
     }
@@ -60,13 +63,14 @@ module.exports = {
       where: { username: dataJSON.username },
       attributes: ['id', 'username']
     })
-    // #swagger.reponses[403] = { description: 'User not added' }
+    // #swagger.reponses[403] = { description: 'Username already taken' }
     if (userWithSameUsername) throw new CodeError('Nom d\'utilisateur déjà utilisé', status.FORBIDDEN)
     const userWithSameEmail = await userModel.findOne({
       where: { email: dataJSON.email },
       attributes: ['id', 'email']
     })
     // Si l'email est déjà utilisé
+    // #swagger.reponses[403] = { description: 'Email already taken' }
     if (userWithSameEmail) throw new CodeError('E-mail déjà utilisé !', status.FORBIDDEN)
     // Si le mot de passe ne respecte pas les normes
     if (!validPassword(dataJSON.password)) throw new CodeError('Mot de passe trop faible', status.FORBIDDEN)
@@ -98,7 +102,7 @@ module.exports = {
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Delete an user by id'
     // #swagger.parameters['x-access-token'] = { in: 'header', description: 'JWT token', required: 'true', type: 'string' }
-    // #swagger.parameters['id'] = { in: 'path', type: 'integer', description: 'id of the user', required: 'true', }
+    // #swagger.parameters['id'] = { in: 'path', type: 'integer', description: 'id of the user', required: 'true' }
     // #swagger.responses[400] = { description: "You must specify the id" }
     if (!has(req.params, 'id')) throw new CodeError('ID manquant', status.BAD_REQUEST)
     const idUser = req.params.id
@@ -118,7 +122,7 @@ module.exports = {
   async getToken (req, res) {
     // #swagger.tags = ['Token']
     // #swagger.summary = 'Retrieve token for the user'
-    // #swagger.parameters['id'] = {in: 'path', type: 'string', description: 'id'}
+    // #swagger.parameters['id'] = {in: 'path', type: 'integer', description: 'id', required: true}
     // Vérification de l'existence de l'utilisateur dans la base
     // #swagger.responses[400] = { description: "You must specify the id" }
     if (!has(req.params, 'id')) throw new CodeError('ID manquant', status.BAD_REQUEST)
@@ -149,7 +153,7 @@ module.exports = {
     const email = req.body.email
     const password = req.body.password
     const userPassword = await userModel.findOne({ attributes: ['password'], where: { email } })
-    // #swagger.responses[403] = { description: 'Les identifiants ne sont pas corrects' }
+    // #swagger.responses[403] = { description: 'Invalid credentials' }
     if (!userPassword) {
       throw new CodeError('Les identifiants ne sont pas corrects', status.FORBIDDEN)
     }

@@ -8,7 +8,7 @@ const places = db.define('places', {
   },
   // Title of the place
   title: {
-    type: Sequelize.STRING(60),
+    type: Sequelize.STRING,
     allowNull: false
   },
   // Description of the place

@@ -145,6 +145,33 @@ describe('GET /routes/users/:id', () => {
       .get('/routes/users/2')
       .set('Content-type', 'application/x-www-form-urlencoded')
       .set('x-access-token', LAMBDA_JWT)
+    expect(responseGet.body.message).toBe("Tous les parcours de l'utilisateur")
+    expect(responseGet.statusCode).toBe(200)
+    expect(responseGet.body.data).toStrictEqual(
+      [{
+        id: 3,
+        title: 'Seaside2',
+        coordinates: {
+          data: {
+            latitude: [20.123456],
+            longitude: [11.12345]
+          }
+        },
+        estimatedDistance: 10000,
+        estimatedTime: 1800,
+        activityType: 'run',
+        userId: 2,
+        score: 0.0,
+        nbVoters: 0.0,
+        isPrivate: true
+      }]
+    )
+  })
+  test('Test if we get all routes of the user as an admin', async () => {
+    const responseGet = await request(app)
+      .get('/routes/users/2')
+      .set('Content-type', 'application/x-www-form-urlencoded')
+      .set('x-access-token', ADMIN_JWT)
     expect(responseGet.statusCode).toBe(200)
     expect(responseGet.body.message).toBe("Tous les parcours de l'utilisateur")
     expect(responseGet.body.data).toStrictEqual(
@@ -166,6 +193,14 @@ describe('GET /routes/users/:id', () => {
         isPrivate: true
       }]
     )
+  })
+  test('Test that we cannot all routes of another user as a lambda user', async () => {
+    const responseGet = await request(app)
+      .get('/routes/users/1')
+      .set('Content-type', 'application/x-www-form-urlencoded')
+      .set('x-access-token', LAMBDA_JWT)
+    expect(responseGet.statusCode).toBe(403)
+    expect(responseGet.body.message).toBe('Vous n\'avez pas le droit d\'effectuer cette action')
   })
 
   test('Test if we cannot get all routes of the user without the token', async () => {
