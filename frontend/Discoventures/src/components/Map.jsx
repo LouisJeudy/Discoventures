@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import * as Location from 'expo-location'
 // Import required components
 import {SafeAreaView, StyleSheet, View, Text} from 'react-native';
-import MapViewDirections from 'react-native-maps-directions'
 // Import Map and Marker
 import MapView, {Polyline, Marker} from 'react-native-maps';
 import colors from '../style/colors';

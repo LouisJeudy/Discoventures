@@ -1,16 +1,16 @@
-import React from 'react'
-import { View, StyleSheet} from "react-native";
+import React,{Suspense} from 'react'
+import { View, StyleSheet, ActivityIndicator, Platform} from "react-native";
 import { TextInput } from "@react-native-material/core"
-import colors from '../style/colors';
 import CardRadioButtonText from './CardRadioButtonText';
 import Button from './Button';
 import ButtonCancel from './ButtonCancel';
-import Map from './Map';
+const Map = Platform.OS ==="web"? 
+  React.lazy(()=>import('./MapWeb')):
+  React.lazy(()=>import('./Map'));
 //TODO add radio button with icon to chosse type activity
 export default function GeneratedParcourAvecMap({route,navigation}){
 
   const {name,icon,activity, distance,distance_km,parcours,lieux,temps,time_h_m_s,descrip } = route.params;
-
   function EnregistrerParcours(){
     console.log("enregistrer le parcours");
   }
@@ -20,6 +20,7 @@ export default function GeneratedParcourAvecMap({route,navigation}){
       distance_km:distance_km 
     });
   }
+ 
   return (
     <View style={styles.container}>
       <ButtonCancel style={styles.btRegenerer}nativeID='btRegenerParcours'
@@ -45,7 +46,9 @@ export default function GeneratedParcourAvecMap({route,navigation}){
         <CardRadioButtonText titre="Distance estimé" icon='flag' text={distance_km+' km'}/>
         <CardRadioButtonText titre="Temps estimé" icon='timer' text={time_h_m_s}/>
       </View>
-      <Map parcours={parcours} nbLieux={lieux.length} lieux={lieux}/>
+      <Suspense fallback={<ActivityIndicator/>}>
+        <Map parcours={parcours} nbLieux={lieux.length} lieux={lieux}/>
+      </Suspense>
     </View>
   );
 }

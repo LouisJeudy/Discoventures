@@ -39,7 +39,6 @@ export default function GenerateParcoursForm({route,navigation}) {
       let description = []
       for(let i = 0; i < res.lieux_tour.length; i++){
         description.push(await get_description_lieux_touristiques(res.lieux_tour[i].nom));
-        console.log(description[i]);
       }
       let iconname = type;
       if(type != 'walk'){
@@ -48,7 +47,7 @@ export default function GenerateParcoursForm({route,navigation}) {
       let time_h_m_s;
       if(res.temps>0){
         if(type == 'run'){
-          res.temps = parseInt(res.temps/2);
+          res.temps = parseInt(res.temps/1.5);
         }
         let h = parseInt(res.temps/3600);
         let m = parseInt((res.temps-h*3600)/60);
@@ -59,7 +58,6 @@ export default function GenerateParcoursForm({route,navigation}) {
           time_h_m_s= h + "h" + m ;
         }
       }
-      console.log(location);
       let distance_km = (res.distance / 1000).toFixed(2);
       navigation.navigate('GenerateMap', {
         name: titre,
@@ -120,7 +118,7 @@ export default function GenerateParcoursForm({route,navigation}) {
         editable = {false}
       />
       <Text style={styles.textStyle} >Type d’activité</Text>
-      <RadioButton ></RadioButton>
+      <RadioButton native='rbActivite'></RadioButton>
       <TextInput
         nativeID='distanceInput'
         label="Distance (km)"
@@ -139,7 +137,7 @@ export default function GenerateParcoursForm({route,navigation}) {
         />
       <Text 
         style={styles.errorMsg}
-        nativeID='errorMsg'
+        nativeID='errorMsgGeneration'
       >
         {errormsg}
       </Text>

@@ -17,7 +17,7 @@ export default function RadioButton() {
       <View style = {styles.radioIconRow}>
         {selectedStyleData.map(item=> {
           return (
-            <Pressable key={item.value} onPress={()=>dispatch(setType(item.value))} style={ useSelector((state) => state.activity.type) === item.value ? styles.RButtonPressedStyle: styles.RButtonStyle}>
+            <Pressable nativeID={item.value} key={item.value} onPress={()=>dispatch(setType(item.value))} style={ useSelector((state) => state.activity.type) === item.value ? styles.RButtonPressedStyle: styles.RButtonStyle}>
              <Icon name={item.iconName} size={27}/>
              <Text style={fonts.textMRegular}>{item.value}</Text>
             </Pressable>
