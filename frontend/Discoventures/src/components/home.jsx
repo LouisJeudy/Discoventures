@@ -44,7 +44,7 @@ export default function Home() {
                 iconName = focused ? 'refresh' : 'refresh';
               } else if (route.name === 'Découvertes') {
                 iconName = focused ? 'apple-safari' : 'apple-safari';
-              } else if (route.name === 'Profil') {
+              } else if (route.name === 'Profile') {
                 iconName = focused ? 'account-circle' : 'account-circle';
               } else if(route.name === 'Parcours'){
                 iconName = focused ? 'map': 'map'
@@ -59,7 +59,7 @@ export default function Home() {
           {isAdmin == false?(
             <>
               <Tab.Screen name="Génération" component={HomeScreen} />
-              <Tab.Screen name="Découvertes" component={SettingsScreen} />
+              <Tab.Screen name="Découvertes" component={Decouvertes} />
               <Tab.Screen name="Profile" component={Profile} />
             </>
           ):(
