@@ -5,18 +5,21 @@ import Button from './Button';
 import { useDispatch } from 'react-redux'
 import colors from '../style/colors'
 import fonts from '../style/fonts'
-import { setUserToken, setUserId, setIsAdmin} from '../app/slices/userSlice';
-import jwt_decode from "jwt-decode";
-const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
+import { setUserToken, setUserId, setIsAdmin, setUserEmail, setUsername} from '../app/slices/userSlice';
+import jwt_decode from "jwt-decode"
+const BACKEND = "http://localhost:3000"
+
 export default function Signin(props) {
   
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [errormsg, setErrormsg] = React.useState('');
+
   const dispatch = useDispatch();
 
+
   function onConnect(email, password){
-      console.log(`${BACKEND}/login`);
+
       fetch(`${BACKEND}/login`,{
           method:'POST',
           headers: {'Content-Type': 'application/json'},
@@ -26,11 +29,27 @@ export default function Signin(props) {
       .then(data => {
           if (data.token) {
               setErrormsg('')
+
               const userData = jwt_decode(data.token)
-              console.log(userData)
+         
               dispatch(setUserToken(data.token))
               dispatch(setUserId(userData.id))
               dispatch(setIsAdmin(userData.isadmin))
+
+              fetch(`${BACKEND}/users/${userData.id}`,{
+                method:'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'x-access-token': data.token
+                }
+              })
+              .then(response => response.json())
+              .then(userData => {
+                dispatch(setUserEmail(userData.data.email))
+                dispatch(setUsername(userData.data.username))
+              })
+              .catch(error => alert("Server error" + error))
+
               props.navigation.navigate('Home')
           } else {
               setErrormsg(data.message)

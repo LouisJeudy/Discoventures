@@ -20,8 +20,10 @@ export function getUrlEncodedPolyline(gpsData){
     const path=[];
 
     for (let i = 0; i < gpsData.latitude.length; i++) {
-        path.push([gpsData.longitude[i], gpsData.latitude[i]]); 
+        path.push([gpsData.latitude[i], gpsData.longitude[i]]); 
     }
+
+    console.log(path)
 
     return encodeURIComponent(encode(path, 5))
 }
