@@ -5,7 +5,8 @@ import Button from './Button';
 import { useDispatch } from 'react-redux'
 import colors from '../style/colors'
 import fonts from '../style/fonts'
-import { userToken } from '../app/slices/userSlice';
+import { setUserToken, setUserId, setIsAdmin} from '../app/slices/userSlice';
+import jwt_decode from "jwt-decode";
 const BACKEND = "http://localhost:3000"
 
 export default function Signin(props) {
@@ -26,7 +27,11 @@ export default function Signin(props) {
       .then(data => {
           if (data.token) {
               setErrormsg('')
-              dispatch(userToken(data.token))
+              const userData = jwt_decode(data.token)
+              console.log(userData)
+              dispatch(setUserToken(data.token))
+              dispatch(setUserId(userData.id))
+              dispatch(setIsAdmin(userData.isadmin))
               props.navigation.navigate('Home')
           } else {
               setErrormsg(data.message)
