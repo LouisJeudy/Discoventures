@@ -5,7 +5,6 @@ import AppHome from './App_home';
 
 export default function App() {
   
-    //const { signIn } = React.useContext(AuthContext);
     return (
     <Provider store={store}>
       <AppHome/>
