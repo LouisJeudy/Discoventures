@@ -88,7 +88,7 @@ export default function GenerateParcoursForm({route,navigation}) {
     if(length == 0){
      return "Ici est " + title;
     }
-    const extract = await fetch(`https://fr.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=${title}&formatversion=2&exintro=1&origin=*`,{ method: 'GET'})
+    await fetch(`https://fr.wikipedia.org/w/api.php?action=query&format=json&prop=extracts&titles=${title}&formatversion=2&exintro=1&origin=*`,{ method: 'GET'})
     .then(response => response.json())
     .then(response =>{
       description = response.query.pages[0].extract.replace(/<!--(?!>)[\S\s]*?-->/g, '');
