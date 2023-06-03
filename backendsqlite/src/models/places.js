@@ -13,7 +13,7 @@ const places = db.define('places', {
   },
   // Description of the place
   description: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false
   },
   // Latitude of the place
