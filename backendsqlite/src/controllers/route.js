@@ -3,6 +3,8 @@ const CodeError = require('../util/CodeError.js')
 const has = require('has-keys')
 const routeModel = require('../models/routes.js')
 const placeModel = require('../models/places.js')
+// eslint-disable-next-line no-unused-vars
+const routesPlaces = require('../models/routesPlaces.js')
 
 module.exports = {
   async getRoutes (req, res) {
