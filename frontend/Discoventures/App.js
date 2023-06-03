@@ -6,7 +6,6 @@ import AppHome from './App_home';
 import { useFonts } from 'expo-font';
 
 export default function App() {
-
   const [fontsLoaded] = useFonts({
     'Raleway-Bold': require('./assets/fonts/Raleway/Raleway-Bold.ttf'),
     'Raleway-SemiBold': require('./assets/fonts/Raleway/Raleway-SemiBold.ttf'),

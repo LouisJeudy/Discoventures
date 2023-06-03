@@ -6,6 +6,7 @@ import colors from '../style/colors';
 import { useSelector} from 'react-redux'
 import DeleteRoutes from './DeleteRoutes';
 import Profile from './Profile';
+import Decouvertes from './Decouvertes';
 
 function HomeScreen({ navigation }) {
     return (
@@ -15,15 +16,6 @@ function HomeScreen({ navigation }) {
           title="Go to Settings"
           onPress={() => navigation.navigate('Settings')}
         />
-      </View>
-    );
-  }
-  
-  function SettingsScreen({ navigation }) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Settings!</Text>
-        <Button title="Go to Home" onPress={() => navigation.navigate('Generation')} />
       </View>
     );
   }
@@ -58,7 +50,7 @@ export default function Home() {
           {isAdmin == false?(
             <>
               <Tab.Screen name="Génération" component={HomeScreen} />
-              <Tab.Screen name="Découvertes" component={SettingsScreen} />
+              <Tab.Screen name="Découvertes" component={Decouvertes} />
               <Tab.Screen name="Profile" component={Profile} />
             </>
           ):(

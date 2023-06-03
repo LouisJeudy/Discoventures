@@ -3,7 +3,7 @@ describe('Scenario', () => {
     beforeEach(() => {
   
       cy.intercept('POST', '/login', (req) => {
-        if(req.body.email == "louisjeudy1@gmail.com" && req.body.password == "louis"){
+        if(req.body.email == "superadmin@email.com" && req.body.password == "%P4ssW0rd"){
           req.reply({
             statusCode: 200,
             body: {
@@ -28,8 +28,8 @@ describe('Scenario', () => {
     cy.visit('http://localhost:19006/')
 
     // Récupération des éléments et écriture du login/mot de passe
-    cy.get('#emailInputSignIn').type('louisjeudy1@gmail.com')
-    cy.get('#passwordInputSignIn').type('louis')
+    cy.get('#emailInputSignIn').type('superadmin@email.com')
+    cy.get('#passwordInputSignIn').type('%P4ssW0rd')
 
     // Appui sur le bouton de connexion
     cy.get('#btnConnectSignIn').click()
@@ -47,7 +47,7 @@ describe('Scenario', () => {
     cy.get('#passwordInputSignIn').type('louis')
 
     // Appui sur le bouton de connexion
-    //cy.get('#btnConnectSignIn').click()
+    cy.get('#btnConnectSignIn').click()
 
     // Tester qu'il n'y a pas d'erreurs
     cy.get("#errorMsgSignIn").contains('Les identifiants ne sont pas corrects')

@@ -5,7 +5,7 @@ import { Divider } from "@react-native-material/core";
 import LogoutButton from './LogoutButton';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSelector, useDispatch} from 'react-redux'
-import { setUserToken } from '../app/slices/userSlice';
+import { setUserEmail, setUserId, setUserToken, setUsername } from '../app/slices/userSlice';
 import MapCard from './MapCard';
 const BACKEND = "http://localhost:3000"
 
@@ -50,30 +50,34 @@ export default function Profile(props) {
     const dispatch = useDispatch();
 
     function logout(){
-        dispatch(setUserToken(null))
-        props.navigation.navigate('Login')
+      dispatch(setUserId(null))
+      dispatch(setUsername(null))
+      dispatch(setUserEmail(null))
+      dispatch(setUserToken(null))
+
+      props.navigation.navigate('Login')
     }
 
     return (
-        <View style={styles.container}>
-            
-          <View style={styles.box}>
-          <Icon name={'account'} size={70} color={'black'}/>
-            <Text nativeID='usernameProfile'>{ useSelector((state) => state.user.username) }</Text>
-            <LogoutButton nativeID="logoutButton" onPress={()=>logout()}/>
-          </View>
-          <ScrollView>
-            <Divider/>
-              { 
-                routeLoaded ? (
-                    routes.map((route) => {
-                      console.log(route)
-                      return(<MapCard key={route.id}nativeID="mapCard" title={route.title} activityType={route.activityType} distance={Math.round(route.estimatedDistance/1000)} estimatedTime={route.estimatedTime} isPrivate={route.isPrivate} nbVoters={route.nbVoters} score={route.score} gps={route.coordinates.data}/>);
-                  })):(<Text>No routes found !</Text>)
-              }
-            </ScrollView>
+      <View style={styles.container}>
+          
+        <View style={styles.box}>
+        <Icon name={'account'} size={70} color={'black'}/>
+          <Text nativeID='usernameProfile'>{ useSelector((state) => state.user.username) }</Text>
+          <LogoutButton nativeID="logoutButton" onPress={()=>logout()}/>
         </View>
-      );
+        <ScrollView>
+          <Divider/>
+            { 
+              routeLoaded ? (
+                  routes.map((route) => {
+                    console.log(route)
+                    return(<MapCard key={route.id}nativeID="mapCard" title={route.title} activityType={route.activityType} distance={Math.round(route.estimatedDistance/1000)} estimatedTime={route.estimatedTime} isPrivate={route.isPrivate} nbVoters={route.nbVoters} score={route.score} gps={route.coordinates.data}/>);
+                })):(<Text>No routes found !</Text>)
+            }
+          </ScrollView>
+      </View>
+    );
 }
 
 const styles = StyleSheet.create({
