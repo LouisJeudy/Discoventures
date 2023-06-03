@@ -59,11 +59,13 @@ export default function GenerateParcoursForm({route,navigation}) {
           time_h_m_s= h + "h" + m ;
         }
       }
+      console.log(location);
       let distance_km = (res.distance / 1000).toFixed(2);
       navigation.navigate('GenerateMap', {
         name: titre,
         icon: iconname,
         activity: type,
+        position : location,
         distance: res.distance,
         distance_km : distance_km,
         parcours : res.route,
