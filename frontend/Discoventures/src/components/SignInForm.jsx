@@ -7,8 +7,7 @@ import colors from '../style/colors'
 import fonts from '../style/fonts'
 import { setUserToken, setUserId, setIsAdmin} from '../app/slices/userSlice';
 import jwt_decode from "jwt-decode";
-const BACKEND = "http://localhost:3000"
-
+const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
 export default function Signin(props) {
   
   const [email, setEmail] = React.useState('');
