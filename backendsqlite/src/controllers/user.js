@@ -4,196 +4,164 @@ const has = require('has-keys')
 const CodeError = require('../util/CodeError.js')
 const bcrypt = require('bcrypt')
 const jws = require('jws')
-require('mandatoryenv').load(['TOKENSECRET'])
 const { TOKENSECRET } = process.env
 
-const saltRounds = 2
+const SALT_ROUNDS = 2
+const ATTRIBUTES_IN_TOKEN = ['id', 'isadmin']
 
 function validPassword (password) {
   return /^(?=.*[\d])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*])[\w!@#$%^&*]{8,}$/.test(password)
 }
 
 module.exports = {
-  // async getUserByEmail (req, res) {
-  //   // #swagger.tags = ['Users']
-  //   // #swagger.summary = 'Get user by Email'
-  //   if (!has(req.params, 'email')) throw new CodeError('You must specify the email', status.BAD_REQUEST)
-  //   const { email } = req.params
-  //   const data = await userModel.findOne({ where: { email }, attributes: ['id', 'name', 'email'] })
-  //   if (!data) throw new CodeError('User not found', status.NOT_FOUND)
-  //   res.json({ status: true, message: 'Returning user', data })
-  // },
   async getUsers (req, res) {
-    /// #swagger.tags = ['Users']
+    // #swagger.tags = ['Users']
     // #swagger.summary = 'Get all users'
-    // #swagger.parameters['user'] = {in: 'header', type: 'string', description: 'username'}
-    // #swagger.responses[200] = {description: 'Returning users', schema: {$data: [{$id: '1',$username: 'louis',$email: 'louis@jeudy.com', $isAdmin: true}]}}
+    // #swagger.parameters['x-access-token'] = { in: 'header', description: 'JWT token', required: 'true', type: 'string' }
+    // #swagger.responses[200] = { description: 'Returning users', type: 'array', schema: { $data: [{$id: '1', $username: 'Louis', $email: 'louisjeudy@gmail.com', $isadmin: true}, {$id: '2', $username: 'Harry', $email: 'harry@email.com', $isadmin: false}] } }
+    const data = await userModel.findAll({ attributes: ['id', 'username', 'email', 'isadmin'] })
+    res.json({ status: status.OK, message: 'Utilisateurs disponibles', data })
+  },
+  async getUserById (req, res) {
+    // #swagger.tags = ['Users']
+    // #swagger.summary = 'Get user by id'
+    // #swagger.parameters['x-access-token'] = { in: 'header', description: 'JWT token', required: 'true', type: 'string' }
+    // #swagger.parameters['id'] = { in: 'path', type: 'integer', description: 'id of the user', required: true }
+    // #swagger.responses[400] = { description: "You must specify the id" }
+    if (!has(req.params, 'id')) throw new CodeError('ID manquant', status.BAD_REQUEST)
+    const { id } = req.params
+    const attributesFetched = req.user.isadmin ? ['id', 'username', 'email', 'isadmin'] : ['id', 'username', 'email'] // TODO: add spotifyToken when it's functional
 
-    const data = await userModel.findAll({ attributes: ['id', 'username', 'email', 'isAdmin'] })
-    res.json({ status: 200, message: 'Utilisateurs disponibles', data })
+    const data = await userModel.findOne({ where: { id }, attributes: attributesFetched })
+    // #swagger.responses[404] = { description: "User not found" }
+    if (!data) throw new CodeError('L\'utilisateur n\'existe pas', status.NOT_FOUND)
+    // #swagger.responses[200] = { description: "User returned", schema: { $id: "4", $username: 'Power', $email: 'power@email.com', $isadmin: false } }
+    res.json({ status: status.OK, message: 'Données de l\'utilisateur', data })
   },
   async newUser (req, res) {
     // #swagger.tags = ['Users']
-    // #swagger.summary = 'Create an user'
-    // #swagger.parameters['data'] = { in: 'body', description:'username', schema: { $username: 'louis', $email:'mark@com.fr', $password:'markcavendish'}}
-    // #swagger.responses[201] = {description: "User Added"}
-    const parsedBody = JSON.parse(req.body.data)
-    const username = parsedBody.username
-    const email = parsedBody.email
-    const isAdmin = false
-    const spotifyToken = null
-    const emailExists = await userModel.findOne({ where: { email: email } })
-    const usernameExists = await userModel.findOne({ where: { username: username } })
-
-    // On n'accepte pas la création si le nom d'utilisateur est déjà utilisé
-    if (usernameExists) {
-      throw new CodeError('Nom d\'utilisateur déjà utilisé !', status.FORBIDDEN)
+    // #swagger.summary = 'Create a new user'
+    // #swagger.parameters['data'] = { in: 'body', schema: {$username: 'Power', $email: 'power@email.com', $password: 'x!P0W3r!x' }, required: 'true', }
+    if (!req.body.data) {
+    // #swagger.reponses[400] = { description: 'User not added' }
+      throw new CodeError('Body manquant', status.BAD_REQUEST)
     }
-
-    // On n'accepte pas la création si le mail est déjà utilisé
-    if (emailExists) {
-      throw new CodeError('Email déjà utilisé !', status.FORBIDDEN)
+    // #swagger.reponses[403] = { description: 'Username missing' }
+    const dataJSON = JSON.parse(req.body.data)
+    if (!has(dataJSON, 'username') || dataJSON.username.length === 0) {
+      throw new CodeError('Vous devez spécifier un nom d\'utilisateur', status.FORBIDDEN)
     }
-
-    // On n'accepte pas la création si la taille du username est > 16 caractères
-    if (username.length > 16) {
-      throw new CodeError('Le nom d\'utilisateur doit être supérieur à 16 caractères', status.FORBIDDEN)
+    // #swagger.reponses[403] = { description: 'Username too long' }
+    if (has(dataJSON, 'username') && dataJSON.username.length > 16) {
+      throw new CodeError('Nom d\'utilisateur doit être inférieur à 16 caractères', status.FORBIDDEN)
     }
-
+    // #swagger.reponses[403] = { description: 'Email missing' }
+    if (!has(dataJSON, 'email') || dataJSON.email.length === 0) {
+      throw new CodeError('Vous devez spécifier une adresse e-mail', status.FORBIDDEN)
+    }
+    const userWithSameUsername = await userModel.findOne({
+      where: { username: dataJSON.username },
+      attributes: ['id', 'username']
+    })
+    // #swagger.reponses[403] = { description: 'Username already taken' }
+    if (userWithSameUsername) throw new CodeError('Nom d\'utilisateur déjà utilisé', status.FORBIDDEN)
+    const userWithSameEmail = await userModel.findOne({
+      where: { email: dataJSON.email },
+      attributes: ['id', 'email']
+    })
+    // Si l'email est déjà utilisé
+    // #swagger.reponses[403] = { description: 'Email already taken' }
+    if (userWithSameEmail) throw new CodeError('E-mail déjà utilisé !', status.FORBIDDEN)
     // Si le mot de passe ne respecte pas les normes
-    if (!validPassword(parsedBody.password)) throw new CodeError('Mot de passe erroné !', status.FORBIDDEN)
-    const password = await bcrypt.hash(parsedBody.password, saltRounds)
+    if (!validPassword(dataJSON.password)) throw new CodeError('Mot de passe trop faible', status.FORBIDDEN)
+    const passwordHashed = await bcrypt.hash(dataJSON.password, SALT_ROUNDS)
+    const newUser = {
+      username: dataJSON.username,
+      email: dataJSON.email,
+      password: passwordHashed,
+      isAdmin: false,
+      spotifyToken: null
+    }
+    await userModel.create(newUser)
 
-    await userModel.create({ username, email, password, isAdmin, spotifyToken })
-    res.statusCode = 201
-    res.json({ status: res.statusCode, message: 'Utilisateur créé' })
+    // #swagger.reponses[201] = { description: 'User successfully added.' }
+    return res
+      .status(201)
+      .send({ status: status.CREATED, message: 'Utilisateur créé' })
   },
   async deleteUsers (req, res) {
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Delete all users'
-
-    const token = req.headers['x-access-token']
-    const email = jws.decode(token).payload
-    const admin = await userModel.findOne({ attributes: ['username', 'email', 'isadmin', 'spotifyToken'], where: { email: email } })
-
-    if (!admin.isadmin) {
-      throw new CodeError('Vous n\'êtes pas administrateur pour cette action !', status.FORBIDDEN)
-    }
-
+    // #swagger.parameters['x-access-token'] = { in: 'header', description: 'JWT token', required: 'true', type: 'string' }
     // On supprime toutes les entrées de la table
-    await userModel.destroy({ where: {}, truncate: true })
-    // #swagger.responses[200] = {description: "Users deleted"}
-    res.json({ status: 200, message: 'Utilisateurs supprimés' })
+    await userModel.destroy({ truncate: true })
+    // #swagger.responses[200] = { description: "Users deleted" }
+    res.json({ status: status.OK, message: 'Utilisateurs supprimés' })
   },
   async deleteUser (req, res) {
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Delete an user by id'
-    // #swagger.parameters['id'] = {in: 'path', type: 'integer', description: 'id of the user'}
-    // #swagger.responses[200] = {description: "User deleted"}
-    const token = req.headers['x-access-token']
-    const email = jws.decode(token).payload
-    const admin = await userModel.findOne({ attributes: ['username', 'email', 'isadmin', 'spotifyToken'], where: { email: email } })
-
-    if (!admin.isadmin) {
-      throw new CodeError('Vous n\'êtes pas administrateur pour cette action !', status.FORBIDDEN)
-    }
-
+    // #swagger.parameters['x-access-token'] = { in: 'header', description: 'JWT token', required: 'true', type: 'string' }
+    // #swagger.parameters['id'] = { in: 'path', type: 'integer', description: 'id of the user', required: 'true' }
+    // #swagger.responses[400] = { description: "You must specify the id" }
+    if (!has(req.params, 'id')) throw new CodeError('ID manquant', status.BAD_REQUEST)
     const idUser = req.params.id
-    const usernameExists = (await userModel.findOne({ where: { id: idUser } }))
+    const usernameExists = await userModel.findOne({ where: { id: idUser } })
 
-    // On n'accepte pas la création si le nom d'utilisateur est déjà utilisé
+    // On ne peut pas supprimer un utilisateur inexistant
     if (!usernameExists) {
-      throw new CodeError('L\'utilisateur n\'existe pas !', status.FORBIDDEN)
+      // #swagger.responses[404] = { description: "User not found" }
+      throw new CodeError('L\'utilisateur n\'existe pas', status.NOT_FOUND)
     }
 
     await userModel.destroy({ where: { id: idUser } })
-    res.json({ status: 200, message: 'Utilisateur supprimé' })
+    // #swagger.responses[200] = { description: "User deleted" }
+    res.json({ status: status.OK, message: 'Utilisateur supprimé' })
   },
+
   async getToken (req, res) {
     // #swagger.tags = ['Token']
     // #swagger.summary = 'Retrieve token for the user'
-    // #swagger.parameters['username'] = {in: 'path', type: 'string', description: 'username'}
-    // #swagger.responses[200] = {descriptiuon: 'Returning token', schema:{"token": "eyJhbGciOiJIUzI1NiJ9.bWFyaw.DAFVHDlid5Factj50DywBd3DhmBZfHDgcLkJiURjZmE"}}
-    // Vérification de l'existence de l'utisateur dans la base
-    const userData = req.params
-    const user = await userModel.findOne({ where: { username: userData.username } })
-
-    if (user === null) {
-      throw new CodeError('L\'utilisateur n\'existe pas !', status.NOT_FOUND)
+    // #swagger.parameters['id'] = {in: 'path', type: 'integer', description: 'id', required: true}
+    // Vérification de l'existence de l'utilisateur dans la base
+    // #swagger.responses[400] = { description: "You must specify the id" }
+    if (!has(req.params, 'id')) throw new CodeError('ID manquant', status.BAD_REQUEST)
+    const user = await userModel.findOne({
+      attributes: ATTRIBUTES_IN_TOKEN,
+      where: { id: req.params.id }
+    })
+    // #swagger.responses[404] = { description: "User not found" }
+    if (!user) {
+      throw new CodeError('L\'utilisateur n\'existe pas', status.NOT_FOUND)
     }
 
-    // Génération du token avec le username en valeur du payload
+    // Génération du token avec l'id et isadmin en valeur du payload
     const token = jws.sign({
       header: { alg: 'HS256' },
-      payload: user.email,
+      payload: user,
       secret: TOKENSECRET
     })
-    // #swagger.responses[200] = {description: "Returning token"}
-    res.json({ status: 200, message: 'Jeton retourné', token })
+    // #swagger.responses[200] = { description: 'Returning token', schema: { "token": "eyJhbGciOiJIUzI1NiJ9.bWFyaw.DAFVHDlid5Factj50DywBd3DhmBZfHDgcLkJiURjZmE" } }
+    res.json({ status: status.OK, message: 'Jeton retourné', token })
   },
-  async getData (req, res) {
-    // #swagger.tags = ['whoami']
-    // #swagger.summary = 'Get the username through token'
-    // #swagger.parameters['x-access-token'] = {in: 'header', type: 'string', description: 'token generated by /getjwtdeleg/{user} endpoint'}
-    // #swagger.responses[200] = {description: "Returning username", schema: {"user": {$username: 'louis', $email: 'louis@com.fr', $isAdmin: '[true|false]', $spotifyToken: '[null|spotifyTokenHash]'}}}
-    const token = req.headers['x-access-token']
-    const email = jws.decode(token).payload
-    const user = await userModel.findOne({ attributes: ['username', 'email', 'isadmin', 'spotifyToken'], where: { email: email } })
-    // Vérification si l'utilisateur renseigné par le token est présent dans la base de données
-    if (!user) {
-      throw new CodeError('L\'utilisateur n\'existe pas !', status.NOT_FOUND)
-    }
-    // Réponse JSON dans le format souhaité
-    res.json({ status: 200, message: 'Données de l\'utilisateur', user })
-  },
+
   async login (req, res) {
     // #swagger.tags = ['Users']
     // #swagger.summary = 'Verify credentials of user using email and password and return token'
-    // #swagger.parameters['obj'] = { in: 'body', schema: { $email: 'John.Doe@acme.com', $password: '12345'}}
+    // #swagger.parameters['obj'] = { in: 'body', schema: { $email: 'johndoe@email.com', $password: '12345'}}
     if (!has(req.body, ['email', 'password'])) throw new CodeError('You must specify the email and password', status.BAD_REQUEST)
     const email = req.body.email
     const password = req.body.password
-
-    const user = await userModel.findOne({ where: { email } })
-
-    if (user) {
-      if (await bcrypt.compare(password, user.password)) {
-        const token = jws.sign({ header: { alg: 'HS256' }, payload: email, secret: TOKENSECRET })
-        res.json({ status: true, message: 'Email/Mot de passe ok', token })
-        return
-      }
+    const userPassword = await userModel.findOne({ attributes: ['password'], where: { email } })
+    // #swagger.responses[403] = { description: 'Invalid credentials' }
+    if (!userPassword) {
+      throw new CodeError('Les identifiants ne sont pas corrects', status.FORBIDDEN)
     }
-    res.status(status.FORBIDDEN).json({ status: false, message: 'Les identifiants ne sont pas correctes' })
+    if (await bcrypt.compare(password, userPassword.password)) {
+      const user = await userModel.findOne({ attributes: ATTRIBUTES_IN_TOKEN, where: { email } })
+      const token = jws.sign({ header: { alg: 'HS256' }, payload: user, secret: TOKENSECRET })
+      // #swagger.responses[200] = { description: 'Email/Mot de passe ok', schema: { "token": "eyJhbGciOiJIUzI1NiJ9.bWFyaw.DAFVHDlid5Factj50DywBd3DhmBZfHDgcLkJiURjZmE" } }
+      res.json({ status: status.OK, message: 'Email/Mot de passe ok', token })
+    }
   }
-
-  // async newUser (req, res) {
-  //   // #swagger.tags = ['Users']
-  //   // #swagger.summary = 'New User'
-  //   // #swagger.parameters['obj'] = { in: 'body', description:'Name and email', schema: { $name: 'John Doe', $email: 'John.Doe@acme.com', $password: '1m02P@SsF0rt!'}}
-  //   if (!has(req.body, ['name', 'email', 'password'])) throw new CodeError('You must specify the name and email', status.BAD_REQUEST)
-  //   const { name, email, password } = req.body
-  //   console.log(req.body)
-  //   if (!validPassword(password)) throw new CodeError('Weak password!', status.BAD_REQUEST)
-  //   await userModel.create({ name, email, passhash: await bcrypt.hash(password, 2) })
-  //   res.json({ status: true, message: 'User Added' })
-  // },
-  // async updateUser (req, res) {
-  //   // TODO : verify if the user that wants to update this user is an admin or the user himself (using token...)
-  //   // #swagger.tags = ['Users']
-  //   // #swagger.summary = 'Update User'
-  //   // #swagger.parameters['obj'] = { in: 'body', schema: { $name: 'John Doe', $email: 'John.Doe@acme.com', $password: '1m02P@SsF0rt!'}}
-  //   if ((!has(req.body, ['name', 'email', 'password']))) throw new CodeError('You must specify the name, email and password', status.BAD_REQUEST)
-  //   const { name, email, password } = req.body
-  //   await userModel.update({ name, passhash: await bcrypt.hash(password, 2) }, { where: { email } })
-  //   res.json({ status: true, message: 'User updated' })
-  // },
-  // async deleteUser (req, res) {
-  //   // TODO : verify if the user that wants to update user is an admin (using token...)
-  //   // #swagger.tags = ['Users']
-  //   // #swagger.summary = 'Delete User'
-  //   if (!has(req.params, 'id')) throw new CodeError('You must specify the id', status.BAD_REQUEST)
-  //   const { id } = req.params
-  //   await userModel.destroy({ where: { id } })
-  //   res.json({ status: true, message: 'User deleted' })
-  // },
 }

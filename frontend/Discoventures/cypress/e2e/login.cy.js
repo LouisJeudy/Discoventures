@@ -14,7 +14,7 @@ describe('Scenario', () => {
           req.reply({
             status: 403,
             body: {
-              message: 'Les identifiants ne sont pas correctes' 
+              message: 'Les identifiants ne sont pas corrects' 
             }
           })
         }
@@ -50,6 +50,6 @@ describe('Scenario', () => {
     cy.get('#btnConnectSignIn').click()
 
     // Tester qu'il n'y a pas d'erreurs
-    cy.get("#errorMsgSignIn").contains('Les identifiants ne sont pas correctes')
+    cy.get("#errorMsgSignIn").contains('Les identifiants ne sont pas corrects')
   })
 })
