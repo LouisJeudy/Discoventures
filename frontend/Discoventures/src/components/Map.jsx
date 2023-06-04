@@ -4,12 +4,41 @@ import * as Location from "expo-location";
 import { SafeAreaView, StyleSheet, View} from "react-native";
 // Import Map and Marker
 import MapView, { Polyline, Marker } from "react-native-maps";
+import  { getDistance } from 'geolib';
 import colors from "../style/colors";
-export default function Map({ parcours, nbLieux, lieux }) {
-  const origin = { latitude: parcours[0][1], longitude: parcours[0][0] };
+import * as Speech from 'expo-speech';
 
+export default function Map({ parcours, nbLieux, lieux, description}) {
+  const origin = { latitude: parcours[0][1], longitude: parcours[0][0] };
+  let parle;
+  if(description.length > 0){
+    parle = Array(description.length).fill(0)
+  } 
   React.useEffect(() => {
-    getLocationPermission();
+    const positionGPS = getLocationPermission();
+    if(description.length > 0){
+      const interval = setInterval(() => {
+        //calcul la distance entre les lieux
+        for(let i = 0; i<lieux.length ;i++){
+          if(parle[i] == 1){
+            continue;
+          }
+          let p2 = {latitude: lieux[i].coordinate[1], longitude: lieux[i].coordinate[0]};
+          let distance = getDistance(positionGPS['_j'],p2,1);
+          if(distance < 300){
+            //lancer audio
+            console.log(description[i]);
+           
+              const thingToSay = description[i]; 
+              Speech.speak(thingToSay);
+                 
+            parle[i]=1;
+          }
+        }
+
+      }, 10000);
+      return () => clearInterval(interval);
+   }
   }, []);
 
   async function getLocationPermission() {
@@ -24,6 +53,7 @@ export default function Map({ parcours, nbLieux, lieux }) {
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
     };
+
     return current;
   }
   const markers = [];

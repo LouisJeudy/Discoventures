@@ -140,7 +140,7 @@ export default function GeneratedParcourAvecMap({route,navigation}){
         <CardRadioButtonText titre="Temps estimé" icon='timer' text={time_h_m_s}/>
       </View>
       <Suspense fallback={<ActivityIndicator/>}>
-        <Map parcours={parcours} nbLieux={lieux.length} lieux={lieux}/>
+        <Map parcours={parcours} nbLieux={lieux.length} lieux={lieux} description ={[]}/>
       </Suspense>
     </View>
   );

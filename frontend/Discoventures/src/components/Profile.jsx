@@ -66,8 +66,6 @@ export default function Profile(props) {
       }).then(response => response.json())
       .then(response =>{
         if(response.status == 200){
-          console.log(response.data.places);
-          console.log(response.data.places[0].description)
           let lesLieux = [];
           let descrip = [];
           for(let i=0; i< response.data.places.length; i++){
@@ -81,8 +79,7 @@ export default function Profile(props) {
             description: descrip
           })
         }
-      }) .catch(error => alert("Server error inscrire Get :" + error));
-    
+      }) .catch(error => alert("Server error inscrire Get :" + error)); 
     }
     return (
       <View style={styles.container}>
