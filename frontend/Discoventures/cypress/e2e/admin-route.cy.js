@@ -184,8 +184,10 @@ describe("Test Admin delete routes", () => {
         .should("have.text", "run");
       cy.get("#adminRoutes3").get("#adminDistance").should("have.text", "2 km");
       cy.get("#adminRoutes3").get("#deleteRouteAdmin").click();
+      cy.wait(2000)
       cy.get("#adminRoutes3").should('not.exist');
       cy.get("#adminRoutes6").should('exist');
+      cy.wait(2000)
       cy.get("#logoutAdmin").click();
     });
   });
