@@ -3,8 +3,7 @@ import { StyleSheet, ScrollView, Text, View} from 'react-native';
 import { Divider } from "@react-native-material/core";
 import { useSelector } from 'react-redux'
 import MapCard from './MapCard';
-const BACKEND = "http://localhost:3000"
-
+const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
 export default function Decouvertes(props) {
 
   const [routes, setRoutes] = React.useState([]);

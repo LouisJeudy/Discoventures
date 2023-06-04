@@ -7,8 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSelector, useDispatch} from 'react-redux'
 import { setUserEmail, setUserId, setUserToken, setUsername } from '../app/slices/userSlice';
 import MapCard from './MapCard';
-const BACKEND = "http://localhost:3000"
-
+const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
 export default function Profile(props) {
 
   const [routes, setRoutes] = React.useState([]);
