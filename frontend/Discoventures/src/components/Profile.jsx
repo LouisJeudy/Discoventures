@@ -63,8 +63,8 @@ export default function Profile(props) {
           
         <View style={styles.box}>
         <Icon name={'account'} size={70} color={'black'}/>
-          <Text nativeID='usernameProfile'>{ useSelector((state) => state.user.username) }</Text>
-          <LogoutButton nativeID="logoutButton" onPress={()=>logout()}/>
+          <Text nativeID='profileUsername'>{ useSelector((state) => state.user.username) }</Text>
+          <LogoutButton nativeID="profileLogoutButton" onPress={()=>logout()}/>
         </View>
         <ScrollView>
           <Divider/>
@@ -72,7 +72,7 @@ export default function Profile(props) {
               routeLoaded ? (
                   routes.map((route) => {
                     console.log(route)
-                    return(<MapCard key={route.id}nativeID="mapCard" title={route.title} activityType={route.activityType} distance={Math.round(route.estimatedDistance/1000)} estimatedTime={route.estimatedTime} isPrivate={route.isPrivate} nbVoters={route.nbVoters} score={route.score} gps={route.coordinates.data}/>);
+                    return(<MapCard key={route.id} nativeID={"profileMapCard" + route.id} title={route.title} activityType={route.activityType} distance={Math.round(route.estimatedDistance/1000)} estimatedTime={route.estimatedTime} isPrivate={route.isPrivate} nbVoters={route.nbVoters} score={route.score} gps={route.coordinates.data}/>);
                 })):(<Text>No routes found !</Text>)
             }
           </ScrollView>

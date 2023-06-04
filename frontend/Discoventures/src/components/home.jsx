@@ -51,7 +51,7 @@ export default function Home() {
             <>
               <Tab.Screen name="Génération" component={HomeScreen} />
               <Tab.Screen name="Découvertes" component={Decouvertes} />
-              <Tab.Screen name="Profile" component={Profile} />
+              <Tab.Screen name="Profile" component={Profile} options={{tabBarTestID: "tabProfile"}}/>
             </>
           ):(
             <>

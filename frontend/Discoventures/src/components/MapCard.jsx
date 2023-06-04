@@ -16,34 +16,33 @@ export default function MapCard({nativeID, title, activityType, distance, estima
         <View style={styles.mainContainer} nativeID={nativeID}>
             <View style={styles.container}>
                 <View style={styles.header}>
-                    <Text style={[styles.title, fonts.textXlSemiBold]} nativeID='title'>{title}</Text>
-                    <Text nativeID='privacy'>{isPrivate == true ? "Privé":"Public"}</Text>
+                    <Text style={[styles.title, fonts.textXlSemiBold]} nativeID='mpTitle'>{title}</Text>
+                    <Text nativeID='mpPrivacy'>{isPrivate == true ? "Privé":"Public"}</Text>
                 </View>
                 <Image
                     source={{uri: 'https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-l+'+ colors.colorPrimary500.color.slice(1) +'('+ gps.longitude[0] +','+ gps.latitude[0] +'),path-5+f44-0.5(' + getUrlEncodedPolyline(gps) +')/auto/500x300?access_token=pk.eyJ1IjoiY3ZuZHNoIiwiYSI6ImNsaG93dWFiejAxYXozcW84a3pxZms2YjkifQ.0SImY1_6NeTPUyAS765eAg'}}
                     style={styles.map}
-                    nativeID='map'
+                    nativeID='mpMap'
                 />
                 <View style={styles.information}>
                     <View style={styles.distance}>
                         <MaterialCommunityIcons name={"map"} size={20}/>
-                        <Text nativeID='distance'>{distance} km</Text>
+                        <Text nativeID='mpDistance'>{distance} km</Text>
                     </View>
 
                     <View style={styles.distance}>
                         <MaterialCommunityIcons name={"timer-outline"} size={20}/>
-                        <Text nativeID='time'>{new Date(estimatedTime * 1000).toISOString().slice(11, 19)}</Text>
+                        <Text nativeID='mpTime'>{new Date(estimatedTime * 1000).toISOString().slice(11, 19)}</Text>
                     </View>
 
                     <View style={styles.distance}>
                         <MaterialCommunityIcons name={icons[activityType]} size={20}/>
-                        <Text nativeID='activityType'>{activityType}</Text>
+                        <Text nativeID='mpActivityType'>{activityType}</Text>
                     </View>
                 </View>
 
                 <View style={styles.score}>
                     <StarRating
-                        nativeID="score"
                         onChange={()=>{}}
                         enableSwiping={false}
                         enableHalfStar={true}
@@ -51,7 +50,8 @@ export default function MapCard({nativeID, title, activityType, distance, estima
                         color={colors.colorPrimary500.color}
                         starSize={25}
                         style={styles.stars}
-                    /><Text>({nbVoters})</Text>
+                    />
+                    <Text nativeID="mpNbVoters">({nbVoters})</Text>
                 </View>
             </View>
         </View>
