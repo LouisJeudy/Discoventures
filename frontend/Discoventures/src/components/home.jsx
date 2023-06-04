@@ -7,7 +7,6 @@ import { useSelector} from 'react-redux'
 import DeleteRoutes from './DeleteRoutes';
 import Profile from './Profile';
 import Decouvertes from './Decouvertes';
-
 import GenerateParcoursStack from './GenerateParcoursStack';
 function HomeScreen({ navigation }) {
     return (
