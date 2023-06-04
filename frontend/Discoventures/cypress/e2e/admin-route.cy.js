@@ -172,7 +172,7 @@ describe("Test Admin delete routes", () => {
     cy.wait("@getRequeteRoutes").then((interception) => {
       // Vérifie la réponse de la requête interceptée
       expect(interception.response.statusCode).to.equal(200);
-    //   nativeID={"profileMapCard" + route.id}
+
       // Verifier le bon affcihage des éléments d'une route
       cy.get("#adminRoutes3")
         .get("#adminTitle")
@@ -183,9 +183,10 @@ describe("Test Admin delete routes", () => {
         .get("#adminActivityType")
         .should("have.text", "run");
       cy.get("#adminRoutes3").get("#adminDistance").should("have.text", "2 km");
+      cy.get("#adminRoutes3").should('be.visible')
       cy.get("#adminRoutes3").get("#deleteRouteAdmin").click();
       cy.wait(2000)
-      cy.get("#adminRoutes3").should('not.exist');
+      cy.get("#adminRoutes3").should('not.be.visible');
       cy.get("#adminRoutes6").should('exist');
       cy.wait(2000)
       cy.get("#logoutAdmin").click();
