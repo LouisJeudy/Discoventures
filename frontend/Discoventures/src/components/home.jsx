@@ -55,7 +55,7 @@ export default function Home() {
             </>
           ):(
             <>
-              <Tab.Screen name="Parcours" component={DeleteRoutes} />
+              <Tab.Screen name="Parcours" component={DeleteRoutes} options={{tabBarTestID: "tabAdminParcours"}} />
             </>
           )}
         </Tab.Navigator>
