@@ -41,7 +41,7 @@ export default function Profile(props) {
       if (res.success) {
         setRoutes(res.data.data);
         setRouteLoaded(true);
-      }x``
+      }
     })();
   }, []);
 

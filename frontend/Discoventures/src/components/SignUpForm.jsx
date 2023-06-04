@@ -12,13 +12,12 @@ export default function SignUpForm(props) {
   const [errormsg, setErrormsg] = React.useState('')
 
   function signup(email, username, password){
-    const body = new URLSearchParams();
-    
-    body.append("data",JSON.stringify({username:username, email:email,password:password}));
     fetch(`${BACKEND}/users`,{
         method:'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body
+        headers: {'Content-Type': 'application/json'},
+        body : JSON.stringify({
+          data: JSON.stringify({username:username, email:email,password:password})
+        })
     })
     .then(response => response.json())
     .then(response =>{

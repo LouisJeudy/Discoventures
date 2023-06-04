@@ -8,17 +8,6 @@ import DeleteRoutes from './DeleteRoutes';
 import ProfileStack from './ProfileStack';
 import DecouvertesStack from './DecouvertesStack';
 import GenerateParcoursStack from './GenerateParcoursStack';
-function HomeScreen({ navigation }) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Home!</Text>
-        <Button
-          title="Go to Settings"
-          onPress={() => navigation.navigate('Settings')}
-        />
-      </View>
-    );
-  }
 
 const Tab = createBottomTabNavigator();
 

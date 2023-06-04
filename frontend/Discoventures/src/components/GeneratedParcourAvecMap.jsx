@@ -22,7 +22,6 @@ const Map =
     : React.lazy(() => import("./Map"));
 export default function GeneratedParcourAvecMap({ route, navigation }) {
   const userToken = useSelector((state) => state.user.token);
-  const userID = useSelector((state) => state.user.id);
   const {
     name,
     icon,

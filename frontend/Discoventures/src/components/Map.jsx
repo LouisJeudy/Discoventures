@@ -39,7 +39,7 @@ export default function Map({
             longitude: lieux[i].coordinate[0],
           };
           let distance = getDistance(positionGPS["_j"], p2, 1);
-          if (distance < 50) {
+          if (distance < 300) {
             //lancer audio
             parle[i] = 1;
             const regex = /(<([^>]+)>)/gi;
