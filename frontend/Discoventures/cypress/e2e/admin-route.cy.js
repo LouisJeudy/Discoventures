@@ -146,6 +146,13 @@ describe("Test Admin delete routes", () => {
         ],
       },
     }).as("getRequeteRoutes");
+    cy.intercept("DELETE", "/routes/3", {
+      statusCode: 200,
+      body: {
+        status: 200,
+        message: "Parcours supprimé",
+      }
+    }).as("deleteRouteRequete");
   });
 
   it("Vérifier la prise en compte des données, leur cohérence ainsi que le bon affichage des éléments", () => {
@@ -184,12 +191,15 @@ describe("Test Admin delete routes", () => {
         .should("have.text", "run");
       cy.get("#adminRoutes3").get("#adminDistance").should("have.text", "2 km");
       cy.get("#adminRoutes3").should('be.visible')
-      cy.get("#adminRoutes3").get("#deleteRouteAdmin").click();
-      cy.wait(2000)
-      cy.get("#adminRoutes3").should('not.be.visible');
-      cy.get("#adminRoutes6").should('exist');
-      cy.wait(2000)
-      cy.get("#logoutAdmin").click();
     });
+
+    cy.get("#adminRoutes3").get("#deleteRouteAdmin").click();
+
+    cy.wait("@deleteRouteRequete").then((interception) => {
+      expect(interception.response.statusCode).to.equal(200);
+      cy.get("#adminRoutes3").should('not.exist');
+      cy.get("#adminRoutes6").should('exist');
+    })
+    cy.get("#logoutAdmin").click();
   });
 });

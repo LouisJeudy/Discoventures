@@ -48,7 +48,6 @@ export default function DeleteRoutes(props) {
       let res = await fetchRoutes();
       if (res.success) {
         setRoutes(res.data.data);
-        console.log(res.data.data)
         setRouteLoaded(true);
       }
     })();
