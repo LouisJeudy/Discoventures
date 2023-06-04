@@ -26,8 +26,8 @@ export default function GenerateParcoursForm({route,navigation}) {
       setErrormsg("Veuillez inserer une distance")
       return;
     }else{
-          setErrormsg(null)
-      }
+      setErrormsg(null)
+    }
   const {status} = await Location.requestForegroundPermissionsAsync();
     if (status === "granted"){
       let coord = await Location.getCurrentPositionAsync({})
@@ -92,6 +92,8 @@ export default function GenerateParcoursForm({route,navigation}) {
     .then(response => response.json())
     .then(response =>{
       description = response.query.pages[0].extract.replace(/<!--(?!>)[\S\s]*?-->/g, '');
+      const regex = /(<([^>]+)>)/ig;
+      description = description.replace(regex,'');
     }); 
     return description
   }

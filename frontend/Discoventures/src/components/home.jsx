@@ -8,6 +8,7 @@ import DeleteRoutes from './DeleteRoutes';
 import Profile from './Profile';
 import Decouvertes from './Decouvertes';
 
+import GenerateParcoursStack from './GenerateParcoursStack';
 function HomeScreen({ navigation }) {
     return (
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -49,9 +50,9 @@ export default function Home() {
         })}>
           {isAdmin == false?(
             <>
-              <Tab.Screen name="Génération" component={HomeScreen} />
-              <Tab.Screen name="Découvertes" component={Decouvertes} options={{tabBarTestID: "tabDecouvertes"}}/>
-              <Tab.Screen name="Profile" component={Profile} options={{tabBarTestID: "tabProfile"}}/>
+              <Tab.Screen name="Génération" component={GenerateParcoursStack} />
+              <Tab.Screen name="Découvertes" component={SettingsScreen} />
+              <Tab.Screen name="Profile" component={SettingsScreen} />
             </>
           ):(
             <>

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Location from 'expo-location';
 // Import required components
-import {SafeAreaView, StyleSheet, View} from 'react-native';
+import {SafeAreaView, StyleSheet, View, Switch} from 'react-native';
 // Import Map and Marker
 import MapView, {Polyline, Marker} from 'react-native-maps';
 import colors from '../style/colors';
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: 380
+    height: 350
   },
   circle: {
     width: 26,
