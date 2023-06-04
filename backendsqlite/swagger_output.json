@@ -676,6 +676,10 @@
                 "activityType": {
                   "type": "string",
                   "example": "walk"
+                },
+                "isPrivate": {
+                  "type": "boolean",
+                  "example": true
                 }
               },
               "required": [
@@ -683,7 +687,8 @@
                 "coordinates",
                 "estimatedDistance",
                 "estimatedTime",
-                "activityType"
+                "activityType",
+                "isPrivate"
               ]
             }
           }
