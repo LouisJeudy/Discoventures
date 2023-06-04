@@ -380,6 +380,9 @@ Un fichier de test par route différente. Avant chaque lancement, on réinitiali
 
 
 ## Gestion des rôles
+<p align="center">
+<img src="./documentation/assets/roles.png"></a>
+</p>
 
 Au sein de l’application, deux types d’utilisateurs sont présents. Nous retrouvons l’entité qui utilise l’application (utilisateurs) et l’entité qui gère l’application (administrateur). La gestion de ces deux rôles se fait au moment de la connexion. Lorsque l’utilisateur se connecte, le endpoint /login renvoie le token de l’utilisateur. Une fois décodé, il est possible de connaître son id et surtout son statut à travers la données isAdmin. Si celle-ci détient la valeur true, il s’agit d’un administrateur qui sera redirigé vers une vue spécifique. Dans ce cas, il peut gérer les parcours de l’application en les supprimant. Dans le cas contraire, il s’agit d’un utilisateur simple qui a accès à l’ensemble des fonctionnalités de l’application.
 
