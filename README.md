@@ -8,7 +8,7 @@
 1.3 [Fonctionnailités manquantes](#fonctionnailités-manquantes)
 2. [Prise en main du projet](#prise-en-main-du-projet)  
 2.1 [Backend](#backend)  
-2.1 [Frontend](#frontend)
+2.2 [Frontend](#frontend)
 3. [Scenarii](#scenarii)  
 3.1 [S’inscrire](#sinscrire)  
 3.2 [Se connecter](#se-connecter)  
