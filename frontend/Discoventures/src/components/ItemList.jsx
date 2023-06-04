@@ -5,9 +5,10 @@ import fonts from "../style/fonts";
 import colors from "../style/colors";
 import DeleteButton from "./DeleteButton";
 const BACKEND = "http://localhost:3000";
-import { getUrlEncodedPolyline } from '@/utils/staticImageMap';
+import { getUrlEncodedPolyline } from '../utils/staticImageMap';
 
 export default function ItemList({
+  nativeID,
   onDelete,
   idRoute,
   title,
@@ -40,16 +41,16 @@ export default function ItemList({
   };
 
   return (
-    <View style={styles.mainContainer}>
+    <View style={styles.mainContainer} nativeID={nativeID}>
       <View style={styles.container}>
         <View style={styles.route}>
           <View style={styles.title}>
-            <Text style={ fonts.textXlMedium}>{title}</Text>
+            <Text nativeID="adminTitle" style={ fonts.textXlMedium}>{title}</Text>
           </View>
           <Image
             source={{uri: 'https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-l+'+ colors.colorPrimary500.color.slice(1) +'('+ gps.longitude[0] +','+ gps.latitude[0] +'),path-5+f44-0.5(' + getUrlEncodedPolyline(gps) +')/auto/500x300?access_token=pk.eyJ1IjoiY3ZuZHNoIiwiYSI6ImNsaG93dWFiejAxYXozcW84a3pxZms2YjkifQ.0SImY1_6NeTPUyAS765eAg'}}
             style={styles.map}
-            nativeID='map'
+            nativeID='routeAdminMap'
             />
           <View style={styles.data}>
             <View style={styles.information}>
@@ -69,7 +70,7 @@ export default function ItemList({
           </View>
         </View>
         <View style={styles.button}>
-            <DeleteButton onPress={() => deleteRoute(idRoute)} />
+            <DeleteButton nativeID="deleteRouteAdmin" onPress={() => deleteRoute(idRoute)} />
         </View>
       </View>
     </View>

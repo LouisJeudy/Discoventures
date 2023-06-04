@@ -65,13 +65,13 @@ export default function DeleteRoutes(props) {
           <View style={styles.userContainer}>
             <Icon name={'account'} size={70} color={'black'}/>
             <Text nativeID='profileUsernameAdmin'>{ useSelector((state) => state.user.username) }</Text>
-            <LogoutButton nativeId='logoutAdmin' onPress={()=>logout()} />
+            <LogoutButton nativeID='logoutAdmin' onPress={()=>logout()} />
           </View>
-          <ScrollView>
+          <ScrollView nativeID='listRoutesAdmin'>
               { 
                 routeLoaded ? (
                     routes.map((route) => {
-                      return(<ItemList onDelete={handleItemDelete} key={route.id} idRoute={route.id} title={route.title} distance={route.estimatedDistance/1000} time={route.estimatedTime} activityType={route.activityType} gps={ route.coordinates.data }/>);
+                      return(<ItemList key={route.id} nativeID={"adminRoutes" + route.id} onDelete={handleItemDelete} key={route.id} idRoute={route.id} title={route.title} distance={route.estimatedDistance/1000} time={route.estimatedTime} activityType={route.activityType} gps={ route.coordinates.data }/>);
                   })):(<Text>No routes found !</Text>)
               }
           </ScrollView>
