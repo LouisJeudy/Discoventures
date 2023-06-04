@@ -15,13 +15,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ensimag.discoventures"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#f3f3ff"
-      }
+      },
+      "package": "com.ensimag.discoventures",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"

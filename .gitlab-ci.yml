@@ -4,7 +4,6 @@ stages:
     - test # stage de test Backend & Frontend
     - documentation # Générer la documentation Swagger
     - deploy # Intégration du backend sur le cloud Scalingo
-    # - badge # Génération des badges pour certifier notre dépôt
     - production # Générer l'application
 
 # Job pour effectuer une analyse syntaxique des fichiers Javascript
@@ -93,8 +92,8 @@ generate_APK:
   image: sebastienviardot/rnenvsv:buster
   script:
   - cd ./frontend/Discoventures/
-  - chmod +x ./genereapk.sh
-  - ./genereapk.sh
+  - chmod +x ./generateapk.sh
+  - ./generateapk.sh
   artifacts:
     paths:
       - frontend/Discoventures/public
