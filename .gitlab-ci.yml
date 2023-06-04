@@ -86,16 +86,18 @@ scalingo:
       - main
 
 # Générer l'APK de l'application
-pages:
+generate_APK:
   tags:
     - docker
   stage: production
   image: sebastienviardot/rnenvsv:buster
   script:
-  - ./scripts/genereapk.sh
+  - cd ./frontend/Discoventures/
+  - chmod +x ./genereapk.sh
+  - ./genereapk.sh
   artifacts:
     paths:
-      - public
+      - frontend/Discoventures/public
   only: # Règles pour choisir la branche devant exécuter ce job (lors de commits ou de merge)
     refs:
       - main
