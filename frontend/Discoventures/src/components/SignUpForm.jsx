@@ -5,7 +5,6 @@ import { TextInput} from '@react-native-material/core';
 import Button from './Button';
 import colors from '../style/colors'
 const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
-
 export default function SignUpForm(props) {
   const [email, setEmail] = React.useState('')
   const [username, setUsername] = React.useState('')

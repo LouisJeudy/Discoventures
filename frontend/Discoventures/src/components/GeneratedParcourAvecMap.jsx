@@ -1,13 +1,13 @@
 import React,{Suspense} from 'react'
-import { View, StyleSheet, ActivityIndicator, Platform, Text,Switch} from "react-native";
+import { View, StyleSheet, ActivityIndicator, Platform, Text,Switch, Alert} from "react-native";
 import { TextInput } from "@react-native-material/core"
-import { useSelector, useDispatch} from 'react-redux'
+import { useSelector} from 'react-redux'
 
 import CardRadioButtonText from './CardRadioButtonText';
 import Button from './Button';
 import ButtonCancel from './ButtonCancel';
 import colors from '../style/colors';
-const BACKEND = "http://localhost:3000"
+const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
 
 const Map = Platform.OS ==="web"? 
   React.lazy(()=>import('./MapWeb')):
@@ -16,7 +16,6 @@ const Map = Platform.OS ==="web"?
 export default function GeneratedParcourAvecMap({route,navigation}){
   const userToken = useSelector((state) => state.user.token);
   const userID = useSelector((state) => state.user.id);
-  const [visibility, setVisibility] = React.useState('true');
   const {name,icon,activity, distance,distance_km,parcours,lieux,temps,time_h_m_s,descrip } = route.params;
   // const name = "test";
   // const icon = "walk";
@@ -85,17 +84,18 @@ export default function GeneratedParcourAvecMap({route,navigation}){
       longitude_.push(parcours[i][0]);
     }
     //post le parcour 
-    let body = new URLSearchParams();
     let id_route ;
-    body.append("data",JSON.stringify({title:name, coordinates:{data:{ latitude: latitude_, longitude:longitude_}},estimatedDistance:distance
-      ,estimatedTime:temps,activityType:activity, isPrivate:!visibiePublic, places:{ids:id_lieux}, userId:userID})); 
+    let bodyPOST = new URLSearchParams();
+    bodyPOST.append("data",JSON.stringify({"title":name, "coordinates":{data:{ latitude: latitude_, longitude:longitude_}}
+      ,"estimatedDistance":distance
+      ,"estimatedTime":temps,"activityType":activity,"places":{ids:id_lieux}})); 
     await fetch(`${BACKEND}/routes`,{
       method:'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         'x-access-token': userToken
       },
-      body
+      bodyPOST
     }).then(response => response.json())
     .then(response =>{
       if(response.status!= 201){ 
@@ -103,6 +103,7 @@ export default function GeneratedParcourAvecMap({route,navigation}){
       }else {
         setErrormsg(null);
         id_route =response.data['id'];
+        console.log('creer route' + id_route );
         navigation.navigate('GenerateForm');
       }
     })
