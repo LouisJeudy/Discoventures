@@ -23,9 +23,10 @@ lintjs_frontend:
     stage: lint
     image: node
     script:
-      - npm --prefix ./frontend/Discoventures/ i
-      - npx eslint ./frontend/Discoventures/src/app/**
-      - npx eslint ./frontend/Discoventures/src/components/**
+      - cd ./frontend/Discoventures/
+      - npm i
+      - npx eslint ./src/app/**
+      - npx eslint ./src/components/**/
 
 # Exécution des tests Cypress
 jobcypress:
