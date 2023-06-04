@@ -5,7 +5,6 @@ import { TextInput} from '@react-native-material/core';
 import Button from './Button';
 import colors from '../style/colors'
 const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
-
 export default function SignUpForm(props) {
   const [email, setEmail] = React.useState('')
   const [username, setUsername] = React.useState('')
@@ -13,13 +12,12 @@ export default function SignUpForm(props) {
   const [errormsg, setErrormsg] = React.useState('')
 
   function signup(email, username, password){
-    const body = new URLSearchParams();
-    
-    body.append("data",JSON.stringify({username:username, email:email,password:password}));
     fetch(`${BACKEND}/users`,{
         method:'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-        body
+        headers: {'Content-Type': 'application/json'},
+        body : JSON.stringify({
+          data: JSON.stringify({username:username, email:email,password:password})
+        })
     })
     .then(response => response.json())
     .then(response =>{

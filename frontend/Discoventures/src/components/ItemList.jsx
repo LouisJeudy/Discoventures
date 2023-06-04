@@ -4,7 +4,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import fonts from "../style/fonts";
 import colors from "../style/colors";
 import DeleteButton from "./DeleteButton";
-const BACKEND = "http://localhost:3000";
+const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
 import { getUrlEncodedPolyline } from '../utils/staticImageMap';
 
 export default function ItemList({

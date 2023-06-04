@@ -6,8 +6,7 @@ import LogoutButton from './LogoutButton';
 import ItemList from './ItemList';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserEmail, setUserId, setUserToken, setUsername } from '../app/slices/userSlice';
-const BACKEND = "http://localhost:3000"
-
+const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
 export default function DeleteRoutes(props) {
     const [routes, setRoutes] = React.useState([]);
     const [routeLoaded, setRouteLoaded] = useState(false);

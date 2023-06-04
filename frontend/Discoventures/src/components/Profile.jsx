@@ -7,8 +7,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSelector, useDispatch} from 'react-redux'
 import { setUserEmail, setUserId, setUserToken, setUsername } from '../app/slices/userSlice';
 import MapCard from './MapCard';
-const BACKEND = "http://localhost:3000"
-
+const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
 export default function Profile(props) {
 
   const [routes, setRoutes] = React.useState([]);
@@ -41,7 +40,6 @@ export default function Profile(props) {
       let res = await fetchRoutes();
       if (res.success) {
         setRoutes(res.data.data);
-        console.log(res.data)
         setRouteLoaded(true);
       }
     })();
@@ -57,7 +55,31 @@ export default function Profile(props) {
 
       props.navigation.navigate('Login')
     }
-
+    async function VisualiserParcours(route){
+      await fetch(`${BACKEND}/routes/${route.id}`,{
+        method:'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'x-access-token': userToken
+        }
+      }).then(response => response.json())
+      .then(response =>{
+        if(response.status == 200){
+          let lesLieux = [];
+          let descrip = [];
+          for(let i=0; i< response.data.places.length; i++){
+              lesLieux.push(({"coordinate": [response.data.places[i].longitude, response.data.places[i].latitude], "nom": response.data.places[i].title}));
+              descrip.push(response.data.places[i].description);
+          }
+          props.navigation.navigate('ParcoursVisual',{
+            latitude : route.coordinates.data.latitude,
+            longitude : route.coordinates.data.longitude,
+            lieux: lesLieux,
+            description: descrip
+          })
+        }
+      }) .catch(error => alert("Server error inscrire Get :" + error)); 
+    }
     return (
       <View style={styles.container}>
           
@@ -72,7 +94,7 @@ export default function Profile(props) {
               routeLoaded ? (
                   routes.map((route) => {
                     console.log(route)
-                    return(<MapCard key={route.id} nativeID={"profileMapCard" + route.id} title={route.title} activityType={route.activityType} distance={Math.round(route.estimatedDistance/1000)} estimatedTime={route.estimatedTime} isPrivate={route.isPrivate} nbVoters={route.nbVoters} score={route.score} gps={route.coordinates.data}/>);
+                    return(<MapCard key={route.id} nativeID={"profileMapCard" + route.id} onPress={async ()=> VisualiserParcours(route)} title={route.title} activityType={route.activityType} distance={Math.round(route.estimatedDistance/1000)} estimatedTime={route.estimatedTime} isPrivate={route.isPrivate} nbVoters={route.nbVoters} score={route.score} gps={route.coordinates.data}/>);
                 })):(<Text>No routes found !</Text>)
             }
           </ScrollView>

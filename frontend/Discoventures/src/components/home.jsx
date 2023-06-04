@@ -1,24 +1,12 @@
 import * as React from 'react';
-import { Button, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import colors from '../style/colors';
 import { useSelector} from 'react-redux'
 import DeleteRoutes from './DeleteRoutes';
-import Profile from './Profile';
-import Decouvertes from './Decouvertes';
-
-function HomeScreen({ navigation }) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Home!</Text>
-        <Button
-          title="Go to Settings"
-          onPress={() => navigation.navigate('Settings')}
-        />
-      </View>
-    );
-  }
+import ProfileStack from './ProfileStack';
+import DecouvertesStack from './DecouvertesStack';
+import GenerateParcoursStack from './GenerateParcoursStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -49,9 +37,9 @@ export default function Home() {
         })}>
           {isAdmin == false?(
             <>
-              <Tab.Screen name="Génération" component={HomeScreen} />
-              <Tab.Screen name="Découvertes" component={Decouvertes} options={{tabBarTestID: "tabDecouvertes"}}/>
-              <Tab.Screen name="Profile" component={Profile} options={{tabBarTestID: "tabProfile"}}/>
+              <Tab.Screen name="Génération" component={GenerateParcoursStack} />
+              <Tab.Screen name="Découvertes" component={DecouvertesStack} options={{tabBarTestID: "tabDecouvertes"}}/>
+              <Tab.Screen name="Profile" component={ProfileStack} options={{tabBarTestID: "tabProfile"}}/>
             </>
           ):(
             <>

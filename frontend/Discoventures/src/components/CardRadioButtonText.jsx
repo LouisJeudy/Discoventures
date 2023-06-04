@@ -8,7 +8,7 @@ export default function CardRadioButtonText({titre, icon, text}) {
     <View >
       <Card containerStyle={styles.card}>
           <Text style={styles.titlecard}>{titre}</Text>
-          <Pressable disabled={'True'} style={styles.RButtonStyle}>
+          <Pressable disabled={true} style={styles.RButtonStyle}>
             <Icon name={icon} style={styles.icon} size={27}/>
             <Text style={fonts.textMRegular}>{text}</Text>
           </Pressable>
