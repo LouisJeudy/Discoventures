@@ -27,15 +27,11 @@ export default function Map({ parcours, nbLieux, lieux, description}) {
           let distance = getDistance(positionGPS['_j'],p2,1);
           if(distance < 300){
             //lancer audio
-            console.log(description[i]);
-           
-              const thingToSay = description[i]; 
-              Speech.speak(thingToSay);
-                 
             parle[i]=1;
+            console.log(description[i]);
+            Speech.speak(description[i]);
           }
         }
-
       }, 10000);
       return () => clearInterval(interval);
    }
