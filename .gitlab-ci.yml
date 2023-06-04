@@ -93,7 +93,7 @@ generate_APK:
   script:
   - cd ./frontend/Discoventures/
   - chmod +x ./genereapk.sh
-  - ./genereapk.sh
+  - ./generateapk.sh
   artifacts:
     paths:
       - frontend/Discoventures/public
