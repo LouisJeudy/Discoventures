@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Image, Text, View} from 'react-native';
+import { StyleSheet, Image, Text, View,Pressable} from 'react-native';
 import fonts from '../style/fonts';
 import colors from '../style/colors'
 import StarRating from 'react-native-star-rating-widget';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { getUrlEncodedPolyline } from '../utils/staticImageMap';
 
-export default function MapCard({nativeID, title, activityType, distance, estimatedTime, isPrivate, nbVoters, score, gps}) {
+export default function MapCard({nativeID, title, activityType, distance, estimatedTime, isPrivate, nbVoters, score, gps, onPress}) {
 
     const icons = new Object();
     icons["walk"] = "walk";
@@ -19,11 +19,12 @@ export default function MapCard({nativeID, title, activityType, distance, estima
                     <Text style={[styles.title, fonts.textXlSemiBold]} nativeID='mpTitle'>{title}</Text>
                     <Text nativeID='mpPrivacy'>{isPrivate == true ? "Privé":"Public"}</Text>
                 </View>
+                <Pressable onPress={onPress}>
                 <Image
                     source={{uri: 'https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-l+'+ colors.colorPrimary500.color.slice(1) +'('+ gps.longitude[0] +','+ gps.latitude[0] +'),path-5+f44-0.5(' + getUrlEncodedPolyline(gps) +')/auto/500x300?access_token=pk.eyJ1IjoiY3ZuZHNoIiwiYSI6ImNsaG93dWFiejAxYXozcW84a3pxZms2YjkifQ.0SImY1_6NeTPUyAS765eAg'}}
                     style={styles.map}
                     nativeID='mpMap'
-                />
+                 /></Pressable>
                 <View style={styles.information}>
                     <View style={styles.distance}>
                         <MaterialCommunityIcons name={"map"} size={20}/>

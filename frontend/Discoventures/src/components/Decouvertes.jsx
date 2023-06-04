@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import MapCard from './MapCard';
 const BACKEND = "http://localhost:3000"
 
-export default function Decouvertes() {
+export default function Decouvertes(props) {
 
   const [routes, setRoutes] = React.useState([]);
   const [routeLoaded, setRouteLoaded] = React.useState(false);
@@ -41,6 +41,34 @@ export default function Decouvertes() {
     })();
   }, []);
 
+  async function VisualiserParcours(route){
+    console.log("decouvert");
+    await fetch(`${BACKEND}/routes/${route.id}`,{
+      method:'GET',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'x-access-token': token
+      }
+    }).then(response => response.json())
+    .then(response =>{
+      if(response.status == 200){
+        let lesLieux = [];
+        let descrip = [];
+        for(let i=0; i< response.data.places.length; i++){
+            lesLieux.push(({"coordinate": [response.data.places[i].longitude, response.data.places[i].latitude], "nom": response.data.places[i].title}));
+            descrip.push(response.data.places[i].description);
+        }
+        console.log("navigate");
+
+        props.navigation.navigate('ParcoursVisual',{
+          latitude : route.coordinates.data.latitude,
+          longitude : route.coordinates.data.longitude,
+          lieux: lesLieux,
+          description: descrip
+        })
+      }
+    }) .catch(error => alert("Server error inscrire Get :" + error)); 
+  }
     return (
         <View style={styles.container}>
           <ScrollView>
@@ -49,7 +77,7 @@ export default function Decouvertes() {
                 routeLoaded ? (
                     routes.map((route) => {
                       console.log(route)
-                      return(<MapCard key={route.id} nativeID={"decouvertesMapCard" + route.id} title={route.title} activityType={route.activityType} distance={Math.round(route.estimatedDistance/1000)} estimatedTime={route.estimatedTime} isPrivate={route.isPrivate} nbVoters={route.nbVoters} score={route.score} gps={route.coordinates.data}/>);
+                      return(<MapCard key={route.id} nativeID={"decouvertesMapCard" + route.id} onPress={async ()=> VisualiserParcours(route)} title={route.title} activityType={route.activityType} distance={Math.round(route.estimatedDistance/1000)} estimatedTime={route.estimatedTime} isPrivate={route.isPrivate} nbVoters={route.nbVoters} score={route.score} gps={route.coordinates.data}/>);
                   })):(<Text>No routes found !</Text>)
               }
             </ScrollView>

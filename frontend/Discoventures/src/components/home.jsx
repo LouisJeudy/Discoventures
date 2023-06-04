@@ -5,8 +5,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import colors from '../style/colors';
 import { useSelector} from 'react-redux'
 import DeleteRoutes from './DeleteRoutes';
-import Profile from './Profile';
-import Decouvertes from './Decouvertes';
+import ProfileStack from './ProfileStack';
+import DecouvertesStack from './DecouvertesStack';
 import GenerateParcoursStack from './GenerateParcoursStack';
 function HomeScreen({ navigation }) {
     return (
@@ -50,8 +50,8 @@ export default function Home() {
           {isAdmin == false?(
             <>
               <Tab.Screen name="Génération" component={GenerateParcoursStack} />
-              <Tab.Screen name="Découvertes" component={SettingsScreen} />
-              <Tab.Screen name="Profile" component={SettingsScreen} />
+              <Tab.Screen name="Découvertes" component={DecouvertesStack} options={{tabBarTestID: "tabDecouvertes"}}/>
+              <Tab.Screen name="Profile" component={ProfileStack} options={{tabBarTestID: "tabProfile"}}/>
             </>
           ):(
             <>

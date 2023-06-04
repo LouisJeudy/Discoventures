@@ -41,9 +41,8 @@ export default function Profile(props) {
       let res = await fetchRoutes();
       if (res.success) {
         setRoutes(res.data.data);
-        console.log(res.data)
         setRouteLoaded(true);
-      }
+      }x``
     })();
   }, []);
 
@@ -57,7 +56,34 @@ export default function Profile(props) {
 
       props.navigation.navigate('Login')
     }
-
+    async function VisualiserParcours(route){
+      await fetch(`${BACKEND}/routes/${route.id}`,{
+        method:'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'x-access-token': userToken
+        }
+      }).then(response => response.json())
+      .then(response =>{
+        if(response.status == 200){
+          console.log(response.data.places);
+          console.log(response.data.places[0].description)
+          let lesLieux = [];
+          let descrip = [];
+          for(let i=0; i< response.data.places.length; i++){
+              lesLieux.push(({"coordinate": [response.data.places[i].longitude, response.data.places[i].latitude], "nom": response.data.places[i].title}));
+              descrip.push(response.data.places[i].description);
+          }
+          props.navigation.navigate('ParcoursVisual',{
+            latitude : route.coordinates.data.latitude,
+            longitude : route.coordinates.data.longitude,
+            lieux: lesLieux,
+            description: descrip
+          })
+        }
+      }) .catch(error => alert("Server error inscrire Get :" + error));
+    
+    }
     return (
       <View style={styles.container}>
           
@@ -72,7 +98,7 @@ export default function Profile(props) {
               routeLoaded ? (
                   routes.map((route) => {
                     console.log(route)
-                    return(<MapCard key={route.id} nativeID={"profileMapCard" + route.id} title={route.title} activityType={route.activityType} distance={Math.round(route.estimatedDistance/1000)} estimatedTime={route.estimatedTime} isPrivate={route.isPrivate} nbVoters={route.nbVoters} score={route.score} gps={route.coordinates.data}/>);
+                    return(<MapCard key={route.id} nativeID={"profileMapCard" + route.id} onPress={async ()=> VisualiserParcours(route)} title={route.title} activityType={route.activityType} distance={Math.round(route.estimatedDistance/1000)} estimatedTime={route.estimatedTime} isPrivate={route.isPrivate} nbVoters={route.nbVoters} score={route.score} gps={route.coordinates.data}/>);
                 })):(<Text>No routes found !</Text>)
             }
           </ScrollView>
