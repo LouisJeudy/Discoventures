@@ -10,16 +10,21 @@ import {
 import { TextInput } from "@react-native-material/core";
 import { useSelector } from "react-redux";
 
-import CardRadioButtonText from "./CardRadioButtonText";
-import Button from "./Button";
-import ButtonCancel from "./ButtonCancel";
-import colors from "../style/colors";
+import CardRadioButtonText from "../../../components/uikit/CardRadioButtonText";
+import Button from "../../../components/uikit/Button";
+import ButtonSecondary from "../../../components/uikit/ButtonSecondary";
+import colors from "../../../style/colors";
+
 const BACKEND = "https://discoventures.osc-fr1.scalingo.io";
 
+// La map mobile n'est pas supporté en version desktop
+// Il faut donc deux versions différentes
 const Map =
   Platform.OS === "web"
-    ? React.lazy(() => import("./MapWeb"))
-    : React.lazy(() => import("./Map"));
+    ? React.lazy(() => import("./Map/MapWeb"))
+    : React.lazy(() => import("./Map/Map"));
+
+// Proposition d'un parcours généré par rapport aux données utilisateurs
 export default function GeneratedParcourAvecMap({ route, navigation }) {
   const userToken = useSelector((state) => state.user.token);
   const {
@@ -34,12 +39,17 @@ export default function GeneratedParcourAvecMap({ route, navigation }) {
     time_h_m_s,
     descrip,
   } = route.params;
+
   const [visiblePublic, setvisiblePublic] = React.useState(true);
+
   const toggleSwitch = () =>
     setvisiblePublic((previousState) => !previousState);
+
   const [errormsg, setErrormsg] = React.useState("");
+
+  // Si l'utilisateur souhaite enregistrer ce parcours dans son profil
   async function EnregistrerParcours() {
-    //post les lieux
+    // Création des lieux culturels / touristiques dans la base de données
     let id_lieux = [];
     for (let indice = 0; indice < lieux.length; indice++) {
       let exited = false;
@@ -57,7 +67,6 @@ export default function GeneratedParcourAvecMap({ route, navigation }) {
         .then((response) => {
           if (response.status == 200) {
             exited = true;
-            console.log("400: " + response.place["id"]);
             id_lieux.push(response.place["id"]);
             setErrormsg(null);
           }
@@ -85,7 +94,6 @@ export default function GeneratedParcourAvecMap({ route, navigation }) {
               setErrormsg(response.message);
               return;
             } else {
-              console.log("200: " + response.place["id"]);
               id_lieux.push(response.place["id"]);
               setErrormsg(null);
             }
@@ -132,7 +140,10 @@ export default function GeneratedParcourAvecMap({ route, navigation }) {
       })
       .catch((error) => alert("Server error inscrire :" + error));
   }
-  function RegenerParcours() {
+
+  // Si l'utilisateur veut changer les données qu'il a précédemment entré
+  function RegenererParcours() {
+    // Redirection sur la page précédente avec les anciennes informations
     navigation.navigate("GenerateForm", {
       titreParcour: name,
       distance_km: distance_km,
@@ -140,11 +151,11 @@ export default function GeneratedParcourAvecMap({ route, navigation }) {
   }
   return (
     <View style={styles.container}>
-      <ButtonCancel
+      <ButtonSecondary
         style={styles.btRegenerer}
-        nativeID="btRegenerParcours"
+        nativeID="btRegenererParcours"
         label="Regénérer un parcours"
-        onPress={() => RegenerParcours()}
+        onPress={() => RegenererParcours()}
       />
       <Button
         nativeID="btEnregistrerParcours"

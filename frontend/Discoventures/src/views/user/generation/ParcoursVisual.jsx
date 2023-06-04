@@ -1,12 +1,16 @@
 import React, { Suspense } from "react";
 import { View, StyleSheet, ActivityIndicator, Platform } from "react-native";
-import colors from "../style/colors";
+import colors from "../../../style/colors";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
+// La map mobile n'est pas supporté en version desktop
+// Il faut donc deux versions différentes
 const Map =
   Platform.OS === "web"
-    ? React.lazy(() => import("./MapWeb"))
-    : React.lazy(() => import("./Map"));
+    ? React.lazy(() => import("./Map/MapWeb"))
+    : React.lazy(() => import("./Map/Map"));
+
+// Page pour démarrer ou stopper le parcours
 export default function ParcoursVisual({ route, navigation }) {
   const [isStart, setIsStart] = React.useState(false);
   const { latitude, longitude, lieux, description } = route.params;

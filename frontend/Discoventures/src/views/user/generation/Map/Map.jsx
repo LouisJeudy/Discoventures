@@ -5,9 +5,12 @@ import { SafeAreaView, StyleSheet, View } from "react-native";
 // Import Map and Marker
 import MapView, { Polyline, Marker } from "react-native-maps";
 import { getDistance } from "geolib";
-import colors from "../style/colors";
+import colors from "../../../../style/colors";
 import * as Speech from "expo-speech";
 
+// Carte interactive avec possibilité de zoomer et de se déplacer
+// Affiche le tracé du parcours et les lieux touristiques
+// Audio disponible
 export default function Map({
   parcours,
   nbLieux,
@@ -25,6 +28,8 @@ export default function Map({
   if (description.length > 0) {
     parle = Array(description.length).fill(0);
   }
+
+  // Récupère la distance entre la position actuelle de l'utilisateur et des lieux touristiques
   React.useEffect(() => {
     const positionGPS = getLocationPermission();
     if (localIsStart == true && description.length > 0) {
@@ -40,7 +45,7 @@ export default function Map({
           };
           let distance = getDistance(positionGPS["_j"], p2, 1);
           if (distance < 50) {
-            //lancer audio
+            // Lance l'audio dès qu'on est à moins de 50m du lieu
             parle[i] = 1;
             const regex = /(<([^>]+)>)/gi;
             description[i] = description[i].replace(regex, "");
@@ -52,6 +57,7 @@ export default function Map({
     }
   }, [localIsStart]);
 
+  // Demande d'accès à la localisation
   async function getLocationPermission() {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {

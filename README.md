@@ -50,7 +50,7 @@ A cet instant, seul le système de notes n'est pas implémenté dans le frontend
 
 ## Demonstration
 
-Une démonstration peut être visualisée <a heref="https://youtu.be/nSQIBluzfJo">ici</a>.
+Une démonstration peut être visualisée <a href="https://youtu.be/nSQIBluzfJo">ici</a>.
 
 **NB: Pour cette démonstration, la détection avec le lieux touristique est faite à une distance de 300 mètres. Cela a permis de s'assurer que l'implémentation fonctionne** 
 
@@ -351,7 +351,7 @@ Le cœur de notre serveur backend se trouve dans le dossier src/. C’est une ar
 
 **Modèles** `(dossier /models)`
 
-À chaque table de notre modèle de données (cf. l’image?) est associé un fichier dans lequel est décrit la liste de ses attributs ainsi que les différentes associations qu’il peut avoir avec d’autres tables.
+À chaque table de notre modèle de données est associé un fichier dans lequel est décrit la liste de ses attributs ainsi que les différentes associations qu’il peut avoir avec d’autres tables.
 Il y a également le fichier de configuration database.js de notre base de données qui est présent dans ce dossier.
 
 **Vues** (dans le projet `/frontend/Discoventures`)
@@ -365,7 +365,7 @@ Un fichier par base de chemin différent est créé.
 
 **Middlewares** (dossier `/middlewares`)
 
-Les middlewares sont découpés par concept. Par exemple, toutes les vérifications liées au token se trouvent dans /middleware/token.js et celles pour les parcours se trouvent dans /middleware/route.js.
+Les middlewares sont découpés par concept. Par exemple, toutes les vérifications liées au token se trouvent dans `/middleware/token.js` et celles pour les parcours se trouvent dans `/middleware/route.js`.
 
 **Contrôleurs** `(dossier /controllers)`
 
@@ -377,6 +377,63 @@ Tous nos tests API sont faits avec supertest et Jest.
 Un fichier de test par route différente. Avant chaque lancement, on réinitialise la base de données à vide et on crée les données qui nous intéressent pour nos tests dans beforeAll().
 
 ### Frontend
+
+**Redux** `(dossier /app)`
+
+Dans cette structure, nous retrouvons la configuration de Redux pour React-native. Dans `/app/slices`, deux slices sont présents. Un slice caractérise un utilisateur pour stocker ses données tout au long de l’utilisation de l’application jusqu’à la déconnexion. La seconde entité représente une activité pour connaître son type lors de la génération du parcours.
+
+Ces deux entités sont rattachées au fichier `/app/store/stores.js` qui permet d’enregistrer les précédentes slices. Elles sont appelées “reducer”.
+
+**Assets** `(dossier /assets)`
+
+On y trouve les éléments de style de notre application : des images statiques comme la favicon, le splash screen et l’icône de l’application et les deux fonts utilisées (.ttf).
+
+**Tests E2E** `(dossier /cypress)`
+
+Tous les fichiers liés à nos tests cypress sont répertoriés ici.
+On trouve dans le sous dossier /e2e, les fichiers de tests end-to-end réalisés sur notre application en version web.
+
+Le coeur de notre application front-end se trouve dans le dossier /src
+
+**Cosmétique** `(dossier /style)`
+
+Le fichier colors.js regroupe toute la palette graphique de notre application.
+Le fichier fonts.js regroupe l’ensemble des fonts utilisables dans notre application.
+Cela permet d’harmoniser et de maintenir une cohérence de style grâce à des variables réutilisables dans tous nos fichiers.
+C’est un dossier qui est évoluable dans la mesure où nous pouvons l’agrémenter d’autres fichiers qui peuvent servir à harmoniser d’autres éléments de style (flex, spacing …).
+
+**Fonctions réutilisables** `(dossier /utils)`
+
+Nous mettons toutes les fonctions utilitaires susceptibles d’être réutilisées. Cela permet également d’isoler les fonctions et de pouvoir les tester unitairement avec Cypress.
+
+**Pages de l’application** `(dossier /views)`
+
+Ce sont les vues principales de l’application entre lesquelles l’utilisateur peut naviguer dans l’application. On a décidé de séparer les pages en trois dossiers différents par rapport aux droits de l'utilisateur. Ensuite, les pages sont répertoriées dans un dossier à leur nom.
+
+*Administrateur* `(sous-dossier /admin)`
+
+Toutes les pages disponibles seulement pour les administrateurs.
+
+*Communs* `(sous-dossier /common)`
+
+Toutes les pages disponibles pour tous les utilisateurs (admin ou user).
+
+*Utilisateurs* `(sous-dossier /user)`
+
+Toutes les pages disponibles seulement pour les utilisateurs.
+
+**Composants** `(dossier /components)`
+
+On répertorie tous les composants de notre application ici.  
+
+*UIKit* `(sous-dossier /uikit)`
+
+Nos plus petits éléments d’UIKit.
+
+*Navigation* `(sous-dossier /navigation)`
+
+Les fichiers permettant de naviguer entre les vues.
+
 
 
 ## Gestion des rôles

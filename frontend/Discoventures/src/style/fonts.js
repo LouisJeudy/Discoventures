@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+// Fichier regroupant toutes les styles de typographie de notre application
 export default StyleSheet.create({
   // Headings
   text6xl: {

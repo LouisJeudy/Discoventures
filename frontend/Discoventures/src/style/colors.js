@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 
+// Fichier regroupant toutes les couleurs de l'application
 export default StyleSheet.create({
   // PRIMARY COLORS
   colorPrimary50: {

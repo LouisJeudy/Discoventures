@@ -1,12 +1,15 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import { useSelector } from "react-redux";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import fonts from "../style/fonts";
-import colors from "../style/colors";
-import DeleteButton from "./DeleteButton";
-const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
-import { getUrlEncodedPolyline } from '../utils/staticImageMap';
+import fonts from "../../../../style/fonts";
+import colors from "../../../../style/colors";
+import DeleteButton from "../../../../components/uikit/DeleteButton";
+import { getUrlEncodedPolyline } from '../../../../utils/staticImageMap';
 
+const BACKEND = "https://discoventures.osc-fr1.scalingo.io"
+
+// Composant représentant une carte informative sur un parcours
+// L'admin peut supprimer le parcours depuis cette carte
 export default function ItemList({
   nativeID,
   onDelete,
@@ -24,6 +27,7 @@ export default function ItemList({
 
   const token = useSelector((state) => state.user.token);
 
+  // Suppression du parcours
   const deleteRoute = async (id) => {
     try {
       await fetch(`${BACKEND}/routes/${id}`, {
