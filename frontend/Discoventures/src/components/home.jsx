@@ -50,7 +50,7 @@ export default function Home() {
           {isAdmin == false?(
             <>
               <Tab.Screen name="Génération" component={HomeScreen} />
-              <Tab.Screen name="Découvertes" component={Decouvertes} />
+              <Tab.Screen name="Découvertes" component={Decouvertes} options={{tabBarTestID: "tabDecouvertes"}}/>
               <Tab.Screen name="Profile" component={Profile} options={{tabBarTestID: "tabProfile"}}/>
             </>
           ):(

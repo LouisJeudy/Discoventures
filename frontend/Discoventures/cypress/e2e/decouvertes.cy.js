@@ -1,16 +1,240 @@
-describe('Test Profile', () => {
+describe('Test Decouvertes', () => {
   beforeEach(() => {
 
-    // Mock de la requête /routes/users/2
-    cy.intercept('GET', '/routes/users/2', {
+    // Mock de la requête /routes
+    cy.intercept('GET', '/routes/', {
       statusCode: 200,
       body: { 
           "status": 200,
-          "message": "Tous les parcours de l'utilisateur",
+          "message": "Tous les parcours publics",
           "data": [
               {
-                  "id": 5,
-                  "title": "Course de vélo sur le campus",
+                  "id": 1,
+                  "title": "Visite rapide de Saint-Martin-d'Hères",
+                  "coordinates": {
+                      "data": {
+                          "latitude": [
+                              45.186589,
+                              45.186627,
+                              45.18672,
+                              45.186812,
+                              45.186587,
+                              45.186556,
+                              45.186537,
+                              45.186568,
+                              45.187009,
+                              45.187078,
+                              45.187069,
+                              45.18689,
+                              45.18695,
+                              45.187014,
+                              45.187041,
+                              45.187057,
+                              45.18713,
+                              45.187203,
+                              45.187288,
+                              45.187331,
+                              45.187376,
+                              45.187541,
+                              45.187739,
+                              45.187761,
+                              45.187758,
+                              45.18777,
+                              45.187847,
+                              45.187916,
+                              45.188016,
+                              45.188042,
+                              45.18809,
+                              45.188186,
+                              45.188482,
+                              45.188702,
+                              45.188834,
+                              45.188937,
+                              45.188834,
+                              45.188702,
+                              45.188482,
+                              45.188464,
+                              45.188424,
+                              45.188319,
+                              45.188179,
+                              45.187833,
+                              45.187766,
+                              45.187714,
+                              45.187538,
+                              45.187358,
+                              45.187243,
+                              45.187203,
+                              45.18713,
+                              45.187057,
+                              45.187041,
+                              45.187014,
+                              45.18695,
+                              45.18689,
+                              45.186283,
+                              45.186051,
+                              45.185898,
+                              45.185006,
+                              45.184997,
+                              45.184983,
+                              45.184957,
+                              45.18493,
+                              45.18485,
+                              45.184733,
+                              45.184128,
+                              45.184098,
+                              45.183967,
+                              45.18389,
+                              45.183725,
+                              45.183527,
+                              45.183484,
+                              45.183527,
+                              45.183725,
+                              45.18389,
+                              45.183967,
+                              45.184098,
+                              45.184128,
+                              45.184733,
+                              45.18485,
+                              45.18493,
+                              45.184957,
+                              45.184983,
+                              45.184997,
+                              45.185006,
+                              45.185154,
+                              45.185442,
+                              45.185606,
+                              45.185689,
+                              45.185746,
+                              45.185946,
+                              45.186285,
+                              45.186405,
+                              45.186487,
+                              45.186515,
+                              45.186537,
+                              45.186556,
+                              45.186587,
+                              45.186812,
+                              45.18672,
+                              45.186627,
+                              45.186589
+                          ],
+                          "longitude": [
+                              5.754958,
+                              5.754892,
+                              5.754727,
+                              5.754566,
+                              5.754276,
+                              5.754236,
+                              5.754211,
+                              5.754102,
+                              5.754649,
+                              5.754734,
+                              5.754772,
+                              5.755493,
+                              5.755523,
+                              5.755554,
+                              5.755568,
+                              5.755576,
+                              5.755612,
+                              5.755648,
+                              5.755231,
+                              5.755223,
+                              5.755187,
+                              5.755304,
+                              5.754765,
+                              5.754705,
+                              5.754556,
+                              5.754527,
+                              5.754353,
+                              5.75424,
+                              5.7541,
+                              5.754065,
+                              5.754146,
+                              5.75426,
+                              5.754489,
+                              5.75466,
+                              5.754759,
+                              5.754837,
+                              5.754759,
+                              5.75466,
+                              5.754489,
+                              5.754536,
+                              5.75464,
+                              5.754929,
+                              5.755319,
+                              5.756227,
+                              5.756294,
+                              5.756241,
+                              5.756064,
+                              5.755912,
+                              5.755733,
+                              5.755648,
+                              5.755612,
+                              5.755576,
+                              5.755568,
+                              5.755554,
+                              5.755523,
+                              5.755493,
+                              5.755191,
+                              5.755067,
+                              5.754984,
+                              5.754496,
+                              5.754549,
+                              5.754593,
+                              5.754685,
+                              5.754784,
+                              5.754741,
+                              5.754677,
+                              5.754337,
+                              5.754323,
+                              5.754271,
+                              5.754311,
+                              5.754909,
+                              5.755639,
+                              5.755793,
+                              5.755639,
+                              5.754909,
+                              5.754311,
+                              5.754271,
+                              5.754323,
+                              5.754337,
+                              5.754677,
+                              5.754741,
+                              5.754784,
+                              5.754685,
+                              5.754593,
+                              5.754549,
+                              5.754496,
+                              5.753903,
+                              5.75405,
+                              5.754044,
+                              5.75404,
+                              5.754037,
+                              5.754021,
+                              5.753994,
+                              5.754088,
+                              5.75417,
+                              5.754193,
+                              5.754211,
+                              5.754236,
+                              5.754276,
+                              5.754566,
+                              5.754727,
+                              5.754892,
+                              5.754958
+                          ]
+                      }
+                  },
+                  "estimatedDistance": 1962.436,
+                  "estimatedTime": 1395.834,
+                  "score": 0,
+                  "nbVoters": 0,
+                  "activityType": "walk",
+                  "userId": 2
+              },
+              {
+                  "id": 3,
+                  "title": "Marche digestive sur le campus SMH",
                   "coordinates": {
                       "data": {
                           "latitude": [
@@ -269,13 +493,12 @@ describe('Test Profile', () => {
                           ]
                       }
                   },
-                  "estimatedDistance": 2073.4,
-                  "estimatedTime": 794.4,
-                  "isPrivate": true,
+                  "estimatedDistance": 2100.799,
+                  "estimatedTime": 1487.819,
                   "score": 0,
                   "nbVoters": 0,
-                  "activityType": "bike",
-                  "userId": 4
+                  "activityType": "run",
+                  "userId": 3
               },
               {
                   "id": 6,
@@ -580,18 +803,15 @@ describe('Test Profile', () => {
                   },
                   "estimatedDistance": 3074.097,
                   "estimatedTime": 2242.456,
-                  "isPrivate": false,
                   "score": 0,
                   "nbVoters": 0,
                   "activityType": "walk",
                   "userId": 4
               }
           ]
+          
       },
     }).as('getRequeteRoutesUser')
-
-
-
   })
 
   it('Vérifier la prise en compte des données, leur cohérence ainsi que le bon affichage des éléments', () => {
@@ -606,13 +826,7 @@ describe('Test Profile', () => {
     cy.get('#btnConnectSignIn').click()
 
     // Appui sur le bouton de profile
-    cy.get('a[data-testid="tabProfile"]').click()
-
-    // Vérifier l'existence du bouton de deconnexion
-    cy.get("#profileLogoutButton")
-
-    // Verfier le nom d'utilisateur
-    cy.get("#profileUsername").should("have.text", "Mickey")
+    cy.get('a[data-testid="tabDecouvertes"]').click()
 
     // Attendre que la requête GET soit interceptée
     cy.wait('@getRequeteRoutesUser').then((interception) => {
@@ -620,13 +834,12 @@ describe('Test Profile', () => {
       expect(interception.response.statusCode).to.equal(200)
 
       // Verfier le bon affcihage des éléments d'une route
-      cy.get("#profileMapCard5").get("#mpTitle").should("have.text", "Course de vélo sur le campus")
-      cy.get("#profileMapCard5").get("#mpPrivacy").should("have.text", "Privé")
-      cy.get("#profileMapCard5").get("#mpDistance").should("have.text","2 km")
-      cy.get("#profileMapCard5").get("#mpTime").should("have.text","00:13:14")
-      cy.get("#profileMapCard5").get("#mpActivityType").should("have.text","bike")
-      cy.get("#profileMapCard5").get("#mpNbVoters").should("have.text","(0)")
-      cy.get("#profileLogoutButton").click()
+      cy.get("#decouvertesMapCard1").get("#mpTitle").should("have.text", "Visite rapide de Saint-Martin-d'Hères")
+      cy.get("#decouvertesMapCard1").get("#mpPrivacy").should("have.text", "Public")
+      cy.get("#decouvertesMapCard1").get("#mpDistance").should("have.text","2 km")
+      cy.get("#decouvertesMapCard1").get("#mpTime").should("have.text","00:23:15")
+      cy.get("#decouvertesMapCard1").get("#mpActivityType").should("have.text","walk")
+      cy.get("#decouvertesMapCard1").get("#mpNbVoters").should("have.text","(0)")
     })
   })
 })
