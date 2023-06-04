@@ -1,50 +1,68 @@
 import React, { Suspense } from "react";
-import {
-  View,
-  StyleSheet,
-  ActivityIndicator,
-  Platform
-} from "react-native";
-import colors from '../style/colors';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-const BACKEND = "https://discoventures.osc-fr1.scalingo.io";
+import { View, StyleSheet, ActivityIndicator, Platform } from "react-native";
+import colors from "../style/colors";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const Map =
   Platform.OS === "web"
     ? React.lazy(() => import("./MapWeb"))
     : React.lazy(() => import("./Map"));
-//TODO add radio button with icon to chosse type activity
 export default function ParcoursVisual({ route, navigation }) {
-  const [start, setStart]= React.useState(false);
-  const {
-    latitude,
-    longitude,
-    lieux,
-    description
-  } = route.params;
+  const [isStart, setIsStart] = React.useState(false);
+  const { latitude, longitude, lieux, description } = route.params;
   let parcours = [];
-  for(let i = 0; i<latitude.length;i++){
-    parcours.push([longitude[i],latitude[i]]);
+  for (let i = 0; i < latitude.length; i++) {
+    parcours.push([longitude[i], latitude[i]]);
   }
 
-  function gotoBackPage(){
+  function gotoBackPage() {
+    setIsStart(false);
     navigation.goBack();
   }
- function commencerParcours(){
-    setStart(true) 
- }
-  function finirParcours(){
+  function commencerParcours() {
+    setIsStart(true);
+  }
+  function finirParcours() {
+    setIsStart(false);
     navigation.goBack();
   }
   return (
     <View style={styles.container}>
-        <View style={styles.box}>
-        <Icon name={'arrow-left-circle'} size={40} color={colors.colorPrimary500.color} onPress={()=>gotoBackPage()}/>
-        {start?null:<Icon marginHorizontal={130} nativeID='visualIconPlay' name={'play'} size={40} color={colors.colorPrimary500.color} onPress={()=>commencerParcours()}/>}
-        {start?<Icon marginHorizontal={130} name={'stop-circle'} size={40} color={colors.colorPrimary500.color} onPress={()=>finirParcours()}/>:null}
-        </View>
+      <View style={styles.box}>
+        <Icon
+          name={"arrow-left-circle"}
+          size={40}
+          color={colors.colorPrimary500.color}
+          onPress={() => gotoBackPage()}
+        />
+        {isStart ? null : (
+          <Icon
+            marginHorizontal={130}
+            nativeID="visualIconPlay"
+            name={"play"}
+            size={40}
+            color={colors.colorPrimary500.color}
+            onPress={() => commencerParcours()}
+          />
+        )}
+        {isStart ? (
+          <Icon
+            marginHorizontal={130}
+            name={"stop-circle"}
+            size={40}
+            color={colors.colorPrimary500.color}
+            onPress={() => finirParcours()}
+          />
+        ) : null}
+      </View>
       <Suspense fallback={<ActivityIndicator />}>
-        <Map parcours={parcours} nbLieux={lieux.length} lieux={lieux} description={description} />
+        <Map
+          parcours={parcours}
+          nbLieux={lieux.length}
+          lieux={lieux}
+          description={description}
+          isStart={isStart}
+        />
       </Suspense>
     </View>
   );
@@ -56,9 +74,9 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: "center",
   },
-  box:{
-      flexDirection: 'row',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-  }
+  box: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
 });

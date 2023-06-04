@@ -1,41 +1,56 @@
 import React from "react";
 import * as Location from "expo-location";
 // Import required components
-import { SafeAreaView, StyleSheet, View} from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 // Import Map and Marker
 import MapView, { Polyline, Marker } from "react-native-maps";
-import  { getDistance } from 'geolib';
+import { getDistance } from "geolib";
 import colors from "../style/colors";
-import * as Speech from 'expo-speech';
+import * as Speech from "expo-speech";
 
-export default function Map({ parcours, nbLieux, lieux, description}) {
+export default function Map({
+  parcours,
+  nbLieux,
+  lieux,
+  description,
+  isStart,
+}) {
   const origin = { latitude: parcours[0][1], longitude: parcours[0][0] };
   let parle;
-  if(description.length > 0){
-    parle = Array(description.length).fill(0)
-  } 
+  const [localIsStart, setLocalIsStart] = React.useState(isStart);
+  React.useEffect(() => {
+    setLocalIsStart(isStart);
+  }, [isStart]);
+
+  if (description.length > 0) {
+    parle = Array(description.length).fill(0);
+  }
   React.useEffect(() => {
     const positionGPS = getLocationPermission();
-    if(description.length > 0){
+    if (localIsStart == true && description.length > 0) {
       const interval = setInterval(() => {
         //calcul la distance entre les lieux
-        for(let i = 0; i<lieux.length ;i++){
-          if(parle[i] == 1){
+        for (let i = 0; i < lieux.length; i++) {
+          if (parle[i] == 1) {
             continue;
           }
-          let p2 = {latitude: lieux[i].coordinate[1], longitude: lieux[i].coordinate[0]};
-          let distance = getDistance(positionGPS['_j'],p2,1);
-          if(distance < 300){
+          let p2 = {
+            latitude: lieux[i].coordinate[1],
+            longitude: lieux[i].coordinate[0],
+          };
+          let distance = getDistance(positionGPS["_j"], p2, 1);
+          if (distance < 300) {
             //lancer audio
-            parle[i]=1;
-            console.log(description[i]);
+            parle[i] = 1;
+            const regex = /(<([^>]+)>)/gi;
+            description[i] = description[i].replace(regex, "");
             Speech.speak(description[i]);
           }
         }
       }, 10000);
       return () => clearInterval(interval);
-   }
-  }, []);
+    }
+  }, [localIsStart]);
 
   async function getLocationPermission() {
     let { status } = await Location.requestForegroundPermissionsAsync();
