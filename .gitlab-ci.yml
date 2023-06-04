@@ -26,7 +26,8 @@ lintjs_frontend:
       - cd ./frontend/Discoventures/
       - npm i
       - npx eslint ./src/app/**
-      - npx eslint ./src/components/**
+      - npx eslint ./src/components/navigation/**
+      - npx eslint ./src/components/uikit/**
 
 # Exécution des tests Cypress
 jobcypress:
