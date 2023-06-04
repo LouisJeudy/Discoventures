@@ -4,7 +4,7 @@
 
 1. [Objectifs du projet](#objectifs-du-projet)  
 1.1 [Comment ?](#comment)  
-1.2 [Demonstration](#demonstration)
+1.2 [Demonstration](#demonstration)  
 1.3 [Fonctionnailités manquantes](#fonctionnailités-manquantes)
 2. [Prise en main du projet](#prise-en-main-du-projet)  
 2.1 [Backend](#backend)  
@@ -42,7 +42,7 @@ Discoventures est une application mobile pour tout sportif voulant se dépenser 
 
 ## Comment ?
 
-En utilisant les cartes natives de IOS et Android, un tracé de parcours est affiché. Il est enrichie de lieux touristiques grâce à la <a href="https://data.culture.gouv.fr/pages/home/">banque de données du gouvernement français</a>. Nous pouvons nous déplacer vers ces lieux. A 50 mètres du lieu (calculé par la bibliothèque <a href="https://www.npmjs.com/package/geolib">geolib</a>), un guide audio nous dicte des informations concernant ce lieu.
+En utilisant les cartes natives de IOS et Android, un tracé de parcours est affiché. Il est enrichie de lieux touristiques grâce à la <a href="https://data.culture.gouv.fr/pages/home/">banque de données du gouvernement français</a>. Nous pouvons nous déplacer vers ces lieux. A 50 mètres du lieu (calculé par la bibliothèque <a href="https://www.npmjs.com/package/geolib">geolib</a>), un guide audio nous dicte des informations concernant ce lieu avec le module <a href="https://docs.expo.dev/versions/latest/sdk/speech/">expo-speech</a>.
 
 ## Fonctionnailités manquantes
 
@@ -266,15 +266,19 @@ Cette API est utilisé dans le composant MapCard. Elle permet d’afficher l’i
 
 *Utilisation*
 
-Cette API est utilisé dans le composant MapCard. Elle permet d’afficher l’image du parcours.
+Cette API est utilisé dans le composant GenerateParcoursForm. Elle permet de récupérer tous les lieux touristiques lors de la génération du parcours.
 
 <a href="https://www.mediawiki.org/wiki/MediaWiki">Mediawiki</a> : API permettant de retrouver les informations issues de Wikipédia à propos d’une recherche. Dans notre cas, les données récupérées de data.culture.gouv.fr sont utilisées dans Mediawiki pour accéder à une description du lieu.
 
 *Utilisation*
 
-Cette API est utilisé dans le composant MapCard. Elle permet d’afficher l’image du parcours.
+Cette API est utilisé dans le composant GenerateParcoursForm. Elle permet de récupérer toutes les description des lieux touristiques/culturels choisis.
 
 ## Librairies NPM
+
+### Lecture à haute voix:
+
+<a href="https://docs.expo.dev/versions/latest/sdk/speech/">expo-speech</a> : Ce module expo permet d'utiliser le composant natif du telephone pour dicter du contenu écrit à haute voix.
 
 ### Maps : 
 <a href="https://github.com/react-native-maps/react-native-maps">react-native-maps</a> : utilisation des cartes natives pour la visualisation des tracés et des lieux touristiques. Sur IOS, Apple Plans est utilisé. Sur Android, il s’agit de Google Maps.  
