@@ -57,7 +57,7 @@ module.exports = {
     // #swagger.tags = ['Routes']
     // #swagger.summary = 'Create a new route'
     // #swagger.parameters['x-access-token'] = { in: 'header', description: 'JWT token', required: 'true', type: 'string' }
-    // #swagger.parameters['data'] = { in: 'body', schema: { $title: 'Walk in the woods', places : { ids: [1,2,3] }, $coordinates: {data: {latitude: [0, 2], longitude: [0, 2]}}, $estimatedDistance: 2, $estimatedTime: 2, $activityType: 'walk' }}
+    // #swagger.parameters['data'] = { in: 'body', schema: { $title: 'Walk in the woods', places : { ids: [1,2,3] }, $coordinates: {data: {latitude: [0, 2], longitude: [0, 2]}}, $estimatedDistance: 2, $estimatedTime: 2, $activityType: 'walk', $isPrivate: true }}
     // #swagger.reponses[400] = { description: 'Missing data attribute'}
     if (!req.body.data) {
       throw new CodeError(

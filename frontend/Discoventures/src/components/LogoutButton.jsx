@@ -6,11 +6,11 @@ import colors from '../style/colors'
 export default function LogoutButton({onPress, nativeID}) {
  
   return (
-    <View >
-    <Pressable style={styles.container} onPress={onPress} nativeID={nativeID}>
-      <Icon name={'logout'} size={20} color={'white'}/>
-    </Pressable>
-  </View>
+    <View>
+      <Pressable style={styles.container} onPress={onPress} nativeID={nativeID}>
+        <Icon name={'logout'} size={20} color={'white'}/>
+      </Pressable>
+    </View>
   );
 }
 
