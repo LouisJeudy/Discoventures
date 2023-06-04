@@ -32,6 +32,7 @@ export default function GenerateParcoursForm({route,navigation}) {
     if (status === "granted"){
       let coord = await Location.getCurrentPositionAsync({})
       const position = [coord.coords.longitude,coord.coords.latitude]
+      //const position = [7.75,48.583328]
       setLocation(position);
       distance = distance * 1000;
       const res = await getRoute(position, distance, type);
