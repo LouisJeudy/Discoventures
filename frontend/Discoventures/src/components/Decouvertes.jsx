@@ -49,7 +49,7 @@ export default function Decouvertes() {
                 routeLoaded ? (
                     routes.map((route) => {
                       console.log(route)
-                      return(<MapCard key={route.id}nativeID="mapCard" title={route.title} activityType={route.activityType} distance={Math.round(route.estimatedDistance/1000)} estimatedTime={route.estimatedTime} isPrivate={route.isPrivate} nbVoters={route.nbVoters} score={route.score} gps={route.coordinates.data}/>);
+                      return(<MapCard key={route.id} nativeID={"decouvertesMapCard" + route.id} title={route.title} activityType={route.activityType} distance={Math.round(route.estimatedDistance/1000)} estimatedTime={route.estimatedTime} isPrivate={route.isPrivate} nbVoters={route.nbVoters} score={route.score} gps={route.coordinates.data}/>);
                   })):(<Text>No routes found !</Text>)
               }
             </ScrollView>
