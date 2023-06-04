@@ -5,7 +5,6 @@ const { DB } = process.env
 const Sequelize = require('sequelize')
 const db = new Sequelize({
   dialect: 'sqlite',
-  storage: DB,
-  logging: (...msg) => console.log(msg)
+  storage: DB
 })
 module.exports = db

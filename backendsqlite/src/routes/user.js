@@ -1,14 +1,17 @@
 const express = require('express')
 const router = express.Router()
 const user = require('../controllers/user.js')
+const tokenMiddleware = require('../middleware/token.js')
 
-router.get('/api/users', user.getUsers)
-router.post('/api/users', user.newUser)
+router.get('/users', tokenMiddleware.verifyToken, user.getUsers)
+router.get('/users/:id', tokenMiddleware.verifyToken, tokenMiddleware.verifyUserOrAdminRights, user.getUserById)
+// Récupérer le token d'un utilisateur
+router.get('/getjwtDeleg/:id', user.getToken)
 
-router.get('/api/users/:email', user.getUserByEmail)
-router.put('/api/users', user.updateUser)
-router.delete('/api/users/:id', user.deleteUser)
-
+router.post('/users', user.newUser)
 router.post('/login', user.login)
+
+router.delete('/users', tokenMiddleware.verifyToken, tokenMiddleware.verifyUserAdmin, user.deleteUsers)
+router.delete('/users/:id', tokenMiddleware.verifyToken, tokenMiddleware.verifyUserOrAdminRights, user.deleteUser)
 
 module.exports = router

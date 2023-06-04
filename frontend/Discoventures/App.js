@@ -1,32 +1,24 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { useFonts } from 'expo-font';
-import colors from "./src/style/colors.js"
-import fonts from "./src/style/fonts.js"
+/* eslint-disable no-undef */
+import * as React from "react";
+import { Provider } from "react-redux";
+import store from "./src/app/store/store";
+import AppHome from "./App_home";
+import { useFonts } from "expo-font";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
-    'Raleway-Bold': require('./assets/fonts/Raleway/Raleway-Bold.ttf'),
-    'Raleway-SemiBold': require('./assets/fonts/Raleway/Raleway-SemiBold.ttf'),
-    'Raleway-Medium': require('./assets/fonts/Raleway/Raleway-Medium.ttf'),
-    'Raleway-Regular': require('./assets/fonts/Raleway/Raleway-Regular.ttf'),
+    "Raleway-Bold": require("./assets/fonts/Raleway/Raleway-Bold.ttf"),
+    "Raleway-SemiBold": require("./assets/fonts/Raleway/Raleway-SemiBold.ttf"),
+    "Raleway-Medium": require("./assets/fonts/Raleway/Raleway-Medium.ttf"),
+    "Raleway-Regular": require("./assets/fonts/Raleway/Raleway-Regular.ttf"),
+    "CantoraOne-Regular": require("./assets/fonts/Cantora/CantoraOne-Regular.ttf"),
   });
   if (!fontsLoaded) {
     return null;
   }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <AppHome />
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
