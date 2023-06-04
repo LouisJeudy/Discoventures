@@ -92,7 +92,7 @@ generate_APK:
   image: sebastienviardot/rnenvsv:buster
   script:
   - cd ./frontend/Discoventures/
-  - chmod +x ./genereapk.sh
+  - chmod +x ./generateapk.sh
   - ./generateapk.sh
   artifacts:
     paths:
