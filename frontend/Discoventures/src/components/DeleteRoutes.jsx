@@ -71,7 +71,7 @@ export default function DeleteRoutes(props) {
               { 
                 routeLoaded ? (
                     routes.map((route) => {
-                      return(<ItemList key={route.id} nativeID={"adminRoutes" + route.id} onDelete={handleItemDelete} key={route.id} idRoute={route.id} title={route.title} distance={route.estimatedDistance/1000} time={route.estimatedTime} activityType={route.activityType} gps={ route.coordinates.data }/>);
+                      return(<ItemList key={route.id} nativeID={"adminRoutes" + route.id} onDelete={handleItemDelete} idRoute={route.id} title={route.title} distance={route.estimatedDistance/1000} time={route.estimatedTime} activityType={route.activityType} gps={ route.coordinates.data }/>);
                   })):(<Text>No routes found !</Text>)
               }
           </ScrollView>
